@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:panelGroup id="fechamento">
+        <h:panelGroup rendered="#{actionMB.acao == 'fechar'}">
+            <h:form>
+                <div class="row" style="padding: 10px;">
+                    <div class="col-xs-12" >
+                        <h3  style="    background: #31353d;
+                             color: white;
+                             text-align: center;
+                             padding: 5px;
+                             border-radius: 5px;">Itens</h3>
+                        <b:row style="    margin-left: 0;margin-right: 0;" class="item">
+                            <div class="col-xs-3 text-center">
+                                <img src="https://superprix.vteximg.com.br/arquivos/ids/178197-600-600/Refrigerante-Coca-Cola-250ml-Pet-Original.png?v=636765245391970000" alt="Sabine Dress" class="img-reponsive" width="70"/>
+                            </div>
+                            <div class="col-xs-8" style="    margin: 0px;     padding-left: 0;">
+                                <span class="title-item" style="color: #26292f;">Coca Cola 150 ML </span><br/>
+                                <b:row style="margin-right: -30px;">
+                                    <div class="col-xs-5" style="    margin: 0px;">
+                                        <small style="    color: #7c7c7c;font-size: 100%;">1 x R$ 2,50</small>
+                                    </div>
+                                    <div class="col-xs-7 pull-right text-right" style="color: #ff501f;     margin: 0px;">
+                                        <h3 style="font-weight: bolder; color: #f94f1f;">  R$ 10,00</h3>
+                                    </div>
+                                </b:row>
+                                <b:commandLink styleClass="btn btn-danger" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
+                                    <i class="fa fa-trash" />
+                                </b:commandLink>
+                            </div>
+                        </b:row>
+                    </div>
+                </div>
+                <div class="row" style="padding: 10px;">
+                    <div class="col-xs-12" >
+                        <h3 style="    background: #31353d;
+                            color: white;
+                            text-align: center;
+                            padding: 5px;
+                            border-radius: 5px;">Dados e Entrega</h3>
+                    </div>
+                    <div class="col-xs-12">
+                        <b:inputText label="Nome Completo" />
+                    </div>
+                    <div class="col-xs-12">
+                        <b:inputText label="Telefone" />
+                    </div>
+                    <div class="col-xs-12">
+                        <b:selectBooleanCheckbox label="Retirada?" />
+                    </div>
+                    <div class="col-xs-12">
+                        <b:inputText label="Endereço e Nº" placeholder="Rua Fula de Tal, 190" />
+                    </div>
+                    <div class="col-xs-12">
+                        <b:inputText label="Complemento" placeholder="Casa Apartamento" />
+                    </div>
+                    <div class="col-xs-6">
+                        <b:inputText label="Bairro"  />
+                    </div>
+                    <div class="col-xs-6">
+                        <b:inputText label="Cidade" readonly="true" />
+                    </div>
+                </div>
+                <div class="row" style="padding: 10px;">
+                    <div class="col-xs-12" >
+                        <h3  style="    background: #31353d;
+                             color: white;
+                             text-align: center;
+                             padding: 5px;
+                             border-radius: 5px;">Pagamento</h3>
+                    </div>
+                    <div class="col-xs-12">
+                        <b:selectOneMenu label="Forma">
+                            <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" />
+                            <f:selectItem itemLabel="Cartão" itemValue="Cartão" />
+                        </b:selectOneMenu>
+                    </div>
+                    <div class="col-xs-3">
+                        <b:selectBooleanCheckbox label="Troco?" />
+                    </div>
+                    <div class="col-xs-9">
+                        <b:inputText label="Para quanto?"  />
+                    </div>
+
+
+                    <div class="col-xs-12" >
+                        <h3  style="    background: #31353d;
+                             color: white;
+                             text-align: center;
+                             padding: 5px;
+                             border-radius: 5px;">TOTAIS</h3>
+                    </div>
+
+                    <div class="col-xs-6" >
+                        <strong>Subtotal</strong>
+                    </div>
+                    <div class="col-xs-6" >
+                        <b:inputText />
+                    </div>
+                    <div class="col-xs-6" >
+                        <strong>Taxa de Entrega</strong>
+                    </div>
+                    <div class="col-xs-6" >
+                        <b:inputText />
+                    </div>
+                    <div class="col-xs-6" >
+                        <strong>TOTAL</strong>
+                    </div>
+                    <div class="col-xs-6" >
+                        <b:inputText />
+                    </div>
+
+                </div>
+                <div class="row" style="padding: 10px;">
+                    <div class="col-xs-12">
+                        <p:commandLink value="Enviar Pedido" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important;"  />
+                    </div>
+                </div>
+            </h:form>
+        </h:panelGroup>
+    </h:panelGroup>
+</html>
+

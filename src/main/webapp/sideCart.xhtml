@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
+    <div id="mySidenav" class="sidenav" >
+        <h:form>
+            <div class="row" style="    position: absolute;   top: 0;width: 100%;margin-left: 0px;     border-bottom: 1px solid #f94f1f;">
+                <div class="col-xs-7" style="padding-top: 15px;">
+                    <span style="    font-size: 20px;font-weight: bolder;color: #ff501f;margin-top: 20px;">Carrinho</span>
+                </div>
+                <div class="col-xs-5">
+                    <a href="javascript:void(0)"  onclick="closeNav()" style="font-size: 18px;    margin-left: 50px;">
+                        <i class="fa fa-arrow-right fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="top-itens clear-fix"></div>
+                    <div class="itens" style="overflow:hidden; overflow-y:scroll; height: 500px;">
+
+                        <b:row style="    margin-left: 0;margin-right: 0;" class="item">
+                            <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
+                                <img src="https://superprix.vteximg.com.br/arquivos/ids/178197-600-600/Refrigerante-Coca-Cola-250ml-Pet-Original.png?v=636765245391970000" alt="Sabine Dress" class="img-reponsive" width="70"/>
+                            </div>
+                            <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
+                                <span class="title-item">Coca Cola 150 ML </span><br/>
+                                <b:row style="margin-right: -30px;">
+                                    <div class="col-xs-5" style="    margin: 0px;">
+                                        <small style="    color: #b9b9b9;font-size: 100%;">1 x R$ 2,50</small>
+                                    </div>
+                                    <div class="col-xs-7 pull-right text-right" style="color: #ff501f;     margin: 0px;">
+                                        <h3 style="font-weight: bolder; color: #f94f1f;">  R$ 10,00</h3>
+                                    </div>
+                                </b:row>
+                                <b:commandLink styleClass="btn btn-danger" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
+                                    <i class="fa fa-trash" />
+                                </b:commandLink>
+                            </div>
+                        </b:row>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="botton-itens">
+                <b:commandButton value="Fechar Pedido"  look="primary"  action="#{actionMB.setAcao('fechar')}" style="width: 100%; height: 50px;"  />
+            </div>
+        </h:form>
+    </div>
+</html>
+

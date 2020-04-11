@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:panelGroup id="item" >
+        <h:panelGroup rendered="#{actionMB.acao == 'itens'}" >
+            <h:form   >
+                <div class="row" style="padding: 5px;     margin-left: 0px; margin-right: 0px; border-bottom: 1px solid #ccc;">
+                    <div class="col-xs-12 ">
+                        <b:commandLink action="#{actionMB.setAcao('grupo')}"   style="color: #ff501f;">
+                            <i class="fa fa-arrow-left fa-2x"></i>
+                        </b:commandLink>
+                    </div>
+                </div>
+                <div class="row" style="padding: 5px;     margin-left: 0px; margin-right: 0px; ">
+
+                    <div class="col-xs-6 containp5">
+                        <div class="itm-img">
+                            <div class="cover"></div>
+                            <img alt="" role="presentation" src="https://www.carone.com.br/media/catalog/product/cache/1/image/580x580/9df78eab33525d08d6e5fb8d27136e95/2/7/27324_B_1.jpg"  style="    width: 98%;"/>
+                        </div>
+                        <div class="item-detail2 text-center">
+                            <strong>Coca Cola 2 Litros</strong>
+
+                            <b:commandLink styleClass="btn btn-primary btn-block"  style="width: 100%;">
+                                <div class="row">
+                                    <div class="col-xs-4"><small>R$ 5,00 </small></div>
+                                    <div class="col-xs-8 text-right"> Pedir</div>
+                                </div>
+                            </b:commandLink>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 containp5">
+                        <div class="item-img2">
+                            <img alt="" role="presentation" src="https://www.carone.com.br/media/catalog/product/cache/1/image/580x580/9df78eab33525d08d6e5fb8d27136e95/2/7/27324_B_1.jpg"  style="    width: 98%;"/>
+                        </div>
+                        <div class="item-detail2 text-center">
+                            <strong>Coca Cola 2 Litros</strong>
+
+                            <b:commandLink styleClass="btn btn-primary btn-block"  style="width: 100%;">
+                                <div class="row">
+                                    <div class="col-xs-4"><small>R$ 5,00 </small></div>
+                                    <div class="col-xs-8 text-right"> Pedir</div>
+                                </div>
+                            </b:commandLink>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </h:form>
+        </h:panelGroup>
+    </h:panelGroup>
+</html>
+

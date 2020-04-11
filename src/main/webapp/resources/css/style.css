@@ -1,0 +1,275 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 10/04/2020, 20:25:43
+    Author     : Renato
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+body {
+    font-family: 'Roboto', sans-serif;
+}
+*{
+    overflow-x: hidden;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Lato", sans-serif;
+}
+
+.nav{
+    width: 100%;
+    background: #31353d;
+    height: 60px;
+    display: flex;
+}
+.nav .logo {
+    text-align: left;
+}
+.nav .logo img {
+    margin-left: 5px;
+    margin-top: 1px;
+}
+
+.nav .cart{
+    text-align: right;
+    right: 0;
+    position: absolute;
+    height: 60px;
+    background: #26292f;
+    width: 90px;
+
+    margin-top:auto;
+    margin-bottom:auto;
+    text-align:center;
+}
+.nav .cart a{
+    position: absolute;
+    width: 90px;
+    right: 0;
+    height: 58px;
+    text-decoration: none;
+}
+.nav .cart fa{
+
+}
+.conteudo{
+    width: 95%;
+}
+
+.badge-custom{
+    text-decoration: none;
+    background: #ff501f !important;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    font-size: 11px;
+    width: 22px;
+}
+
+
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #26292f;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #ff501f;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+
+}
+.botton-itens{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.title-item{
+    color: white;
+    font-size: 18px;
+    font-weight: bolder;
+}
+.sidenav span{
+    color: white;
+}
+.item{
+    border-bottom: 1px solid #31353d;
+    padding: 5px;
+}
+
+.contain{
+    margin: 0px;
+    padding: 0;
+}
+.containp5{
+    margin: 0px;
+    padding: 5px;;
+}
+.item-detail{
+    font-size: 15px;
+    margin-bottom: 2px;
+    text-overflow: ellipsis;
+    display: inline-grid;
+    width: 100%;
+
+    position: absolute;
+    top: 25%;
+    color: white;
+    font-size: 30px;
+
+    text-align: center;
+    vertical-align: middle;
+}
+.item-detail strong{
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.item-detail small{
+    font-size: 11px;
+    color: #aaa;
+}
+.item-detail a small{
+    font-size: 11px;
+    color: #fff;
+    font-weight: bolder;
+}
+.item-img {
+    filter: brightness(50%);
+    -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    -ms-transition: opacity 1s ease-in-out;
+    -o-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
+}
+.item-img img{
+    width: 100%;
+    height: 150px;
+}
+
+.itm-img{
+
+}
+.itm-img .cover{
+
+}
+.itm-img .cover img{
+
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #ff501f !important;
+    border-color: #ff501f !important;
+}
+
+.btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus{
+    color: #fff !important;
+    background-color: #a9501f !important;
+    border-color: #A9501F !important;
+}
+.item-img:hover{
+
+    opacity: 1;
+}
+
+label {
+    margin-bottom: 0px;
+}
+
+#fechamento .form-group{
+    margin-bottom: 5px;
+}
+
+
+/* Styling Checkbox Starts */
+input[type=checkbox] {
+    outline: none;
+    width: 58px;
+    height: 21px;
+    font-size: 11px;
+    line-height: 2;
+    display: block;
+    font-weight: bold;
+    border-radius: 3px;
+    border: 1px solid #B9B9B9;
+    -webkit-appearance: none;
+
+    background-image: -webkit-gradient( 
+        linear, left top, left bottom,
+        color-stop(0, #E8E8E8),
+        color-stop(0.5, #E8E8E8),
+        color-stop(0.5, #FDFDFD),
+        color-stop(1, #FDFDFD)
+        );
+    box-shadow: 0px 1px 2px #AFAFAF inset;
+    color: #7F7F7F;
+}
+
+input[type=checkbox]:checked {
+    background: #f94f1f;
+    box-shadow: none;
+    color: #fff;
+    text-shadow: none;
+    border: 1px solid #f94f1f;
+}
+
+input[type=checkbox]:before {
+    content: 'Não';
+    border-radius: 3px;
+    border-top: 1px solid #F7F7F7;
+    border-right: 1px solid #999999;
+    border-bottom: 1px solid #BABABA;
+    border-left: 1px solid #BDBDBD;
+    background-image: -webkit-gradient( 
+        linear, left top, left bottom,
+        color-stop(0, #D8D8D8),
+        color-stop(1, #FBFBFB)
+        );
+    height: 20px;
+    width: 22px;
+    display: inline-block;
+    text-indent: 27px;
+}
+
+input[type=checkbox]:checked:before {
+    content: 'Sim';
+    text-indent: -25px;
+    margin-left: 33px;
+}
