@@ -3,9 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <div id="mySidenav" class="sidenav" >
-        <h:form>
+        <h:form id="frmMySide">
             <div class="row" style="    position: absolute;   top: 0;width: 100%;margin-left: 0px;     border-bottom: 1px solid #f94f1f;">
                 <div class="col-xs-7" style="padding-top: 15px;">
                     <span style="    font-size: 20px;font-weight: bolder;color: #ff501f;margin-top: 20px;">Carrinho</span>
@@ -20,35 +21,42 @@
                 <div class="col-xs-12">
                     <div class="top-itens clear-fix"></div>
                     <div class="itens" style="overflow:hidden; overflow-y:scroll; height: 500px;">
+                        <h:panelGroup id="itnsGroup">
 
-                        <b:row style="    margin-left: 0;margin-right: 0;" class="item">
-                            <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
-                                <img src="https://superprix.vteximg.com.br/arquivos/ids/178197-600-600/Refrigerante-Coca-Cola-250ml-Pet-Original.png?v=636765245391970000" alt="Sabine Dress" class="img-reponsive" width="70"/>
-                            </div>
-                            <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
-                                <span class="title-item">Coca Cola 150 ML </span><br/>
-                                <b:row style="margin-right: -30px;">
-                                    <div class="col-xs-5" style="    margin: 0px;">
-                                        <small style="    color: #b9b9b9;font-size: 100%;">1 x R$ 2,50</small>
+
+                            <ui:repeat value="#{orderMB.order.products}" var="prod">
+                                <b:row style="    margin-left: 0;margin-right: 0;" class="item">
+                                    <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
+                                        <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}" class="img-reponsive" width="70"/>
                                     </div>
-                                    <div class="col-xs-7 pull-right text-right" style="color: #ff501f;     margin: 0px;">
-                                        <h3 style="font-weight: bolder; color: #f94f1f;">  R$ 10,00</h3>
+                                    <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
+                                        <span class="title-item">#{prod.product.name} </span><br/>
+                                        <b:row style="margin-right: -30px;">
+                                            <div class="col-xs-5" style="    margin: 0px;">
+                                                <small style="    color: #b9b9b9;font-size: 100%;">#{prod.quantity} x #{orderMB.formatarMoeda(prod.price)}</small>
+                                            </div>
+                                            <div class="col-xs-7 pull-right text-right" style="color: #ff501f;     margin: 0px;">
+                                                <h3 style="font-weight: bolder; color: #f94f1f; font-size: 18px;">  #{orderMB.formatarMoeda(prod.quantity * prod.price)}</h3>
+                                            </div>
+                                        </b:row>
+                                        <p:commandLink styleClass="btn btn-danger" action="#{orderMB.removeCart(prod)}" update="@form" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
+                                            <i class="fa fa-trash" />
+                                        </p:commandLink>
                                     </div>
                                 </b:row>
-                                <b:commandLink styleClass="btn btn-danger" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
-                                    <i class="fa fa-trash" />
-                                </b:commandLink>
-                            </div>
-                        </b:row>
 
-
+                            </ui:repeat>
+                        </h:panelGroup>
 
                     </div>
                 </div>
             </div>
 
             <div class="botton-itens">
-                <b:commandButton value="Fechar Pedido"  look="primary"  action="#{actionMB.setAcao('fechar')}" style="width: 100%; height: 50px;"  />
+                <p:blockUI block="btnLink" widgetVar="ldg2"  >
+                    <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                </p:blockUI>
+                <p:commandLink id="btnLink" value="Fechar Pedido"  styleClass="btn btn-primary"  action="#{actionMB.setAcao('fechar')}" onstart="PF('ldg2').show()" oncomplete="closeNav(); PF('ldg2').hide()" style="width: 100%; height: 50px; color: white;border-radius: 0px;"  />
             </div>
         </h:form>
     </div>

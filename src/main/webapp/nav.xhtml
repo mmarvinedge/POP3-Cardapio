@@ -2,15 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <div class="nav">
+    <div class="nav" id="myHeader">
         <div class="logo">
             <h:graphicImage name="img/burguer.png" width="48"/>
             <span style="    color: white;font-weight: bolder;font-size: 18px;">POP SALES</span>
         </div>
         <div class="cart">
             <a href="#" onclick="openNav()">
-                <i class="fa fa-cart-plus fa-2x " style="color: white;     margin-top: 12px;"></i>
-                <span class="badge-custom">0</span>
+                <i class="fa fa-cart-plus fa-2x " style="color: white;     margin-top: 15px;"></i>
+                <h:panelGroup id="grpNumbers">
+                    <span class="badge-custom">#{orderMB.order.products.size()}</span>
+                </h:panelGroup>
             </a>
         </div>
     </div>

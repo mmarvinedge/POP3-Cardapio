@@ -8,19 +8,77 @@
         <title>Pop Sales</title>
         <h:outputStylesheet name="css/style.css"   />
         <h:outputStylesheet name="css/all.min.css"   />
+        <h:outputStylesheet name="css/sweetalert2.min.css"   />
     </h:head>
     <h:body>
         <ui:include src="nav.xhtml" />
-        <h:panelGroup id="grpPrincipal" class="conteudo">
+        <h:panelGroup id="grpPrincipal" class="conteudo contentudo">
+            <p:blockUI block="grpPrincipal" widgetVar="loading"  >
+                <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+            </p:blockUI>
             <ui:include src="grupos.xhtml" />
             <ui:include src="itens.xhtml" />
             <ui:include src="fecharPedido.xhtml" />
+            <p:remoteCommand name="backGrupos" action="#{actionMB.setAcao('grupo')}"  update="grpPrincipal" immediate="true"/>
+
         </h:panelGroup>
 
         <ui:include src="sideCart.xhtml" />
         <h:outputScript name="js/all.min.js"   />
         <h:outputScript name="js/functions.js"   />
+        <h:outputScript name="js/jquery.mask.js"   />
+        <h:outputScript name="js/load.js"   />
+        <h:outputScript name="js/sweetalert2.all.min.js"   />
+        <button onclick="topFunction()" id="myBtn" title="Go to top">
+            <i class="fa fa-arrow-up"></i>
+        </button>
 
+
+        <script>
+            function callBack() {
+                backGrupos();
+            }
+
+
+            function confirm() {
+                Swal.fire({
+                    title: 'Muito Bom',
+                    text: "Seu pedido foi enviado!",
+                    icon: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK!'
+                }).then((result) => {
+                    if (result.value) {
+                        backGrupos();
+                    }
+                })
+            }
+
+
+            //Get the button:
+            mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function () {
+                scrollFunction()
+            };
+
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    mybutton.style.display = "block";
+                } else {
+                    mybutton.style.display = "none";
+                }
+            }
+
+// When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+                document.body.scrollTop = 0; // For Safari
+                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }
+
+        </script>
     </h:body>
 </html>
 

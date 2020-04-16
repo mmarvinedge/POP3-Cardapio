@@ -27,8 +27,13 @@ public class ActionMB {
     }
 
     public void setAcao(String acao) {
+        System.out.println("change");
         this.acao = acao;
         PrimeFaces.current().ajax().update("grpPrincipal");
+    }
+    public void setAcaoNOUpdate(String acao) {
+        System.out.println("change");
+        this.acao = acao;
     }
 
 }
