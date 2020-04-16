@@ -5,7 +5,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Pop Sales</title>
+        <title>Pop Sales - #{orderMB.company.companyName}</title>
         <h:outputStylesheet name="css/style.css"   />
         <h:outputStylesheet name="css/all.min.css"   />
         <h:outputStylesheet name="css/sweetalert2.min.css"   />
@@ -19,7 +19,7 @@
             <ui:include src="grupos.xhtml" />
             <ui:include src="itens.xhtml" />
             <ui:include src="fecharPedido.xhtml" />
-            <p:remoteCommand name="backGrupos" action="#{actionMB.setAcao('grupo')}"  update="grpPrincipal" immediate="true"/>
+            <p:remoteCommand name="backGrupos" action="#{actionMB.setAcao('grupo')}"  update="grpPrincipal,:grpNumbers" immediate="true"/>
 
         </h:panelGroup>
 

@@ -423,3 +423,13 @@ label{
 #myBtn:hover {
     background-color: #ff501f !important; /* Add a dark-grey background on hover */
 }
+
+.ui-chkbox .ui-chkbox-box {
+    display: inline-block;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    background:  white;
+    border-color: #ff501f  !important;
+}
+.ui-selectmanycheckbox tbody 

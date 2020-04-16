@@ -11,7 +11,6 @@ import java.util.List;
  *
  * @author Tadeu-PC
  */
-
 public class Item {
 
     private String id;
@@ -21,7 +20,9 @@ public class Item {
     public Double quantity;
     public String obs;
     public List<Attribute> attributes;
+    public List<AttributeValue> attributesValues;
     public Product product;
+    public String printer;
 
     public Item() {
     }
@@ -89,8 +90,21 @@ public class Item {
     public void setProduct(Product product) {
         this.product = product;
     }
-    
-    
-    
+
+    public String getPrinter() {
+        return printer;
+    }
+
+    public void setPrinter(String printer) {
+        this.printer = printer;
+    }
+
+    public List<AttributeValue> getAttributesValues() {
+        return attributesValues;
+    }
+
+    public void setAttributesValues(List<AttributeValue> attributesValues) {
+        this.attributesValues = attributesValues;
+    }
 
 }

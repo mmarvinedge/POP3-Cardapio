@@ -5,25 +5,25 @@
  */
 package com.popsales.model;
 
-
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
  * @author PICHAU
  */
 public class Attribute implements Serializable {
-    
+
     private String sku;
     private String name;
     private String description;
     private String type;
     private Boolean highestPrice;
     private String quantityType;
-        private Integer quantity;
+    private Integer quantity;
     private BigDecimal price;
-    private String companyId;
+    private List<AttributeValue> values;
 
     public String getSku() {
         return sku;
@@ -87,6 +87,14 @@ public class Attribute implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public List<AttributeValue> getValues() {
+        return values;
+    }
+
+    public void setValues(List<AttributeValue> values) {
+        this.values = values;
     }
 
     @Override

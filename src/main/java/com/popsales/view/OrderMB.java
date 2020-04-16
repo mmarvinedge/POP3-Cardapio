@@ -5,6 +5,7 @@
  */
 package com.popsales.view;
 
+import com.popsales.model.AttributeValue;
 import com.popsales.model.Category;
 import com.popsales.model.Company;
 import com.popsales.model.Item;
@@ -12,10 +13,11 @@ import com.popsales.model.Merchant;
 import com.popsales.model.Order;
 import com.popsales.model.Product;
 import com.popsales.services.CategoryServices;
+import com.popsales.util.OUtils;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +47,8 @@ public class OrderMB implements Serializable {
     private Category categorySelected = new Category();
     private Item item = new Item();
     private Order order = new Order();
+    private List<AttributeValue> adicionais = new ArrayList();
+    private BigDecimal totalAdicionais = BigDecimal.ZERO;
 
     public OrderMB() {
     }
@@ -82,15 +86,12 @@ public class OrderMB implements Serializable {
         try {
             if (idCompany == null) {
             }
-            System.out.println("ID CATEGORY: " + id);
-            if (category == null) {
-                System.out.println("CATEGORY ULL");
-            }
             if (category == null || idCompany == null) {
                 return;
             }
             categorySelected = category;
             products = categoriaService.getProducts(idCompany, id);
+            System.out.println("PRODUCTS");
         } catch (IOException ex) {
             PrimeFaces.current().executeScript("connectionErrorMsg('" + ex.getMessage() + "')");
             Logger.getLogger(OrderMB.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,15 +102,18 @@ public class OrderMB implements Serializable {
         if (order.getProducts() == null) {
             order.setProducts(new ArrayList());
         }
+        item.setAttributesValues(adicionais);
+        item.setPrice(totalAdicionais.add(new BigDecimal(item.getQuantity() * item.getProduct().getPrice())).doubleValue());
         order.getProducts().add(item);
         order.setSubtotal(order.getProducts().stream().map(m -> m.getQuantity() * m.getPrice()).reduce(0.0, Double::sum));
         calcularTotal();
         item = new Item();
+        adicionais = new ArrayList<>();
+        totalAdicionais = BigDecimal.ZERO;
     }
 
     private void calcularTotal() {
         order.setTotal(order.getProducts().stream().map(m -> m.getQuantity() * m.getPrice()).reduce(0.0, Double::sum) - order.getDiscountValue() + order.getDeliveryCost());
-        System.out.println("TOTAL: " + order.getTotal());
     }
 
     public void removeCart(Item i) {
@@ -120,12 +124,10 @@ public class OrderMB implements Serializable {
 
     public void registarPedido() {
         try {
-            order.setDtRegister(new Date().toString());
+            order.setDtRegister(OUtils.formataData(new Date(), "dd/MM/yyyy HH:mm:ss"));
             order.setStatus("Aguardando");
             order.setMerchant(new Merchant(company));
             categoriaService.sendOrder(order, idCompany);
-            PrimeFaces.current().executeScript("confirm()");
-            PrimeFaces.current().ajax().update("grpPrincipal");
             order = new Order();
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,6 +147,7 @@ public class OrderMB implements Serializable {
         item.setQuantity(1D);
         item.setSku(product.getSku());
         item.setProduct(product);
+        item.setPrinter(product.getPrinter());
     }
 
     public String getIdCompany() {
@@ -197,6 +200,42 @@ public class OrderMB implements Serializable {
 
     public void setCategorySelected(Category categorySelected) {
         this.categorySelected = categorySelected;
+    }
+
+    public Company getCompany() {
+        if (company == null) {
+            try {
+                company = categoriaService.loadCompany(idCompany);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public List<AttributeValue> getAdicionais() {
+        return adicionais;
+    }
+
+    public void setAdicionais(List<AttributeValue> adicionais) {
+        this.adicionais = adicionais;
+    }
+
+    public BigDecimal getTotalAdicionais() {
+        return totalAdicionais;
+    }
+
+    public void setTotalAdicionais(BigDecimal totalAdicionais) {
+        this.totalAdicionais = totalAdicionais;
+    }
+
+    public void processarTotalAdicionais() {
+        totalAdicionais = adicionais.stream().map(m -> m.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println("TOTAIS: " + totalAdicionais);
     }
 
 }

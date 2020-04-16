@@ -164,9 +164,9 @@
                     </div>
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
-                            <p:commandLink value="Enviar Pedido" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;" ajax="true"
+                            <p:commandLink value="Enviar Pedido" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;" 
                                            update="@form"
-                                           action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); backGrupos(); "/>
+                                           action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="if (!args.validationFailed){ backGrupos();}PF('ldg').hide();  "/>
                         </div>
                     </div>
 
