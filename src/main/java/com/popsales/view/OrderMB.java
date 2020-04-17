@@ -137,7 +137,7 @@ public class OrderMB implements Serializable {
             String foneCod = foneNoMask.substring(foneNoMask.length() - 4, foneNoMask.length());
             return nome + "-" + foneCod;
         } catch (Exception e) {
-            return new Random().nextInt(6);
+            return new Random().nextInt(6) + "";
         }
     }
 
