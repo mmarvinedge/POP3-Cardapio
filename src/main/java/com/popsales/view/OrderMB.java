@@ -134,10 +134,10 @@ public class OrderMB implements Serializable {
         try {
             String nome = order.getClientInfo().getName().substring(0, 2);
             String foneNoMask = order.getClientInfo().getPhone().replace("-", "").replace("(", "").replace(")", "");
-            String foneCod = foneNoMask.substring(foneNoMask.length() - 4, foneNoMask.length());
+            String foneCod = foneNoMask.substring(foneNoMask.length() - 4, foneNoMask.length()) + new Random().nextInt((9 - 1) + 1) + 0;
             return nome + "-" + foneCod;
         } catch (Exception e) {
-            return new Random().nextInt(6) + "";
+            return new Random().nextInt(7) + "";
         }
     }
 
