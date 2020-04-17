@@ -5,6 +5,7 @@
  */
 package com.popsales.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -16,8 +17,10 @@ public class Item {
     private String id;
     private String sku; //codigo do produto
     private String name;
-    public Double price;
-    public Double quantity;
+    public BigDecimal price;
+    public BigDecimal quantity;
+    public BigDecimal totalAds;
+    public BigDecimal total;
     public String obs;
     public List<Attribute> attributes;
     public List<AttributeValue> attributesValues;
@@ -49,22 +52,6 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
     }
 
     public String getObs() {
@@ -105,6 +92,38 @@ public class Item {
 
     public void setAttributesValues(List<AttributeValue> attributesValues) {
         this.attributesValues = attributesValues;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public BigDecimal getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getTotalAds() {
+        return totalAds;
+    }
+
+    public void setTotalAds(BigDecimal totalAds) {
+        this.totalAds = totalAds;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
 }

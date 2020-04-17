@@ -6,6 +6,7 @@
 package com.popsales.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class Product implements Serializable {
     private Boolean availability;
     private String imageType;
     private String imageBase64;
-    private Double price;
+    private BigDecimal price;
     private String companyId;
     private Category categoryMain;
     private List<Category> categories;
@@ -56,11 +57,11 @@ public class Product implements Serializable {
         this.sku = sku;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

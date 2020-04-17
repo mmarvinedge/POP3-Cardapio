@@ -5,12 +5,13 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Pop Sales - #{orderMB.company.companyName}</title>
+        <title>Pop Sales </title>
         <h:outputStylesheet name="css/style.css"   />
         <h:outputStylesheet name="css/all.min.css"   />
         <h:outputStylesheet name="css/sweetalert2.min.css"   />
     </h:head>
     <h:body>
+        
         <ui:include src="nav.xhtml" />
         <h:panelGroup id="grpPrincipal" class="conteudo contentudo">
             <p:blockUI block="grpPrincipal" widgetVar="loading"  >

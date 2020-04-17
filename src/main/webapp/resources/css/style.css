@@ -432,4 +432,10 @@ label{
     background:  white;
     border-color: #ff501f  !important;
 }
-.ui-selectmanycheckbox tbody 
+.modal-footer{
+    padding-top: 0px !important;
+}
+
+.ui-selectmanycheckbox label{
+    font-size: 12px !important;
+}

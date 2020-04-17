@@ -52,8 +52,8 @@ function effect(iditemimg) {
                 .css({
                     'opacity': '0.5',
                     'position': 'absolute',
-                    'height': '100px',
-                    'width': '100px',
+                    'height': '50px',
+                    'width': '50px',
                     'z-index': '100'
                 })
                 .appendTo($('body'))

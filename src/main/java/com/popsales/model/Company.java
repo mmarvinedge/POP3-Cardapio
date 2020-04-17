@@ -5,6 +5,7 @@
  */
 package com.popsales.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ public class Company {
     private String phone;
     private String owner;
     private Address address;
+    private BigDecimal deliveryCost;
 
     public String getId() {
         return id;
@@ -58,5 +60,20 @@ public class Company {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public BigDecimal getDeliveryCost() {
+        return deliveryCost;
+    }
+
+    public void setDeliveryCost(BigDecimal deliveryCost) {
+        this.deliveryCost = deliveryCost;
+    }
+
+    @Override
+    public String toString() {
+        return "Company{" + "id=" + id + ", companyName=" + companyName + ", phone=" + phone + ", owner=" + owner + ", address=" + address + ", deliveryCost=" + deliveryCost + '}';
+    }
+    
+    
 
 }

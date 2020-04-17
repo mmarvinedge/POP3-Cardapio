@@ -33,10 +33,13 @@
                                         <span class="title-item">#{prod.product.name} </span><br/>
                                         <b:row style="margin-right: -30px;">
                                             <div class="col-xs-5" style="    margin: 0px;">
-                                                <small style="    color: #b9b9b9;font-size: 100%;">#{prod.quantity} x #{orderMB.formatarMoeda(prod.price)}</small>
+                                                <small style="    color: #b9b9b9;font-size: 100%;">#{prod.quantity} x #{orderMB.formatarMoeda(prod.price)}
+                                                <br/>
+                                                Ads: #{orderMB.formatarMoeda(prod.totalAds)}
+                                                </small>
                                             </div>
                                             <div class="col-xs-7 pull-right text-right" style="color: #ff501f;     margin: 0px;">
-                                                <h3 style="font-weight: bolder; color: #f94f1f; font-size: 18px;">  #{orderMB.formatarMoeda(prod.quantity * prod.price)}</h3>
+                                                <h3 style="font-weight: bolder; color: #f94f1f; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
                                             </div>
                                         </b:row>
                                         <p:commandLink styleClass="btn btn-danger" action="#{orderMB.removeCart(prod)}" update="@form" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
