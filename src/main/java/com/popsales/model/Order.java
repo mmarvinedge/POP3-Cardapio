@@ -6,6 +6,7 @@
 package com.popsales.model;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -182,6 +183,9 @@ public class Order {
     }
 
     public BigDecimal getDeliveryCost() {
+        if (deliveryCost == null) {
+            deliveryCost = new BigDecimal(BigInteger.ZERO);
+        }
         return deliveryCost;
     }
 
