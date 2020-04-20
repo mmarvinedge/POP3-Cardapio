@@ -22,7 +22,7 @@
                 <div class="row equal-cols row-flex" style="padding: 5px;     margin-left: 0px; margin-right: 0px; ">
                     <ui:repeat value="#{orderMB.products}" var="prod">
 
-                        <div class="col-xs-12 containp5">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5">
                             <p:commandLink action="#{orderMB.setProduct(prod)}" style="width: 100%;     border-bottom: 1px solid #ccc;" 
                                            update=":mdlPedir" oncomplete="openModal('mdlPedir')">
                                 <div class="row">
@@ -46,94 +46,7 @@
             </h:form>
 
 
-            <b:modal id="mdlPedir"  title="" styleClass="modalPseudoClass custom-modal fade-scale" size="modal-lg" headerClass="head-hidden" >
-                <h:form id="frmModal" >
-
-
-
-                    <div class="modal-header" style="    background-image: url('#{facesContext.externalContext.request.contextPath}/resources/img/back.jpg');     height: 205px;                     min-height: 205px;    background-size: 100%; background-repeat: none;  max-height: 250px;padding: 16px 32px;">
-                        <button type="button" class="close" data-dismiss="modal" style=" background: white; border-radius: 32px;color: #337ab7;right:  15px;position: absolute;height: 55px;width: 55px;opacity: .7;font-size: 37px;">&times;</button>
-
-                        <div class="" style="    position: absolute; top: 75px;     width: 94%;
-                             background: rgba(255,255,255,0.7); padding: 10px;border-radius: 15px;left: 10px;height: 120px;     padding-top: 0px;">
-                            <h3 class="" >#{orderMB.product.name}</h3>
-                            <small >#{orderMB.product.description}</small>
-                        </div>
-                        
-
-                    </div>
-
-
-                    <div class="modal-body">
-                        <h:panelGroup id="grp">
-
-                            <div class="row" style="padding: 10px;">
-                                <div class="col-xs-12">
-                                    <ui:repeat value="#{orderMB.item.product.attributes}" var="at">
-                                        <h:outputLabel for="grid" value="Adicionais" /><br/>
-                                        <p:selectManyCheckbox id="grid" value="#{orderMB.adicionais}" layout="grid" columns="1" converter="Converter"
-                                                              >
-                                            <f:selectItems itemDisabled="true" value="#{at.values}" var="val" itemLabel="#{val.name} - (#{orderMB.formatarMoeda(val.price)})" itemValue="#{val}" />
-                                            <p:ajax event="change" listener="#{orderMB.processarTotalAdicionais()}" update=":frmModal:grpValue" />
-                                        </p:selectManyCheckbox>
-                                    </ui:repeat>
-                                </div>
-                            </div>
-
-                            <div class="row" style="padding: 10px;">
-                                <div class="col-xs-12">
-                                    <label>Recado</label>
-                                    <b:inputTextarea rows="2" value="#{orderMB.item.obs}" />
-                                </div>
-                            </div>
-
-
-
-                        </h:panelGroup>
-                    </div>
-                    <div class="modal-footer">
-                        <h:panelGroup >
-                            <p:remoteCommand name="complete" action="#{orderMB.change()}" />
-                            <div class="row">
-                                <div class="col-md-3 text-left">
-                                    <strong>Quantidade</strong>
-                                    <h5 style="position: absolute;right: 15px;top: -10px;font-size: 15px;font-weight: bolder;">#{orderMB.formatarMoeda(orderMB.product.price)}</h5>
-                                    <b:touchSpin id="spin1"   min="1" max="50" step="1" value="#{orderMB.item.quantity}" style="text-align: center;     " 
-                                                 style-class="ipt-touch"      oncomplete="complete()"  update="@form">
-                                    </b:touchSpin>
-                                    <p:blockUI block="spin1" widgetVar="loadingSpin"  >
-                                        <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-                                    </p:blockUI>
-                                </div>
-
-                                <div class="col-md-5">
-
-                                </div>
-
-                                <div class="col-md-4">
-                                    <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" oncomplete="closeModal('mdlPedir');effect('ima-#{orderMB.product.id}')"  style="padding: 15px;     margin-top: 32px;"
-                                                   update=":grpNumbers,:frmMySide">
-                                        <div class="row">
-                                            <div class="col-xs-5 text-left bold">
-                                                <h:panelGroup id="grpValue">
-                                                    <strong>
-                                                        #{orderMB.formatarMoeda((orderMB.item.quantity * orderMB.item.price)+orderMB.item.totalAds)}
-                                                    </strong>
-                                                </h:panelGroup>
-
-                                            </div>
-                                            <div class="col-xs-7 text-right">
-                                                <strong>Adicionar Item</strong>
-                                            </div>
-                                        </div>
-                                    </p:commandLink>
-                                </div>
-                            </div>
-                        </h:panelGroup>
-                    </div>
-
-                </h:form>
-            </b:modal>
+            
         </h:panelGroup>
     </h:panelGroup>
 </html>

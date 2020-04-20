@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="product" type="com.popsales.model.Product"  required="true"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 containp5">
+            <div class="carde"  style="width: 100%;     border-bottom: 1px solid #ccc;">
+                <p:commandLink action="#{orderMB.setProduct(cc.attrs.product)}" 
+                               update=":mdlPedir" oncomplete="openModal('mdlPedir')">
+                    <div class="row">
+                        <div class="col-xs-3" style="padding: 0;">
+                            <div class="itm-img ima-#{prod.id}">
+                                <center>
+                                    <img  role="presentation" src="#{cc.attrs.product.imageBase64}" style="max-width: 116px; max-height: 104px;"/>
+                                </center>
+                            </div>
+                        </div>
+                        <div class="col-xs-9">
+                            <span style="color: #3e3e3e;font-weight: 400;font-size: 1.8rem;line-height: 1.25rem;margin-bottom: 9px;">#{cc.attrs.product.name}</span><br/>
+                            <span style="font-size: 1.10rem;line-height: 1rem;color: #717171;word-break: break-word;">#{cc.attrs.product.description}</span><Br/>
+                            <span style="font-size: 2rem;line-height: 1.25rem;font-weight: 400;color: #e83b62;">#{orderMB.formatarMoeda(cc.attrs.product.price)}</span>
+                        </div>
+                    </div>
+                </p:commandLink>
+            </div>
+
+        </div>
+    </cc:implementation>
+</html>

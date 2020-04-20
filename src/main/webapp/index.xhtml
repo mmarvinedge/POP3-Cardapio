@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <title>Pop Sales </title>
         <meta charset="utf-8"/> 
@@ -31,6 +33,10 @@
         </h:panelGroup>
 
         <ui:include src="sideCart.xhtml" />
+        <ui:include src="modalPedir.xhtml" />
+
+
+
 
         <h:outputScript name="js/all.min.js"   />
         <h:outputScript name="js/functions.js"   />
@@ -41,6 +47,9 @@
         <button onclick="topFunction()" id="myBtn" title="Go to top">
             <i class="fa fa-arrow-up"></i>
         </button>
+
+
+
         <footer class="fixed-bottom">
             <div class="row" >
                 <div class="col-xs-7">

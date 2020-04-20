@@ -6,6 +6,7 @@
 package com.popsales.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -77,6 +78,55 @@ public class Category implements Serializable {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Category other = (Category) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.sku, other.sku)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.order, other.order)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        if (!Objects.equals(this.companyId, other.companyId)) {
+            return false;
+        }
+        if (!Objects.equals(this.img, other.img)) {
+            return false;
+        }
+        if (!Objects.equals(this.enable, other.enable)) {
+            return false;
+        }
+        if (!Objects.equals(this.main, other.main)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
