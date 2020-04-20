@@ -80,3 +80,16 @@ function effect(iditemimg) {
 }
 
 
+function imgError(path) {
+    $('img').each(function () {
+        if ((typeof this.naturalWidth != "undefined" &&
+                this.naturalWidth == 0)
+                || this.readyState == 'uninitialized') {
+            $(this).attr('src', path);
+        }
+    });
+}
+
+
+
+

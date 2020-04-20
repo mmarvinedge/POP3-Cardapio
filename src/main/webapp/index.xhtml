@@ -6,14 +6,20 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Pop Sales </title>
+        <meta charset="utf-8"/> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <h:outputStylesheet name="css/style.css"   />
         <h:outputStylesheet name="css/all.min.css"   />
         <h:outputStylesheet name="css/sweetalert2.min.css"   />
+
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="256x256" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="128x128" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="64x64" />
     </h:head>
     <h:body>
-        
+
         <ui:include src="nav.xhtml" />
-        <h:panelGroup id="grpPrincipal" class="conteudo contentudo">
+        <h:panelGroup id="grpPrincipal" class="conteudo contentudo" layout="block">
             <p:blockUI block="grpPrincipal" widgetVar="loading"  >
                 <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
             </p:blockUI>
@@ -25,19 +31,46 @@
         </h:panelGroup>
 
         <ui:include src="sideCart.xhtml" />
+
         <h:outputScript name="js/all.min.js"   />
         <h:outputScript name="js/functions.js"   />
         <h:outputScript name="js/jquery.mask.js"   />
         <h:outputScript name="js/load.js"   />
         <h:outputScript name="js/sweetalert2.all.min.js"   />
+        <h:outputStylesheet name="js/hide-address-bar.js" />
         <button onclick="topFunction()" id="myBtn" title="Go to top">
             <i class="fa fa-arrow-up"></i>
         </button>
-
+        <footer class="fixed-bottom">
+            <div class="row" >
+                <div class="col-xs-7">
+                    <div style="    margin-top: 10px;margin-left: 15px;">
+                        <span>Total</span> 
+                        <strong style="    color: white;font-size: 20px;">
+                            <h:outputText  id="outPutTotal" value="R$ 0,00" />
+                        </strong>
+                    </div>
+                </div>
+                <div class="col-xs-5 text-right">
+                    <p:commandButton value="Fechar" style="    height: 100% !important;
+                                     background: #ca173f;
+                                     border: 1px solid #ca173f;
+                                     text-shadow: none;
+                                     padding: 7px;
+                                     width: 90% !important;
+                                     margin-top: 4px;
+                                     margin-right: 4px;
+                                     border-color: #ca173f;
+                                     box-shadow: none;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" onstart="PF('ldg2').show()" oncomplete=" PF('ldg2').hide()" />
+                </div>
+            </div>
+        </footer>
 
         <script>
             function callBack() {
+                PF('loading').show();
                 backGrupos();
+                PF('loading').hide();
             }
 
 
@@ -55,11 +88,21 @@
                     }
                 })
             }
+            function alerta(msg) {
+                Swal.fire({
+                    title: 'Atenção',
+                    text: msg,
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK!'
+                });
+            }
 
 
             //Get the button:
             mybutton = document.getElementById("myBtn");
-
+            $('img').attr('loading', 'lazy');
 // When the user scrolls down 20px from the top of the document, show the button
             window.onscroll = function () {
                 scrollFunction()
@@ -79,6 +122,63 @@
                 document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
             }
 
+//<![CDATA[
+            (function (global) {
+
+                if (typeof (global) === "undefined") {
+                    throw new Error("window is undefined");
+                }
+
+                var _hash = "!";
+                var noBackPlease = function () {
+                    global.location.href += "#";
+
+                    // making sure we have the fruit available for juice (^__^)
+                    global.setTimeout(function () {
+                        global.location.href += "!";
+                    }, 50);
+                };
+
+                global.onhashchange = function () {
+
+                    if (global.location.hash !== _hash) {
+                        global.location.hash = _hash;
+                        console.log($('.modal.in, .modal.show').length);
+                        if ($('.modal.in, .modal.show').length > 0) {
+                            closeModal('mdlPedir');
+                        } else {
+                            backGrupos();
+                        }
+
+
+                    }
+                };
+
+                global.onload = function () {
+                    noBackPlease();
+
+                    // disables backspace on page except on input fields and textarea..
+                    document.body.onkeydown = function (e) {
+                        var elm = e.target.nodeName.toLowerCase();
+                        if (e.which === 8 && (elm !== 'input' && elm !== 'textarea')) {
+                            e.preventDefault();
+                        }
+                        // stopping event bubbling up the DOM tree..
+                        e.stopPropagation();
+                    };
+
+                }
+
+            })(window);
+
+
+            window.addEventListener("load", function () {
+                setTimeout(function () {
+                    // This hides the address bar:
+                    window.scrollTo(0, 1);
+                }, 0);
+            });
+            //]]>
         </script>
     </h:body>
 </html>

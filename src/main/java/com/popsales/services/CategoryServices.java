@@ -90,14 +90,12 @@ public class CategoryServices {
 
     public List<Product> getProducts(String idCompany, String idCat) throws IOException {
         List<Product> saida = new ArrayList();
-        System.out.println("ID CATE: "+idCat);
         Request request = new Request.Builder()
                 .url(Constantes.URL + "/product/byCategory/" + idCat)
                 .header("company_id", idCompany)
                 .get()
                 .build();
         Response response = httpClient.newCall(request).execute();
-        System.out.println("CODE: " + response.code());
         if (response.code() == 202) {
             throw new IOException("Nenhum dado retornado!");
         } else {
@@ -108,8 +106,30 @@ public class CategoryServices {
 
         // Get response body
         String json = response.body().string();
-        System.out.println("Categorias: " + json);
 
+        saida = new Gson().fromJson(json, new TypeToken<List<Product>>() {
+        }.getType());
+
+        return saida;
+    }
+    public List<Product> getProductsPromo(String idCompany) throws IOException {
+        List<Product> saida = new ArrayList();
+        Request request = new Request.Builder()
+                .url(Constantes.URL + "/product/promo/")
+                .header("company_id", idCompany)
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (response.code() == 202) {
+            throw new IOException("Nenhum dado retornado!");
+        } else {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+        }
+
+        // Get response body
+        String json = response.body().string();
         saida = new Gson().fromJson(json, new TypeToken<List<Product>>() {
         }.getType());
 

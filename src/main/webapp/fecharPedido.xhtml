@@ -15,7 +15,7 @@
                 <h:form>
                     <div class="row" style="padding: 5px;     margin-left: 0px; margin-right: 0px; border-bottom: 1px solid #ccc;">
                         <div class="col-xs-12 ">
-                            <p:commandLink action="#{actionMB.setAcao('grupo')}" immediate="true"   style="color: #ff501f;">
+                            <p:commandLink action="#{actionMB.setAcao('grupo')}" immediate="true"   style="color: #e83b62;">
                                 <i class="fa fa-arrow-left fa-2x"></i>
                             </p:commandLink>
                         </div>
@@ -27,7 +27,7 @@
                                  text-align: center;
                                  padding: 5px;
                                  border-radius: 5px;">Itens</h3>
-                                 
+
                             <ui:repeat value="#{orderMB.order.products}" var="prod">
                                 <b:row style="    margin-left: 0;margin-right: 0;" class="item">
                                     <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
@@ -38,11 +38,13 @@
                                         <b:row style="margin-right: -30px;">
                                             <div class="col-xs-6" style="    margin: 0px;">
                                                 <small style="    color: #999999;font-size: 12px;">#{prod.quantity} x #{orderMB.formatarMoeda(prod.price)}
-                                                <br/>Ads: #{orderMB.formatarMoeda(prod.totalAds)}
+                                                    <h:panelGroup rendered="#{prod.totalAds > 0}">
+                                                        <br/>Ads: #{orderMB.formatarMoeda(prod.totalAds)}
+                                                    </h:panelGroup>
                                                 </small>
                                             </div>
-                                            <div class="col-xs-6 pull-right text-right" style="color: #ff501f;     margin: 0px;">
-                                                <h3 style="font-weight: bolder; color: #f94f1f; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
+                                            <div class="col-xs-6 pull-right text-right" style="color: #e83b62;     margin: 0px;">
+                                                <h3 style="font-weight: bolder; color: #e83b62; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
                                             </div>
                                         </b:row>
                                         <p:commandLink styleClass="btn btn-danger" action="#{orderMB.removeCart(prod)}" immediate="true" update="@form" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
@@ -63,19 +65,19 @@
                                 border-radius: 5px;">Dados e Entrega</h3>
                         </div>
                         <div class="col-xs-12">
-                            <b:inputText label="Nome Completo" value="#{orderMB.order.clientInfo.name}"  required="true" requiredMessage="Infome o nome" />
+                            <b:inputText label="Nome Completo" value="#{orderMB.order.clientInfo.name}"  required="true" requiredMessage="Infome o nome"  update="@this"/>
                             <b:message for="@previous" />
                         </div>
                         <div class="col-xs-12">
                             <div class="ui-fone">
-                                <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}" required="true" requiredMessage="Informe o telefone" type="tel" />
+                                <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}" required="true" requiredMessage="Informe o telefone" type="tel" update="@this" />
                                 <b:message for="@previous" />
                             </div>
                         </div>
                         <div class="col-xs-12">
-                            <p:outputLabel value="Entrega?" /><br/>
+                            <p:outputLabel  value="#{orderMB.order.delivery == true ? 'Entrega' : 'Retirada em Balcão'}" /><br/>
                             <p:toggleSwitch label="Entrega?" value="#{orderMB.order.delivery}" >
-                                <p:ajax event="change" update="endereco,grpValorEntrega"  onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
+                                <p:ajax event="change" update="@form" listener="#{orderMB.adicionarRemoverTaxa()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
                             </p:toggleSwitch>
                         </div>
                         <h:panelGroup id="endereco">

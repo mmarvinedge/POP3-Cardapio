@@ -12,19 +12,61 @@
                     <p:blockUI block="pnl" widgetVar="ldg"  >
                         <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
                     </p:blockUI>
-                    <div class="row" style="margin-left: -15px;margin-right: -22px;">
-                        <ui:repeat value="#{orderMB.categories}" var="cate">
-                            <p:commandLink action="#{actionMB.setAcao('itens')}" actionListener="#{orderMB.selectGroup(cate,cate.id)}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"  > 
-                                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 contain">
-                                    <div class="item-img">
-                                        <img alt="" role="presentation" src="#{cate.img == null ? 'https://www.qgjeitinhocaseiro.com/wp-content/uploads/2019/10/como-fazer-sandu%C3%ADche-artigo-crop.jpg' : cate.img}" class="b7 bo he c4" style="    width: 98%;"/>
-                                    </div>
-                                    <div  class="item-detail" >
-                                        <strong>#{cate.name}</strong>
-                                        <small>#{cate.description}</small>
-                                    </div>
+                    <div class="container testimonial-group">
+                        <div class="row"  style="    margin-top: 10px;">
+                            <ui:repeat value="#{orderMB.categories}" var="cate">
+
+                                <div class="col-xs-4">
+                                    <p:commandLink action="#{actionMB.setAcao('itens')}" actionListener="#{orderMB.selectGroup(cate,cate.id)}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); "  >
+                                        <div  style="display: inline-block;text-align: center;transition: color 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);">
+                                            <div style="    margin: 0;border-radius: 50%;width: 80px;height: 80px;overflow: hidden;position: relative;z-index: 1;">
+                                                <img style="position: absolute;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);top: 50%;left: 50%;z-index: 0;height: 100%;-o-object-fit: cover;object-fit: cover;"
+                                                     src="#{cate.img == null ? 'https://www.qgjeitinhocaseiro.com/wp-content/uploads/2019/10/como-fazer-sandu%C3%ADche-artigo-crop.jpg' : cate.img}"  />
+                                            </div>
+                                            <span style="    text-align: center;margin-top: 10px;display: block;font-size: 17px;font-weight: 300;line-height: 2rem;color: #717171;">
+                                                #{cate.name}
+                                            </span>
+                                        </div>
+                                    </p:commandLink> 
                                 </div>
-                            </p:commandLink>
+                            </ui:repeat>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-left: -15px;margin-right: -22px;">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 contain">
+                            <hr style="border-color: #ccc;"/>
+                            <i class="fa fa-star" style="color: #ffc24e"></i> PROMOÇÕES
+
+
+                            <h:panelGroup layout="block" >
+                                <center>
+                                    <h4 style="margin-top: 75px;">Sem promoções no momento!</h4>
+                                    <i class="fa fa-sad-tear fa-3x" style="color: #e83b62"></i>
+                                </center>
+                            </h:panelGroup>
+                        </div>
+
+                        <ui:repeat value="#{orderMB.productsPromo}" var="prod">
+
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 containp5">
+                                <p:commandLink action="#{orderMB.setProduct(prod)}" style="width: 100%;     border-bottom: 1px solid #ccc;" 
+                                               update=":mdlPedir" oncomplete="openModal('mdlPedir')">
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding: 0;">
+                                            <div class="itm-img ima-#{prod.id}">
+                                                <center>
+                                                    <img  role="presentation" src="#{prod.imageBase64}" style="max-width: 116px; max-height: 104px;"/>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <span style="color: #3e3e3e;font-weight: 400;font-size: 1.8rem;line-height: 1.25rem;margin-bottom: 9px;">#{prod.name}</span><br/>
+                                            <span style="font-size: 1.10rem;line-height: 1rem;color: #717171;word-break: break-word;">#{prod.description}</span><Br/>
+                                            <span style="font-size: 2rem;line-height: 1.25rem;font-weight: 400;color: #e83b62;">#{orderMB.formatarMoeda(prod.price)}</span>
+                                        </div>
+                                    </div>
+                                </p:commandLink>
+                            </div>
                         </ui:repeat>
                     </div>
                 </p:panel>

@@ -10,7 +10,10 @@ and open the template in the editor.
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif !important;
+}
+.ui-widget{
+    font-family: 'Roboto', sans-serif !important;
 }
 *{
     overflow-x: hidden;
@@ -19,7 +22,6 @@ body {
 body{
     margin: 0;
     padding: 0;
-    font-family: "Lato", sans-serif;
 }
 
 .nav{
@@ -30,7 +32,9 @@ body{
     z-index: 1;
 }
 .nav .logo {
-    text-align: left;
+    text-align: center;
+    width: calc(90% - 20px);
+    padding-top: 10px;
 }
 .nav .logo img {
     margin-left: 5px;
@@ -60,12 +64,14 @@ body{
 
 }
 .conteudo{
-    width: 95%;
+    width: 100%;
+    margin-bottom: 50px;
+    padding-bottom: 25px;
 }
 
 .badge-custom{
     text-decoration: none;
-    background: #ff501f !important;
+    background: #e83b62 !important;
     padding: 5px;
     border-radius: 10px;
     color: white;
@@ -101,7 +107,7 @@ body{
 }
 
 .sidenav a:hover {
-    color: #ff501f;
+    color: #e83b62;
 }
 
 .sidenav .closebtn {
@@ -199,14 +205,14 @@ body{
 
 .btn-primary {
     color: #fff;
-    background-color: #ff501f !important;
-    border-color: #ff501f !important;
+    background-color: #e83b62 !important;
+    border-color: #e83b62 !important;
 }
 
 .btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus{
     color: #fff !important;
-    background-color: #a9501f !important;
-    border-color: #A9501F !important;
+    background-color: #ca173f !important;
+    border-color: #ca173f !important;
 }
 .item-img:hover{
 
@@ -247,11 +253,11 @@ input[type=checkbox] {
 }
 
 input[type=checkbox]:checked {
-    background: #f94f1f;
+    background: #e83b62;
     box-shadow: none;
     color: #fff;
     text-shadow: none;
-    border: 1px solid #f94f1f;
+    border: 1px solid #e83b62;
 }
 
 input[type=checkbox]:before {
@@ -350,7 +356,7 @@ input[type=checkbox]:checked:before {
 }
 
 .ui-toggleswitch-checked .ui-toggleswitch-slider{
-    background: #f94f1f;
+    background: #e83b62;
 }
 .ui-toggleswitch-checked  .ui-toggleswitch-slider:before{
     background: white;
@@ -412,7 +418,7 @@ label{
     z-index: 99; /* Make sure it does not overlap */
     border: none; /* Remove borders */
     outline: none; /* Remove outline */
-    background-color: #ff501f !important; /* Set a background color */
+    background-color: #e83b62 !important; /* Set a background color */
     color: white; /* Text color */
     cursor: pointer; /* Add a mouse pointer on hover */
     padding: 15px; /* Some padding */
@@ -421,7 +427,7 @@ label{
 }
 
 #myBtn:hover {
-    background-color: #ff501f !important; /* Add a dark-grey background on hover */
+    background-color: #e83b62 !important; /* Add a dark-grey background on hover */
 }
 
 .ui-chkbox .ui-chkbox-box {
@@ -430,7 +436,7 @@ label{
     -webkit-border-radius: 2px;
     border-radius: 2px;
     background:  white;
-    border-color: #ff501f  !important;
+    border-color: #e83b62  !important;
 }
 .ui-selectmanycheckbox .ui-chkbox .ui-chkbox-box{
     width: auto !important;
@@ -445,4 +451,25 @@ label{
 }
 .ui-selectmanycheckbox.ui-widget td, .ui-selectoneradio.ui-widget td{
     font-size: 24px !important;
+}
+
+
+footer {
+    position: fixed;
+    height: 50px;
+    bottom: 0;
+    width: 100%;
+    background: #e83b62;
+}
+.fixed-bottom span{
+    color: white;
+}
+
+.testimonial-group > .row {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.testimonial-group > .row > .col-xs-4 {
+  display: inline-block;
+  float: none;
 }

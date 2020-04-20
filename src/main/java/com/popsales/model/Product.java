@@ -32,6 +32,7 @@ public class Product implements Serializable {
     private List<Category> categories;
     private List<Attribute> attributes;
     private String printer;
+    private Boolean promo;
 
     public String getId() {
         return id;
@@ -121,7 +122,7 @@ public class Product implements Serializable {
             HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String url = req.getRequestURL().toString();
             String urll = url.substring(0, url.length() - req.getRequestURI().length()) + req.getContextPath() + "/";
-            return urll + "resources/img/no-image.png";
+            return urll + "resources/img/nophoto.png";
         }
         return imageBase64;
     }
@@ -160,6 +161,14 @@ public class Product implements Serializable {
 
     public void setPrinter(String printer) {
         this.printer = printer;
+    }
+
+    public Boolean getPromo() {
+        return promo;
+    }
+
+    public void setPromo(Boolean promo) {
+        this.promo = promo;
     }
 
     @Override

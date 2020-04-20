@@ -27,7 +27,9 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.rmi.CORBA.Util;
 import javax.servlet.http.HttpServletRequest;
+import org.controlsfx.tools.Utils;
 import org.primefaces.PrimeFaces;
 
 /**
@@ -44,6 +46,7 @@ public class OrderMB implements Serializable {
     private Company company = new Company();
     private List<Category> categories = new ArrayList();
     private List<Product> products = new ArrayList();
+    private List<Product> productsPromo = new ArrayList();
     private Product product = new Product();
     private Category categorySelected = new Category();
     private Item item = new Item();
@@ -82,10 +85,20 @@ public class OrderMB implements Serializable {
             if (idCompany == null) {
             }
             categories = categoriaService.getCategoryList(idCompany);
+            productsPromo = categoriaService.getProductsPromo(idCompany);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
+    }
+
+    public void adicionarRemoverTaxa() {
+        if (order != null && order.getDelivery()) {
+            order.setDeliveryCost(company.getDeliveryCost());
+        } else {
+            order.setDeliveryCost(BigDecimal.ZERO);
+        }
+        calcularTotal();
     }
 
     public void selectGroup(Category category, String id) {
@@ -118,6 +131,7 @@ public class OrderMB implements Serializable {
         item = new Item();
         adicionais = new ArrayList<>();
         totalAdicionais = BigDecimal.ZERO;
+        PrimeFaces.current().executeScript(" $('#outPutTotal').text('" + formatarMoeda(order.getSubtotal().doubleValue()) + "').fadeIn();");
     }
 
     private void calcularTotal() {
@@ -276,6 +290,14 @@ public class OrderMB implements Serializable {
     public void change() {
         System.out.println(item.getQuantity());
         processarTotalAdicionais();
+    }
+
+    public List<Product> getProductsPromo() {
+        return productsPromo;
+    }
+
+    public void setProductsPromo(List<Product> productsPromo) {
+        this.productsPromo = productsPromo;
     }
 
 }
