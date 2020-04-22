@@ -10,7 +10,7 @@
             <h:form>
                 <p:panel id="pnl" style="border: none !important;" >
                     <p:blockUI block="pnl" widgetVar="ldg"  >
-                        <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                        <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
                     </p:blockUI>
                     <div class="container-fluid testimonial-group">
                         <div class="row"  style="    margin-top: 10px;">
@@ -34,11 +34,8 @@
                     </div>
                     <div class="row" style="margin-left: -15px;margin-right: -22px;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 contain" style="border-top: 1px solid #ccc; padding-top: 10px;padding-bottom: 10px; ">
-                            <strong >
-                                <i class="fa fa-star" style="color: #ffc24e"></i> PROMOÇÕES
-                            </strong>
                             <h:panelGroup layout="block" rendered="#{orderMB.productsPromo.size() == 0}" >
-                                <center>
+                                <center >
                                     <h4 style="margin-top: 75px;">Sem promoções no momento!</h4>
                                     <i class="fa fa-sad-tear fa-3x" style="color: #e83b62"></i>
                                 </center>
@@ -54,15 +51,21 @@
                                         <div class="row">
                                             <div class="col-xs-4" style="padding: 0;">
                                                 <div class="itm-img ima-#{prod.id}">
-                                                    <center>
-                                                        <img  role="presentation" src="#{prod.imageBase64}"  style="max-width: 116px; max-height: 104px;"/>
+                                                    <center style="display: inline-grid;">
+                                                        <span class="label-yellow">
+                                                            <i class="fa fa-star"></i> Promoção
+                                                        </span>
+                                                        <img  role="presentation" src="#{prod.imageBase64}"  style="max-width: 116px; max-height: 104px; min-height: 64px; margin-top: 3px;"/>
                                                     </center>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-8">
-                                                <span style="color: #3e3e3e;font-weight: 400;font-size: 1.8rem;line-height: 1.25rem;margin-bottom: 9px;">#{prod.name}</span><br/>
-                                                <span style="font-size: 1.00rem;line-height: 1.10rem;color: #717171;word-break: break-word;">#{prod.description}</span><Br/>
-                                                <span style="font-size: 2rem;line-height: 1.25rem;font-weight: 400;color: #e83b62;">#{orderMB.formatarMoeda(prod.price)}</span>
+                                            <div class="col-xs-8" style="display: inline-grid;">
+
+                                                <span style="color: #3e3e3e;font-weight: 400;font-size: 1.8rem;line-height: 1.50rem;margin-bottom: 9px;">#{prod.name}</span>
+                                                <h:panelGroup rendered="#{prod.description != null}">
+                                                    <span style="font-size: 1.00rem;line-height: 1.10rem;color: #717171;word-break: break-word;">#{prod.description}</span>
+                                                </h:panelGroup>
+                                                <span style="font-size: 2rem;font-weight: 400;color: #e83b62;">#{orderMB.formatarMoeda(prod.price)}</span>
                                             </div>
                                         </div>
                                     </p:commandLink>

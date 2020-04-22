@@ -34,9 +34,9 @@
                                         </div>
                                     </div>
                                     <div class="col-xs-8">
-                                        <span style="color: #3e3e3e;font-weight: 400;font-size: 1.8rem;line-height: 1.25rem;margin-bottom: 9px;">#{prod.name}</span><br/>
+                                        <span style="color: #3e3e3e;font-weight: 400;font-size: 1.5rem;line-height: 1.25rem;margin-bottom: 9px;">#{prod.name}</span><br/>
                                         <span style="font-size: 1.00rem;line-height: 1.10rem;color: #717171;word-break: break-word;">#{prod.description}</span><Br/>
-                                        <span style="font-size: 2rem;line-height: 1.25rem;font-weight: 400;color: #e83b62;">#{orderMB.formatarMoeda(prod.price)}</span>
+                                        <span style="font-size: 2rem;line-height: 1.25rem;font-weight: 400;color: #e83b62;">#{prod.price == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
                                     </div>
                                 </div>
                             </p:commandLink>

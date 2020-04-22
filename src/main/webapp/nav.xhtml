@@ -5,7 +5,8 @@
       xmlns:p="http://primefaces.org/ui">
     <div class="nav" id="myHeader">
         <div class="logo">
-            <span style="color: white;font-weight: bolder;font-size: 18px;">POP SALES</span><br/>
+            <img src="#{orderMB.company.logo}" style="    border-radius: 50%;"/>
+            <span style="color: white;font-weight: bolder;font-size: 15px;">#{orderMB.company.name}</span><br/>
         </div>
         <div class="cart">
             <p:commandLink  onclick="openNav()">

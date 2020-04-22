@@ -31,8 +31,14 @@ public class Product implements Serializable {
     private Category categoryMain;
     private List<Category> categories;
     private List<Attribute> attributes;
+    private List<Attribute> attributesSelected;
     private String printer;
     private Boolean promo;
+
+    private String sizePizza;
+    private Integer maxPizza;
+    private List<FlavorPizza> flavorsPizza;
+    private String rulePricePizza;
 
     public String getId() {
         return id;
@@ -169,6 +175,46 @@ public class Product implements Serializable {
 
     public void setPromo(Boolean promo) {
         this.promo = promo;
+    }
+
+    public List<Attribute> getAttributesSelected() {
+        return attributesSelected;
+    }
+
+    public void setAttributesSelected(List<Attribute> attributesSelected) {
+        this.attributesSelected = attributesSelected;
+    }
+
+    public String getSizePizza() {
+        return sizePizza;
+    }
+
+    public void setSizePizza(String sizePizza) {
+        this.sizePizza = sizePizza;
+    }
+
+    public Integer getMaxPizza() {
+        return maxPizza;
+    }
+
+    public void setMaxPizza(Integer maxPizza) {
+        this.maxPizza = maxPizza;
+    }
+
+    public List<FlavorPizza> getFlavorsPizza() {
+        return flavorsPizza;
+    }
+
+    public void setFlavorsPizza(List<FlavorPizza> flavorsPizza) {
+        this.flavorsPizza = flavorsPizza;
+    }
+
+    public String getRulePricePizza() {
+        return rulePricePizza;
+    }
+
+    public void setRulePricePizza(String rulePricePizza) {
+        this.rulePricePizza = rulePricePizza;
     }
 
     @Override

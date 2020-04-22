@@ -23,6 +23,7 @@ public class Attribute implements Serializable {
     private String quantityType;
     private Integer quantity;
     private BigDecimal price;
+    private String rule;
     private List<AttributeValue> values;
 
     public String getSku() {
@@ -90,11 +91,22 @@ public class Attribute implements Serializable {
     }
 
     public List<AttributeValue> getValues() {
+        values.forEach(c -> {
+            c.setAttribute_sku(c.getId());
+        });
         return values;
     }
 
     public void setValues(List<AttributeValue> values) {
         this.values = values;
+    }
+
+    public String getRule() {
+        return rule;
+    }
+
+    public void setRule(String rule) {
+        this.rule = rule;
     }
 
     @Override

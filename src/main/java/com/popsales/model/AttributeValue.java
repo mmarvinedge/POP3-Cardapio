@@ -69,4 +69,9 @@ public class AttributeValue implements Serializable {
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "AttributeValue{" + "id=" + id + ", sku=" + sku + ", attribute_sku=" + attribute_sku + ", name=" + name + ", description=" + description + ", price=" + price + '}';
+    }
+
 }

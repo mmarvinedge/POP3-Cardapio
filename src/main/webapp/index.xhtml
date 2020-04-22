@@ -17,25 +17,124 @@
         <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="256x256" />
         <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="128x128" />
         <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="64x64" />
+        
+        
+         <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
+        <link rel="apple-touch-icon-precomposed" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
+
+
+        <meta property="og:site_name" content="Cardápio #{orderMB.company.name}" />
+        <meta property="og:title" content="Cardápio #{orderMB.company.name}" />
+        <meta property="og:description" content="Conheça o cardápio e faça seu pedido!" />
+        <meta property="og:image" content="http://metre.ddns.net:88/popsales/min.jpg" />
+        <meta property="og:url" content="http://metre.ddns.net/popsales" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:type" content="article" />
+        
     </h:head>
     <h:body>
+        <h:panelGroup id="page">
+            <h:panelGroup id="welcome" rendered="#{orderMB.home}" layout="block" style="background: #31353d;    height: 100%;width: 100%; position: fixed;">
+                <p:blockUI block="welcome" widgetVar="la"  animate="true"  >
+                    <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
+                </p:blockUI>
+                <div class="cover"  style="background: #31353d;    height: 100%;width: 100%;position: fixed;"></div>
+                <div class="container-fluid" style="padding: 30px;">
+                    <div class="row">
+                        <div class="col-xs-12" style="    text-align: center;">
+                            <img src="#{orderMB.company.logo}" style="    border-radius: 50%;     max-width: 215px;" class="img-reponsive"/>
+                        </div>
+                    </div>
 
-        <ui:include src="nav.xhtml" />
-        <h:panelGroup id="grpPrincipal" class="conteudo contentudo" layout="block">
-            <p:blockUI block="grpPrincipal" widgetVar="loading"  >
-                <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-            </p:blockUI>
-            <ui:include src="grupos.xhtml" />
-            <ui:include src="itens.xhtml" />
-            <ui:include src="fecharPedido.xhtml" />
-            <p:remoteCommand name="backGrupos" action="#{actionMB.setAcao('grupo')}"  update="grpPrincipal,:grpNumbers" immediate="true"/>
+                    <div class="col-xs-12" style="    text-align: center;">
+                        <h4 style="color: white;    margin-top: 30px">Bem Vindo à(o)</h4>
+                        <h3 style="color: white;">#{orderMB.company.name}</h3>
+                    </div>
 
+                    <h:panelGroup rendered="#{orderMB.fechado}">
+                        <div class="col-xs-12" style="    text-align: center; color: white; margin-top: 70px;">
+                            <h4 style="background: #da6060;padding: 10px;
+                                color: white;border-radius: 5px;border: 1px solid #e73535;">Estabelecimento Fechado</h4>
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{!orderMB.fechado}">
+
+
+
+                        <div class="col-xs-12" style="    text-align: center; color: white; margin-top: 70px;">
+                            <h:form>
+                                <h5>Para iniciar seu pedido ou ver o cardápio</h5>
+                                <p:commandButton value="Clique Aqui" action="#{orderMB.setHome(false)}" update=":page"
+                                                 onstart="PF('la').show()" oncomplete="PF('la').hide()"
+                                                 style="background: #e83b62 !important; color: white !important; box-shadow: none !important; text-shadow: none !important; border-color: #e83b62 !important;     width: 200px;    margin-top: 5px; padding: 15px;" />
+                            </h:form>
+                        </div>
+                    </h:panelGroup>
+
+                </div>
+
+            </h:panelGroup>
+            <h:panelGroup id="order" rendered="#{!orderMB.home}" layout="block"  style="height: 100%;width: 100%; position: fixed;">
+                <p:blockUI block="order" widgetVar="la2"  animate="true"  >
+                    <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
+                </p:blockUI>
+                <ui:include src="nav.xhtml" />
+                <h:panelGroup id="grpPrincipal" class="conteudo contentudo" layout="block">
+                    <p:blockUI block="order" widgetVar="loading"  >
+                        <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
+                    </p:blockUI>
+                    <ui:include src="grupos.xhtml" />
+                    <ui:include src="itens.xhtml" />
+                    <ui:include src="fecharPedido.xhtml" />
+
+
+                </h:panelGroup>
+
+                <ui:include src="sideCart.xhtml" />
+                <ui:include src="modalPedir.xhtml" />
+
+                <h:panelGroup id="pnlend">
+                    <h:panelGroup rendered="#{actionMB.acao != 'fechar'}" >
+                        <footer class="fixed-bottom">
+                            <div class="row" >
+                                <div class="col-xs-6">
+                                    <div style="    margin-top: 10px;margin-left: 15px;">
+                                        <span>Total</span> 
+                                        <strong style="    color: white;font-size: 20px;">
+                                            <h:outputText  id="outPutTotal" value="R$ 0,00" />
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <p:commandButton value="Finalizar Pedido" 
+                                                     style="    height: 100% !important;
+                                                     background: #9d1534;     font-size: 14px;
+                                                     border: 1px solid #9d1534;
+                                                     text-shadow: none;
+                                                     padding: 7px;
+                                                     width: 90% !important;
+                                                     margin-top: 4px;
+                                                     margin-right: 4px;
+                                                     border-color:#9d1534;
+                                                     box-shadow: none;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide()" update="pnlend" />
+                                </div>
+                            </div>
+                        </footer>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+
+                <button onclick="topFunction()" id="myBtn" title="Go to top">
+                    <i class="fa fa-arrow-up"></i>
+                </button>
+
+            </h:panelGroup>
         </h:panelGroup>
 
-        <ui:include src="sideCart.xhtml" />
-        <ui:include src="modalPedir.xhtml" />
-
-
+        <p:remoteCommand name="backGrupos" action="#{actionMB.setAcao('grupo')}"  update="grpPrincipal,:grpNumbers" immediate="true"/>
 
 
         <h:outputScript name="js/all.min.js"   />
@@ -44,36 +143,11 @@
         <h:outputScript name="js/load.js"   />
         <h:outputScript name="js/sweetalert2.all.min.js"   />
         <h:outputStylesheet name="js/hide-address-bar.js" />
-        <button onclick="topFunction()" id="myBtn" title="Go to top">
-            <i class="fa fa-arrow-up"></i>
-        </button>
 
 
 
-        <footer class="fixed-bottom">
-            <div class="row" >
-                <div class="col-xs-7">
-                    <div style="    margin-top: 10px;margin-left: 15px;">
-                        <span>Total</span> 
-                        <strong style="    color: white;font-size: 20px;">
-                            <h:outputText  id="outPutTotal" value="R$ 0,00" />
-                        </strong>
-                    </div>
-                </div>
-                <div class="col-xs-5 text-right">
-                    <p:commandButton value="Fechar" style="    height: 100% !important;
-                                     background: #ca173f;
-                                     border: 1px solid #ca173f;
-                                     text-shadow: none;
-                                     padding: 7px;
-                                     width: 90% !important;
-                                     margin-top: 4px;
-                                     margin-right: 4px;
-                                     border-color: #ca173f;
-                                     box-shadow: none;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" onstart="PF('ldg2').show()" oncomplete=" PF('ldg2').hide()" />
-                </div>
-            </div>
-        </footer>
+
+
 
         <script>
             function callBack() {
@@ -82,7 +156,7 @@
                 PF('loading').hide();
             }
 
-
+//<![CDATA[
             function confirm() {
                 Swal.fire({
                     title: 'Muito Bom',
@@ -94,9 +168,11 @@
                 }).then((result) => {
                     if (result.value) {
                         backGrupos();
+                        window.location.replace("https://api.whatsapp.com/send?phone=55#{orderMB.company.phoneUnformat}&text=Acabei de registrar o pedido!");
                     }
                 })
             }
+            //]]>
             function alerta(msg) {
                 Swal.fire({
                     title: 'Atenção',
@@ -113,17 +189,7 @@
             mybutton = document.getElementById("myBtn");
             $('img').attr('loading', 'lazy');
 // When the user scrolls down 20px from the top of the document, show the button
-            window.onscroll = function () {
-                scrollFunction()
-            };
 
-            function scrollFunction() {
-                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                    mybutton.style.display = "block";
-                } else {
-                    mybutton.style.display = "none";
-                }
-            }
 
 // When the user clicks on the button, scroll to the top of the document
             function topFunction() {

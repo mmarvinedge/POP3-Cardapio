@@ -5,6 +5,8 @@
  */
 package com.popsales.view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.PrimeFaces;
@@ -18,6 +20,7 @@ import org.primefaces.PrimeFaces;
 public class ActionMB {
 
     private String acao = "grupo";
+    private Boolean home = true;
 
     public ActionMB() {
     }
@@ -34,6 +37,7 @@ public class ActionMB {
 
         this.acao = acao;
         PrimeFaces.current().ajax().update("grpPrincipal");
+        PrimeFaces.current().ajax().update("pnlend");
     }
 
     public void setAcaoFechar(String acao, int size) {
@@ -41,14 +45,35 @@ public class ActionMB {
             PrimeFaces.current().executeScript("alerta('Informe 1 item!')");
             return;
         }
-
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ActionMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.acao = acao;
         PrimeFaces.current().ajax().update("grpPrincipal");
+        PrimeFaces.current().ajax().update("pnlend");
     }
 
     public void setAcaoNOUpdate(String acao) {
         System.out.println("change");
         this.acao = acao;
+    }
+
+    public Boolean getHome() {
+        return home;
+    }
+
+    public void setHome(Boolean home) {
+        try {
+            System.out.println("CLICOU?");
+            Thread.sleep(1000);
+            this.home = home;
+            System.out.println("HOME: " + this.home);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

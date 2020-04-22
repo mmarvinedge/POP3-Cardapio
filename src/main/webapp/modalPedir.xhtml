@@ -14,8 +14,7 @@
             <div class="modal-header" style="    background-image: url('#{facesContext.externalContext.request.contextPath}/resources/img/back.jpg');     height: 205px;                     min-height: 205px;    background-size: 100%; background-repeat: none;  max-height: 250px;padding: 16px 32px;">
                 <button type="button" class="close" data-dismiss="modal" style=" background: white; border-radius: 32px;color: #337ab7;right:  15px;position: absolute;height: 55px;width: 55px;opacity: .7;font-size: 37px;">&times;</button>
 
-                <div class="" style="    position: absolute; top: 75px;     width: 94%;
-                     background: rgba(255,255,255,0.7); padding: 10px;border-radius: 15px;left: 10px;height: 120px;     padding-top: 0px;">
+                <div class="" style="    position: absolute;top: 75px;width: 94%;display: grid;background: rgba(255,255,255,0.7);padding: 10px;border-radius: 15px;left: 10px;height: 120px;padding-top: 0px;margin-top: 0px;line-height: normal;padding-bottom: 0px;">
                     <h3 class="" >#{orderMB.product.name}</h3>
                     <small >#{orderMB.product.description}</small>
                 </div>
@@ -25,52 +24,65 @@
 
 
             <div class="modal-body">
-                <h:panelGroup id="grp">
-
+                <h:panelGroup id="grp" layout="block">
+                    <p:blockUI block="grp" widgetVar="ldga"  >
+                        <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
+                    </p:blockUI>
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
-                            <ui:repeat value="#{orderMB.item.product.attributes}" var="at">
-                                <h:outputLabel for="grid" value="Adicionais" /><br/>
-                                <p:selectManyCheckbox id="grid" value="#{orderMB.adicionais}" layout="grid" columns="1" converter="Converter"
-                                                      >
-                                    <f:selectItems itemDisabled="true" value="#{at.values}" var="val" itemLabel="#{val.name} - (#{orderMB.formatarMoeda(val.price)})" itemValue="#{val}" />
-                                    <p:ajax event="change" listener="#{orderMB.processarTotalAdicionais()}" update=":frmModal:grpValue" />
+                            <ui:repeat value="#{orderMB.item.product.attributes}" var="at" varStatus="varie">
+                                <strong>#{at.description}</strong>
+                                <p:selectManyCheckbox value="#{orderMB.adicionais[varie.index]}" converter="Converter"  layout="grid" columns="1" >
+                                    <f:selectItems value="#{at.values}" var="vale" itemLabel="#{vale.name} - #{orderMB.formatarMoeda(vale.price)}" itemValue="#{vale}"/>
+                                    <p:ajax event="change" listener="#{orderMB.processarTotalAdicionais()}" update=":frmModal:grpValue, @this" onstart="PF('ldga').show()" oncomplete="PF('ldga').hide()" />
                                 </p:selectManyCheckbox>
                             </ui:repeat>
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-xs-12">
+                            <h:panelGroup rendered="#{orderMB.item.product.categoryMain.name == 'Pizzas'}" >
+                                <strong>Selecione #{orderMB.item.product.maxPizza} sabor(es)</strong>
+                                <h:panelGroup rendered="#{orderMB.item.product.promo}">
+                                    <br/>
+                                    <strong>PREÇO PROMOCIONAL <span style="font-size: 25px;color: #e83b62;"> #{orderMB.formatarMoeda(orderMB.item.product.price)}</span></strong>
+                                </h:panelGroup>
+                                <p:selectManyCheckbox value="#{orderMB.item.flavors}" converter="Converter"  layout="grid" columns="1" >
+                                    <f:selectItems value="#{orderMB.item.product.flavorsPizza}" var="flav" 
+                                                   itemLabel="#{flav.flavor} - #{orderMB.formatarMoeda(flav.price)}" itemValue="#{flav}"
+                                                   itemDisabled="#{orderMB.item.flavors.size() == orderMB.item.product.maxPizza and orderMB.item.flavors.indexOf(flav) == -1}"
+                                                   />
+                                    <p:ajax event="change" listener="#{orderMB.processarTotalPizza()}" update=":frmModal:grpValue, @this" onstart="PF('ldga').show()" oncomplete="PF('ldga').hide()" />
+                                </p:selectManyCheckbox>
+                            </h:panelGroup>
                         </div>
                     </div>
 
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
                             <label>Recado</label>
-                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" />
+                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this" />
                         </div>
                     </div>
 
 
 
-                </h:panelGroup>
-            </div>
-            <div class="modal-footer">
-                <h:panelGroup >
+
                     <p:remoteCommand name="complete" action="#{orderMB.change()}" />
                     <div class="row">
-                        <div class="col-md-3 text-left">
+                        <div class="col-md-3 text-left" style="padding-left: 25px;padding-right: 25px;">
                             <strong>Quantidade</strong>
-                            <h5 style="position: absolute;right: 15px;top: -10px;font-size: 15px;font-weight: bolder;">#{orderMB.formatarMoeda(orderMB.product.price)}</h5>
+                            <h5 style="position: absolute;right: 25px;top: -10px;font-size: 15px;font-weight: bolder;">#{orderMB.formatarMoeda(orderMB.product.price)}</h5>
                             <b:touchSpin id="spin1"   min="1" max="50" step="1" value="#{orderMB.item.quantity}" style="text-align: center;     " 
-                                         style-class="ipt-touch"      oncomplete="complete()"  update="@form">
+                                         style-class="ipt-touch"   onchange="PF('ldga').show()"    oncomplete="complete(); PF('ldga').hide()"  update="@form">
                             </b:touchSpin>
-                            <p:blockUI block="spin1" widgetVar="loadingSpin"  >
-                                <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-                            </p:blockUI>
                         </div>
 
                         <div class="col-md-5">
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
                             <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" oncomplete="closeModal('mdlPedir');effect('ima-#{orderMB.product.id}')"  style="padding: 15px;     margin-top: 32px;"
                                            update=":grpNumbers,:frmMySide">
                                 <div class="row">

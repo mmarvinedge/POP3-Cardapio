@@ -16,10 +16,13 @@ public class Company {
 
     private String id;
     private String companyName;
+    private String name;
     private String phone;
     private String owner;
     private Address address;
     private BigDecimal deliveryCost;
+    private String logo;
+    private TimeOpen time;
 
     public String getId() {
         return id;
@@ -39,6 +42,10 @@ public class Company {
 
     public String getPhone() {
         return phone;
+    }
+
+    public String getPhoneUnformat() {
+        return phone.replace("(", "").replace(")", "").replace("-", "").trim();
     }
 
     public void setPhone(String phone) {
@@ -69,11 +76,33 @@ public class Company {
         this.deliveryCost = deliveryCost;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public TimeOpen getTime() {
+        return time;
+    }
+
+    public void setTime(TimeOpen time) {
+        this.time = time;
+    }
+
     @Override
     public String toString() {
-        return "Company{" + "id=" + id + ", companyName=" + companyName + ", phone=" + phone + ", owner=" + owner + ", address=" + address + ", deliveryCost=" + deliveryCost + '}';
+        return "Company{" + "id=" + id + ", companyName=" + companyName + ", name=" + name + ", phone=" + phone + ", owner=" + owner + ", address=" + address + ", deliveryCost=" + deliveryCost + ", logo=" + logo + ", time=" + time + '}';
     }
-    
-    
 
 }

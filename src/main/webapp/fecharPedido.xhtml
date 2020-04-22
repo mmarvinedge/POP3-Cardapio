@@ -10,14 +10,16 @@
         <h:panelGroup rendered="#{actionMB.acao == 'fechar'}">
             <p:panel id="pnl" >
                 <p:blockUI block="pnl" widgetVar="ldg"  >
-                    <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                    <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
                 </p:blockUI>
                 <h:form>
                     <div class="row" style="padding: 5px;     margin-left: 0px; margin-right: 0px; border-bottom: 1px solid #ccc;">
                         <div class="col-xs-12 ">
                             <p:commandLink action="#{actionMB.setAcao('grupo')}" immediate="true"   style="color: #e83b62;">
-                                <i class="fa fa-arrow-left fa-2x"></i>
+                                <i class="fa fa-arrow-left fa-2x"></i> 
+                                <span style="top: 4px;position: absolute;left: 50px;">Preencha os dados a baixo</span>
                             </p:commandLink>
+                            
                         </div>
                     </div>
                     <div class="row" style="padding: 10px;">
@@ -47,7 +49,7 @@
                                                 <h3 style="font-weight: bolder; color: #e83b62; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
                                             </div>
                                         </b:row>
-                                        <p:commandLink styleClass="btn btn-danger" action="#{orderMB.removeCart(prod)}" immediate="true" update="@form" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
+                                        <p:commandLink styleClass="text-danger" action="#{orderMB.removeCart(prod)}" immediate="true" update="@form" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;     color: #ff3535;">
                                             <i class="fa fa-trash" />
                                         </p:commandLink>
                                     </div>
@@ -62,7 +64,7 @@
                                 color: white;
                                 text-align: center;
                                 padding: 5px;
-                                border-radius: 5px;">Dados e Entrega</h3>
+                                border-radius: 5px;">Seus Dados</h3>
                         </div>
                         <div class="col-xs-12">
                             <b:inputText label="Nome Completo" value="#{orderMB.order.clientInfo.name}"  required="true" requiredMessage="Infome o nome"  update="@this"/>
@@ -75,14 +77,24 @@
                             </div>
                         </div>
                         <div class="col-xs-12">
-                            <p:outputLabel  value="#{orderMB.order.delivery == true ? 'Entrega' : 'Retirada em Balcão'}" /><br/>
-                            <p:toggleSwitch label="Entrega?" value="#{orderMB.order.delivery}" >
-                                <p:ajax event="change" update="@form" listener="#{orderMB.adicionarRemoverTaxa()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
-                            </p:toggleSwitch>
+
+                            <p:selectOneRadio value="#{orderMB.order.delivery}" columns="1" layout="grid">
+                                <f:selectItem itemLabel="Quero Receber em Casa" itemValue="true" />
+                                <f:selectItem itemLabel="Quero Retirar no Local" itemValue="false" />
+                                <p:ajax event="change" listener="#{orderMB.adicionarRemoverTaxa()}" update="@form" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                            </p:selectOneRadio>
                         </div>
                         <h:panelGroup id="endereco">
                             <h:panelGroup rendered="#{orderMB.order.delivery}">
-                                <div class="col-xs-12">
+                                <div class="col-xs-12" style="margin-top: 15px;" >
+                                    <h3 style="    background: #31353d;
+                                        color: white;
+                                        text-align: center;
+                                        padding: 5px;
+                                        border-radius: 5px;">Endereço de Entrega</h3>
+                                </div>
+
+                                <div class="col-xs-12" >
                                     <b:inputText label="Endereço e Nº" placeholder="Rua Central, 190" value="#{orderMB.order.address.street}"  />
                                     <b:message for="@previous" />
                                 </div>
@@ -173,7 +185,7 @@
                     </div>
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
-                            <p:commandLink value="Enviar Pedido" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;" 
+                            <p:commandLink value="Enviar Pedido" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid;" 
                                            update="@form"
                                            action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="if (!args.validationFailed){ confirm();}PF('ldg').hide();  "/>
                         </div>

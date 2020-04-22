@@ -32,13 +32,15 @@ body{
     z-index: 1;
 }
 .nav .logo {
-    text-align: center;
+    text-align: left;
     width: calc(90% - 20px);
-    padding-top: 10px;
+    padding-top: 5px;
+    padding-left: 5px;
 }
 .nav .logo img {
     margin-left: 5px;
-    margin-top: 1px;
+    max-width: 52px;
+    max-height: 52px;
 }
 
 .nav .cart{
@@ -466,10 +468,63 @@ footer {
 }
 
 .testimonial-group > .row {
-  overflow-x: auto;
-  white-space: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 .testimonial-group > .row > .col-xs-4 {
-  display: inline-block;
-  float: none;
+    display: inline-block;
+    float: none;
+}
+
+.label-yellow{
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    color: #4a4a4a;
+    background: #ffc24e;
+}
+
+.ui-icon{
+    position: static !important;
+}
+
+
+.ui-selectoneradio label{
+    font-size: 17px !important;
+}
+.ui-radiobutton-box{
+    background: white !important;
+}
+.ui-radiobutton-icon {
+    margin-left: 0  !important;
+    margin-top: -1px  !important;
+}
+
+.ui-widget-overlay{
+    background: #f9f9f9  !important;
+    opacity: .60 !important;
+    filter: Alpha(Opacity=30) !important;
+}
+
+.ui-blockui-content {
+    position: absolute !important;
+    text-align: center !important;
+    padding: 1em !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.ui-radiobutton .ui-radiobutton-box{
+    overflow-x: initial !important;
+}
+a button{
+    overflow-x: initial !important;;
 }

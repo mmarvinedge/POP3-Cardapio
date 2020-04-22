@@ -49,7 +49,6 @@ public class CategoryServices {
             }
             // Get response body
             String json = response.body().string();
-            System.out.println("Categorias: " + json);
 
             comp = new Gson().fromJson(json, Company.class);
         } catch (Exception e) {
@@ -76,7 +75,6 @@ public class CategoryServices {
             }
             // Get response body
             String json = response.body().string();
-            System.out.println("Categorias: " + json);
 
             saida = new Gson().fromJson(json, new TypeToken<List<Category>>() {
             }.getType());
