@@ -273,14 +273,15 @@ public class OrderMB implements Serializable {
             order.setDtRegister(OUtils.formataData(new Date(), "dd/MM/yyyy HH:mm:ss"));
             order.setStatus("Aguardando");
             order.setMerchant(new Merchant(company));
-            order.getProducts().forEach(c -> {
+            for (Item it : order.getProducts()) {
                 Product novo = new Product();
-                novo.setId(c.getProduct().getId());
-                novo.setSku(c.getProduct().getSku());
-                novo.setPrice(c.getPrice());
-                novo.setName(c.getName());
-                c.setProduct(novo);
-            });
+                novo.setId(it.getProduct().getId());
+                novo.setSku(it.getProduct().getSku());
+                novo.setPrice(it.getPrice());
+                novo.setName(it.getName());
+                it.setProduct(novo);
+            }
+            
             categoriaService.sendOrder(order, idCompany);
             order = new Order();
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
