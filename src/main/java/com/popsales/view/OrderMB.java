@@ -141,14 +141,14 @@ public class OrderMB implements Serializable {
             }
             horaAbertura = company.getTime().getOpenSab();
             horaFechamento = company.getTime().getCloseSab();
-        } 
-        
+        }
+
         System.out.println("");
-        
+
         Integer horaA = Integer.parseInt(horaAgora);
 
-        System.out.println("1 "+ (horaA >= horaAbertura && horaFechamento < 0));
-        System.out.println("2 "+ (horaA >= horaAbertura && horaFechamento < 0));
+        System.out.println("1 " + (horaA >= horaAbertura && horaFechamento < 0));
+        System.out.println("2 " + (horaA >= horaAbertura && horaFechamento < 0));
         if (horaA >= horaAbertura && horaFechamento < 0) {
             fechado = false;
             return;
@@ -273,6 +273,14 @@ public class OrderMB implements Serializable {
             order.setDtRegister(OUtils.formataData(new Date(), "dd/MM/yyyy HH:mm:ss"));
             order.setStatus("Aguardando");
             order.setMerchant(new Merchant(company));
+            order.getProducts().forEach(c -> {
+                Product novo = new Product();
+                novo.setId(c.getProduct().getId());
+                novo.setSku(c.getProduct().getSku());
+                novo.setPrice(c.getPrice());
+                novo.setName(c.getName());
+                c.setProduct(novo);
+            });
             categoriaService.sendOrder(order, idCompany);
             order = new Order();
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
