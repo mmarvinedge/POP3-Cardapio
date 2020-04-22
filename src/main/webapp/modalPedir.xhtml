@@ -11,15 +11,13 @@
 
 
 
-            <div class="modal-header" style="    background-image: url('#{facesContext.externalContext.request.contextPath}/resources/img/back.jpg');     height: 205px;                     min-height: 205px;    background-size: 100%; background-repeat: none;  max-height: 250px;padding: 16px 32px;">
-                <button type="button" class="close" data-dismiss="modal" style=" background: white; border-radius: 32px;color: #337ab7;right:  15px;position: absolute;height: 55px;width: 55px;opacity: .7;font-size: 37px;">&times;</button>
+            <div class="modal-header" style="    background-image: url('#{facesContext.externalContext.request.contextPath}/resources/img/back.jpg');        height: 180px; min-height: 185px;    background-size: 100%; background-repeat: none;  max-height: 250px;padding: 16px 32px;">
+                <button type="button" class="close" data-dismiss="modal" style=" background: white; border-radius: 32px;color: #337ab7;right:  15px;position: absolute;height: 35px;width: 35px;opacity: .7;font-size: 37px;">&times;</button>
 
-                <div class="" style="    position: absolute;top: 75px;width: 94%;display: grid;background: rgba(255,255,255,0.7);padding: 10px;border-radius: 15px;left: 10px;height: 120px;padding-top: 0px;margin-top: 0px;line-height: normal;padding-bottom: 0px;">
+                <div class="" style="    position: absolute;top: 55px;width: 94%;display: grid;background: rgba(255,255,255,0.7);padding: 10px;border-radius: 15px;left: 10px;height: 120px;padding-top: 0px;margin-top: 0px;line-height: normal;padding-bottom: 0px;">
                     <h3 class="" >#{orderMB.product.name}</h3>
                     <small >#{orderMB.product.description}</small>
                 </div>
-
-
             </div>
 
 
@@ -28,17 +26,7 @@
                     <p:blockUI block="grp" widgetVar="ldga"  >
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
                     </p:blockUI>
-                    <div class="row" style="padding: 10px;">
-                        <div class="col-xs-12">
-                            <ui:repeat value="#{orderMB.item.product.attributes}" var="at" varStatus="varie">
-                                <strong>#{at.description}</strong>
-                                <p:selectManyCheckbox value="#{orderMB.adicionais[varie.index]}" converter="Converter"  layout="grid" columns="1" >
-                                    <f:selectItems value="#{at.values}" var="vale" itemLabel="#{vale.name} - #{orderMB.formatarMoeda(vale.price)}" itemValue="#{vale}"/>
-                                    <p:ajax event="change" listener="#{orderMB.processarTotalAdicionais()}" update=":frmModal:grpValue, @this" onstart="PF('ldga').show()" oncomplete="PF('ldga').hide()" />
-                                </p:selectManyCheckbox>
-                            </ui:repeat>
-                        </div>
-                    </div>
+
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
                             <h:panelGroup rendered="#{orderMB.item.product.categoryMain.name == 'Pizzas'}" >
@@ -57,6 +45,19 @@
                             </h:panelGroup>
                         </div>
                     </div>
+
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-xs-12">
+                            <ui:repeat value="#{orderMB.item.product.attributes}" var="at" varStatus="varie">
+                                <strong>#{at.description}</strong>
+                                <p:selectManyCheckbox value="#{orderMB.adicionais[varie.index]}" converter="Converter"  layout="grid" columns="1" >
+                                    <f:selectItems value="#{at.values}" var="vale" itemLabel="#{vale.name} - #{orderMB.formatarMoeda(vale.price)}" itemValue="#{vale}"/>
+                                    <p:ajax event="change" listener="#{orderMB.processarTotalAdicionais()}" update=":frmModal:grpValue, @this" onstart="PF('ldga').show()" oncomplete="PF('ldga').hide()" />
+                                </p:selectManyCheckbox>
+                            </ui:repeat>
+                        </div>
+                    </div>
+
 
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">

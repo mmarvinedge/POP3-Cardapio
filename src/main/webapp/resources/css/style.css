@@ -449,7 +449,7 @@ label{
 }
 
 .ui-selectmanycheckbox label{
-    font-size: 18px !important;
+    font-size: 16px !important;
 }
 .ui-selectmanycheckbox.ui-widget td, .ui-selectoneradio.ui-widget td{
     font-size: 24px !important;
@@ -527,4 +527,8 @@ footer {
 }
 a button{
     overflow-x: initial !important;;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,span{
+    overflow: hidden !important;
 }

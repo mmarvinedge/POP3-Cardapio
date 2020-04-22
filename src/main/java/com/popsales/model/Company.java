@@ -45,6 +45,9 @@ public class Company {
     }
 
     public String getPhoneUnformat() {
+        if(phone == null){
+            phone = "";
+        }
         return phone.replace("(", "").replace(")", "").replace("-", "").trim();
     }
 
