@@ -6,4 +6,8 @@
     <lifecycle>
         <phase-listener id="nocache">com.popsales.view.CacheControlPhaseListener</phase-listener>
     </lifecycle>
+    <locale-config>
+        <default-locale>pt_BR</default-locale>
+        <supported-locale>pt_BR</supported-locale>
+    </locale-config>
 </faces-config>

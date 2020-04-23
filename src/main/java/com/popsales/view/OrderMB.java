@@ -5,6 +5,7 @@
  */
 package com.popsales.view;
 
+import com.popsales.model.Attribute;
 import com.popsales.model.AttributeValue;
 import com.popsales.model.Category;
 import com.popsales.model.Company;
@@ -20,8 +21,10 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +74,10 @@ public class OrderMB implements Serializable {
                 tratarEstabelecimentoAberto();
                 order.setDeliveryCost(company.getDeliveryCost());
                 order.getAddress().setCity((company.getAddress() != null && company.getAddress().getCity() != null) ? company.getAddress().getCity() : "");
+                if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel") != null) {
+                    String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
+                    order.getClientInfo().setPhone(OUtils.formataNinePhone(phone));
+                }
 
             } catch (Exception e) {
             }
@@ -226,24 +233,40 @@ public class OrderMB implements Serializable {
         if (order.getProducts() == null) {
             order.setProducts(new ArrayList());
         }
-        item.setAttributesValues(new ArrayList());
-        for (List<AttributeValue> list : adicionais) {
-            item.getAttributesValues().addAll(list);
-        }
-        if (item.getProduct().getCategoryMain().getName().equals("Pizzas")) {
+        //REPROCESSAMENTO DOS ATRIBUTOS, CASO NAO SEJA LANÇADO O ITEM NÃO SERA ENVIADO!
+        BigDecimal totalAdicionais = BigDecimal.ZERO;
+        List<Attribute> atrs = new ArrayList();
+        if (item.getAttributes() != null) {
+            for (Attribute atr : item.getAttributes()) {
+                List<AttributeValue> novos = new ArrayList();
+                for (AttributeValue value : atr.getValues()) {
+                    if (value.getTotal() != null && value.getTotal().doubleValue() > 0) {
+                        novos.add(value);
+                        if (value.getTotal() != null) {
+                            totalAdicionais = totalAdicionais.add(value.getTotal());
+                        }
+                    }
+                }
+                atr.setValues(novos);
+                if (atr.getValues().size() > 0) {
 
-        } else {
-            item.setPrice(item.getProduct().getPrice());
-            item.setTotalAds(totalAdicionais);
-            item.setTotal(item.getPrice().multiply(item.getQuantity()).add(item.getTotalAds()));
+                    atrs.add(atr);
+                }
+            }
         }
+
+        item.setAttributes(atrs);
+        System.out.println("TOTAL ADS: " + totalAdicionais);
+        item.setTotalAds(totalAdicionais);
+        //item.setPrice(item.getProduct().getPrice());
+        //item.setTotal(item.getPrice().multiply(item.getQuantity()).add(item.getTotalAds()));
+
         order.getProducts().add(item);
         order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
         calcularTotal();
         item = new Item();
         adicionais = new ArrayList[0];
         totalAdicionais = BigDecimal.ZERO;
-        PrimeFaces.current().executeScript(" $('#outPutTotal').text('" + formatarMoeda(order.getSubtotal().doubleValue()) + "').fadeIn();");
     }
 
     private void calcularTotal() {
@@ -253,7 +276,12 @@ public class OrderMB implements Serializable {
     public void removeCart(Item i) {
         order.getProducts().remove(i);
         order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
+        System.out.println("SIZE: " + order.getProducts().size());
         calcularTotal();
+        PrimeFaces.current().ajax().update("outPutTotal");
+        PrimeFaces.current().ajax().update("grpNumbers");
+        PrimeFaces.current().ajax().update("frmMySide");
+        PrimeFaces.current().ajax().update("frmFechar:btnSEND");
     }
 
     public String genCodigo() {
@@ -269,6 +297,11 @@ public class OrderMB implements Serializable {
 
     public void registarPedido() {
         try {
+            System.out.println("SIZ11111111111E: "+order.getProducts().size());
+            if (order.getProducts().size() == 0 || order.getProducts().isEmpty()) {
+                System.out.println("alerta");
+                return;
+            }
             order.setNum_order(genCodigo());
             order.setDtRegister(OUtils.formataData(new Date(), "dd/MM/yyyy HH:mm:ss"));
             order.setStatus("Aguardando");
@@ -281,7 +314,7 @@ public class OrderMB implements Serializable {
                 novo.setName(it.getName());
                 it.setProduct(novo);
             }
-            
+
             categoriaService.sendOrder(order, idCompany);
             order = new Order();
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
@@ -308,16 +341,16 @@ public class OrderMB implements Serializable {
         item.setSku(product.getSku());
         item.setProduct(product);
         item.setPrinter(product.getPrinter());
-        adicionaisArray = new ArrayList();
-
-        adicionais = new ArrayList[product.getAttributes() != null ? product.getAttributes().size() : 0];
-
-        if (adicionais.length > 0) {
-            for (int i = 0; i < product.getAttributes().size(); i++) {
-                List<AttributeValue> saida = new ArrayList<>();
-                adicionaisArray.add(saida);
+        item.setAttributesValues(new ArrayList());
+        item.setAttributes(new ArrayList());
+        if (product.getAttributes() != null) {
+            for (Attribute at : product.getAttributes()) {
+                item.getAttributes().add(new Attribute(at));
             }
         }
+        adicionaisArray = new ArrayList();
+        item.setPrice(product.getPrice());
+        item.setTotal(product.getPrice());
     }
 
     public String getIdCompany() {
@@ -344,12 +377,66 @@ public class OrderMB implements Serializable {
         this.item = item;
     }
 
+    public void addQnt(AttributeValue av, Attribute at) {
+        av.setQuantity(av.getQuantity().add(BigDecimal.ONE));
+        av.setTotal(av.getQuantity().multiply(av.getPrice()));
+        atingiuMaximo(at);
+    }
+
+    public void minQnt(AttributeValue av, Attribute at) {
+        if (av.getQuantity().intValue() < 0) {
+            av.setQuantity(BigDecimal.ZERO);
+            return;
+        }
+        av.setQuantity(av.getQuantity().subtract(BigDecimal.ONE));
+        av.setTotal(av.getQuantity().multiply(av.getPrice()));
+        atingiuMaximo(at);
+    }
+
+    public void atingiuMaximo(Attribute at) {
+        BigDecimal bd = at.getValues().stream().map(m -> m.getQuantity()).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        if (at.getQuantity() > bd.intValue()) {
+            at.setTravado(false);
+        } else {
+            at.setTravado(true);
+        }
+        processarTotaisAdcs();
+
+    }
+
+    public void processarTotaisAdcs() {
+        item.setTotalAds(item.getAttributes().stream().filter(mm -> mm.getValues() != null).map(m -> m.getValues()).findAny().get().stream().filter(c -> c != null && c.getTotal() != null).map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
+        BigDecimal totalAds = BigDecimal.ZERO;
+        for (Attribute at : item.getAttributes()) {
+            if (at.getValues() != null && at.getValues().size() > 0) {
+                for (AttributeValue av : at.getValues()) {
+                    if (av.getTotal() != null) {
+                        System.out.println(av.getName() + ": " + av.getQuantity() + " * " + av.getPrice() + " = " + av.getTotal());
+                        totalAds = totalAds.add(av.getTotal());
+                    }
+                }
+            }
+
+        }
+        item.setTotalAds(totalAds);
+        System.out.println("ADS: " + item.getTotalAds());
+        System.out.println("QNT: " + item.getQuantity());
+        BigDecimal total = (item.getPrice().add(item.getTotalAds())).multiply(item.getQuantity());
+        item.setTotal(total);
+        System.out.println("ITEM TOTAL: " + item.getTotal());
+        PrimeFaces.current().ajax().update("frmModal:grp");
+    }
+
     public String formatarMoeda(Double val) {
         if (val == null) {
             return "R$ 0,00";
         }
         try {
-            return NumberFormat.getCurrencyInstance().format(val);
+
+            NumberFormat nF = NumberFormat.getCurrencyInstance();
+            nF.setCurrency(Currency.getInstance(new Locale("pt", "BR")));
+            return nF.format(val);
         } catch (Exception e) {
             System.out.println("ERRO AO TENTAR FORMATAR: " + val);
             return "R$ " + val;
@@ -423,28 +510,8 @@ public class OrderMB implements Serializable {
 
     }
 
-    public void processarTotalAdicionais() {
-        if (item == null || item.getPrice() == null || item.getQuantity() == null) {
-            return;
-        }
-        System.out.println("CHANGE: ");
-        totalAdicionais = BigDecimal.ZERO;
-        for (List<AttributeValue> adicionai : adicionais) {
-            if (adicionai != null && adicionai.size() > 0) {
-                for (AttributeValue av : adicionai) {
-                    totalAdicionais = totalAdicionais.add(av.getPrice().multiply(item.getQuantity()));
-                }
-            }
-        }
-
-        System.out.println("totalAdicionais: " + totalAdicionais);
-        item.setTotalAds(totalAdicionais);
-        item.setTotal((item.getPrice().multiply(item.getQuantity())).add(item.getTotalAds()));
-        PrimeFaces.current().ajax().update("frmModal:grpValue");
-    }
-
     public void change() {
-        processarTotalAdicionais();
+        processarTotaisAdcs();
     }
 
     public List<Product> getProductsPromo() {

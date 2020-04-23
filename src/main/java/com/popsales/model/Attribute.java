@@ -7,6 +7,7 @@ package com.popsales.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,33 @@ public class Attribute implements Serializable {
     private Integer quantity;
     private BigDecimal price;
     private String rule;
-    private List<AttributeValue> values;
+    private List<AttributeValue> values = new ArrayList();
+
+    private Boolean travado = false;
+
+    public Attribute() {
+    }
+
+    public Attribute(Attribute at) {
+        this.sku = at.getSku();
+        this.name = at.getName();
+        this.description = at.getDescription();
+        this.type = at.getType();
+        this.highestPrice = at.getHighestPrice();
+        this.quantityType = at.getQuantityType();
+        this.quantity = at.getQuantity();
+        this.price = at.getPrice();
+        this.rule = at.getRule();
+        this.values = at.getValues();
+        if (values != null) {
+           List<AttributeValue> vals = new ArrayList();
+            for (AttributeValue value : values) {
+                vals.add(new AttributeValue(value));
+            }
+            values = vals;
+        }
+
+    }
 
     public String getSku() {
         return sku;
@@ -107,6 +134,14 @@ public class Attribute implements Serializable {
 
     public void setRule(String rule) {
         this.rule = rule;
+    }
+
+    public Boolean getTravado() {
+        return travado;
+    }
+
+    public void setTravado(Boolean travado) {
+        this.travado = travado;
     }
 
     @Override

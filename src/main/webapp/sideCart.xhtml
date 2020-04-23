@@ -43,7 +43,7 @@
                                                 <h3 style="font-weight: bolder; color: #e83b62; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
                                             </div>
                                         </b:row>
-                                        <p:commandLink styleClass="btn btn-danger" action="#{orderMB.removeCart(prod)}" update="@form" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
+                                        <p:commandLink styleClass="btn btn-danger" action="#{orderMB.removeCart(prod)}" update="@form,grpNumbers,outPutTotal" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
                                             <i class="fa fa-trash" />
                                         </p:commandLink>
                                     </div>

@@ -20,6 +20,22 @@ public class AttributeValue implements Serializable {
     private String name;
     private String description;
     private BigDecimal price;
+    private BigDecimal quantity;
+    private BigDecimal total;
+
+    public AttributeValue() {
+    }
+
+    public AttributeValue(AttributeValue ab) {
+        this.id = ab.getId();
+        this.sku = ab.getSku();
+        this.attribute_sku = ab.getAttribute_sku();
+        this.name = ab.getName();
+        this.description = ab.getDescription();
+        this.price = ab.getPrice();
+        this.quantity = BigDecimal.ZERO;
+        this.total = BigDecimal.ZERO;
+    }
 
     public String getId() {
         return id;
@@ -67,6 +83,25 @@ public class AttributeValue implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getQuantity() {
+        if (quantity == null) {
+            quantity = BigDecimal.ZERO;
+        }
+        return quantity;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
     @Override

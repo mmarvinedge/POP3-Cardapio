@@ -15,13 +15,17 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            60
         </session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsf</welcome-file>
     </welcome-file-list>
     
-
+    <context-param>
+        <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+        <param-value>0</param-value>
+        <!-- (-1) habilita o cache indefinidamente e (0) Desabilita-->
+    </context-param>
     
 </web-app>

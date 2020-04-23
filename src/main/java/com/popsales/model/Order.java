@@ -202,6 +202,9 @@ public class Order {
     }
 
     public BigDecimal getTotal() {
+        if (total == null) {
+            total = BigDecimal.ZERO;
+        }
         return total;
     }
 

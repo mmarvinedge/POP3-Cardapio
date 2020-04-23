@@ -24,4 +24,21 @@ public class OUtils {
             return "";
         }
     }
+    
+    public static String formataNinePhone(String tel){
+          String fone = tel;
+        //String fone = "553438233745";
+        String whitou55 = fone.subSequence(2, fone.length()).toString();
+        String ddd = whitou55.subSequence(0, 2).toString();
+        String whitoudd = whitou55.substring(2, whitou55.length()).toString();
+        
+        Boolean isCelular = whitoudd.startsWith("9") || whitoudd.startsWith("8");
+        if(isCelular){
+            return "("+ddd+")9"+whitoudd.substring(0, 4)+"-"+whitoudd.substring(4, 8);
+        }else{
+            return "("+ddd+")"+whitoudd.substring(0, 4)+"-"+whitoudd.substring(4, 8);
+            
+        }
+        
+    }
 }

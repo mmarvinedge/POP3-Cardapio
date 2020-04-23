@@ -532,3 +532,18 @@ a button{
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,span{
     overflow: hidden !important;
 }
+.iptNumber .ui-inputfield{
+    width: 50px !important;
+    text-align: center !important;
+}
+
+.ui-fieldset-legend{
+    width: auto !important;
+    font-size: 15px !important;
+    padding: 5px !important;
+    border-color: #e83b62 !important;
+    background: #e83b62 !important;
+    color: white !important; 
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
