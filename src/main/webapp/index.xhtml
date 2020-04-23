@@ -105,7 +105,7 @@
                                         <div style="    margin-top: 10px;margin-left: 15px;">
                                             <span>Total</span> 
                                             <strong style="    color: white;font-size: 20px;">
-                                                <h:outputText  id="outPutTotal" value="#{orderMB.formatarMoeda(orderMB.order.total)}" />
+                                                <h:outputText  id="outPutTotal" value="#{orderMB.order.products.size()== 0 ? 'R$ 0,00' : orderMB.formatarMoeda(orderMB.order.total)}" />
                                             </strong>
                                         </div>
                                     </div>
