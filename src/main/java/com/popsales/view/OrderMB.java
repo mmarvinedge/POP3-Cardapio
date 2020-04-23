@@ -240,7 +240,7 @@ public class OrderMB implements Serializable {
             for (Attribute atr : item.getAttributes()) {
                 List<AttributeValue> novos = new ArrayList();
                 for (AttributeValue value : atr.getValues()) {
-                    if (value.getTotal() != null && value.getTotal().doubleValue() > 0) {
+                    if (value.getQuantity() != null && value.getQuantity().doubleValue() > 0 ) {
                         novos.add(value);
                         if (value.getTotal() != null) {
                             totalAdicionais = totalAdicionais.add(value.getTotal());

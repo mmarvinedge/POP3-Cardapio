@@ -45,11 +45,6 @@ public class ActionMB {
             PrimeFaces.current().executeScript("alerta('Informe 1 item!')");
             return;
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ActionMB.class.getName()).log(Level.SEVERE, null, ex);
-        }
         this.acao = acao;
         PrimeFaces.current().ajax().update("grpPrincipal");
         PrimeFaces.current().ajax().update("pnlend");

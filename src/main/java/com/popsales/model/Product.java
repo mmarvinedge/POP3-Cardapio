@@ -27,6 +27,7 @@ public class Product implements Serializable {
     private String imageType;
     private String imageBase64;
     private BigDecimal price;
+    private BigDecimal priceOriginal;
     private String companyId;
     private Category categoryMain;
     private List<Category> categories;
@@ -215,6 +216,14 @@ public class Product implements Serializable {
 
     public void setRulePricePizza(String rulePricePizza) {
         this.rulePricePizza = rulePricePizza;
+    }
+
+    public BigDecimal getPriceOriginal() {
+        return priceOriginal;
+    }
+
+    public void setPriceOriginal(BigDecimal priceOriginal) {
+        this.priceOriginal = priceOriginal;
     }
 
     @Override
