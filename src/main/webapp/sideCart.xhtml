@@ -60,7 +60,7 @@
                 <p:blockUI block="order" widgetVar="ldg2"  >
                     <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
                 </p:blockUI>
-                <p:commandLink id="btnLink" value="Fechar Pedido"  styleClass="btn btn-primary"  action="#{actionMB.setAcaoFechar('fechar', orderMB.order.products.size())}" onstart="PF('ldg2').show()" oncomplete="closeNav(); PF('ldg2').hide()" style="width: 100%; height: 50px; color: white;border-radius: 0px;"  />
+                <p:commandLink id="btnLink" value="Fechar Pedido"  styleClass="btn btn-primary" disabled="#{orderMB.fechado}" action="#{actionMB.setAcaoFechar('fechar', orderMB.order.products.size())}" onstart="PF('ldg2').show()" oncomplete="closeNav(); PF('ldg2').hide()" style="width: 100%; height: 50px; color: white;border-radius: 0px;"  />
             </div>
         </h:form>
     </div>

@@ -618,3 +618,9 @@ abel-float{
   margin-top: 0;
   color: #3951b2;
 }
+.badge-danger{
+    background: #f15353;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+}

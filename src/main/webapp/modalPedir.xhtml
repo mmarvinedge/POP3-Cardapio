@@ -136,7 +136,7 @@
                         <div class="col-md-4" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
                             <p:messages id="msgs" closable="true" />
                             <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" oncomplete="if (!args.validationFailed)  {}"  style="padding: 15px;     margin-top: 32px;"
-                                           update=":grpNumbers,:frmMySide, pnlend,frmModal:msgs">
+                                           update=":grpNumbers,:frmMySide, pnlend,frmModal:msgs" disabled="#{orderMB.fechado}">
                                 <div class="row">
                                     <div class="col-xs-5 text-left bold">
                                         <h:panelGroup id="grpValue">

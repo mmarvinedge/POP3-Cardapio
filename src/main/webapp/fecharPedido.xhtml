@@ -190,7 +190,7 @@
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
                             <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{orderMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid;" 
-                                           update="@form"
+                                           update="@form" 
                                            action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="if (!args.validationFailed){ finalizarPedido();}PF('ldg').hide();  "/>
                         </div>
                     </div>

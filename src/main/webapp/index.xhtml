@@ -55,15 +55,6 @@
                             <h3 style="color: white;">#{orderMB.company.name}</h3>
                         </div>
 
-                        <h:panelGroup rendered="#{orderMB.fechado}">
-                            <div class="col-xs-12" style="    text-align: center; color: white; margin-top: 70px;">
-                                <h4 style="background: #da6060;padding: 10px;
-                                    color: white;border-radius: 5px;border: 1px solid #e73535;">Estabelecimento Fechado</h4>
-                            </div>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{!orderMB.fechado}">
-
-
 
                             <div class="col-xs-12" style="    text-align: center; color: white; margin-top: 70px;">
                                 <h:form>
@@ -73,7 +64,6 @@
                                                      style="background: #e83b62 !important; color: white !important; box-shadow: none !important; text-shadow: none !important; border-color: #e83b62 !important;     width: 200px;    margin-top: 5px; padding: 15px;" />
                                 </h:form>
                             </div>
-                        </h:panelGroup>
 
                     </div>
 
@@ -111,6 +101,7 @@
                                     </div>
                                     <div class="col-xs-6 text-right">
                                         <p:commandButton value="Finalizar Pedido" 
+                                                         disabled="#{orderMB.fechado}"
                                                          style="    height: 100% !important;
                                                          background: #9d1534;     font-size: 14px;
                                                          border: 1px solid #9d1534;

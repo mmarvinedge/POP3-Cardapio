@@ -6,6 +6,16 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:panelGroup id="grupos">
+        <h:panelGroup rendered="#{orderMB.fechado}">
+            <center>
+                <br/>
+                <span class="badge-danger">
+                   Estabelecimento Fechado
+                </span><br/>
+                <span style="    line-height: 2.5;">#{orderMB.horario}</span>
+                <hr style="margin-bottom: 0px;margin-top: 0px;border-color: #ccc;"/>
+            </center>
+        </h:panelGroup>
         <h:panelGroup rendered="#{actionMB.acao == 'grupo'}">
             <h:form>
                 <p:panel id="pnl" style="border: none !important;" >

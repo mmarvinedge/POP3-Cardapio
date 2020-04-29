@@ -46,6 +46,8 @@ public class OrderMB implements Serializable {
     public Boolean home = true;
     public Boolean fechado = true;
 
+    public String horario = "";
+
     CategoryServices categoriaService = new CategoryServices();
 
     private String idCompany = null;
@@ -108,6 +110,7 @@ public class OrderMB implements Serializable {
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenDom().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseDom().replace(":", "").trim());
+                horario = company.getTime().getOpenDom() + " às " + company.getTime().getCloseDom();
             } else if (dia.equals("Seg") || dia.equals("Mon")) {
                 if (!company.getTime().getSeg()) {
                     fechado = true;
@@ -115,6 +118,7 @@ public class OrderMB implements Serializable {
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenSeg().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseSeg().replace(":", "").trim());
+                horario = company.getTime().getOpenSeg() + " às " + company.getTime().getCloseSeg();
             } else if (dia.equals("Ter") || dia.equals("Tue")) {
                 if (!company.getTime().getTer()) {
                     fechado = true;
@@ -122,6 +126,7 @@ public class OrderMB implements Serializable {
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenTer().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseTer().replace(":", "").trim());
+                horario = company.getTime().getOpenTer() + " às " + company.getTime().getCloseTer();
             } else if (dia.equals("Qua") || dia.equals("Wed")) {
                 if (!company.getTime().getQua()) {
                     fechado = true;
@@ -129,6 +134,7 @@ public class OrderMB implements Serializable {
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenQua().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseQua().replace(":", "").trim());
+                horario = company.getTime().getOpenQua() + " às " + company.getTime().getCloseQua();
             } else if (dia.equals("Qui") || dia.equals("Thu")) {
                 if (!company.getTime().getQui()) {
                     fechado = true;
@@ -136,6 +142,7 @@ public class OrderMB implements Serializable {
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenQui().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseQui().replace(":", "").trim());
+                horario = company.getTime().getOpenQui() + " às " + company.getTime().getCloseQui();
             } else if (dia.equals("Sex") || dia.equals("Fri")) {
                 if (!company.getTime().getSex()) {
                     fechado = true;
@@ -143,6 +150,7 @@ public class OrderMB implements Serializable {
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenSex().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseSex().replace(":", "").trim());
+                horario = company.getTime().getOpenSex() + " às " + company.getTime().getCloseSex();
             } else if (dia.equals("Sab") || dia.equals("Sat")) {
                 if (!company.getTime().getSab()) {
                     fechado = true;
@@ -150,15 +158,15 @@ public class OrderMB implements Serializable {
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenSab().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseSab().replace(":", "").trim());
+                horario = company.getTime().getOpenSab() + " às " + company.getTime().getCloseSab();
             }
 
             System.out.println("");
 
             Integer horaA = Integer.parseInt(horaAgora.replace(":", "").trim());
 
-            System.out.println("1 " + (horaA >= horaAbertura && horaFechamento < 0));
-            System.out.println("2 " + (horaA >= horaAbertura && horaFechamento < 0));
-            if (horaA >= horaAbertura && horaFechamento < 0) {
+            System.out.println("1 " + (horaA >= horaAbertura && horaFechamento < horaAbertura));
+            if (horaA >= horaAbertura && horaFechamento < horaAbertura) {
                 fechado = false;
                 return;
             } else {
@@ -588,6 +596,14 @@ public class OrderMB implements Serializable {
 
     public void setFechado(Boolean fechado) {
         this.fechado = fechado;
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
     }
 
 }
