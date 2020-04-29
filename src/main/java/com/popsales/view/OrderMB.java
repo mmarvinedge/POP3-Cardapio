@@ -9,6 +9,7 @@ import com.popsales.model.Attribute;
 import com.popsales.model.AttributeValue;
 import com.popsales.model.Category;
 import com.popsales.model.Company;
+import com.popsales.model.FlavorPizza;
 import com.popsales.model.Item;
 import com.popsales.model.Merchant;
 import com.popsales.model.Order;
@@ -86,86 +87,91 @@ public class OrderMB implements Serializable {
     }
 
     public void tratarEstabelecimentoAberto() {
-        String dia = new SimpleDateFormat("EE").format(new Date());
-        System.out.println("DIA: " + dia);
-        String horaAgora = new SimpleDateFormat("HH").format(new Date());
-        System.out.println("HORA: " + horaAgora);
+        try {
+            String dia = new SimpleDateFormat("EE").format(new Date());
+            System.out.println("DIA: " + dia);
+            String horaAgora = new SimpleDateFormat("HH:mm").format(new Date());
+            System.out.println("HORA: " + horaAgora);
 
-        Integer horaAbertura = 0;
-        Integer horaFechamento = 0;
+            Integer horaAbertura = 0;
+            Integer horaFechamento = 0;
 
-        if (company.getTime() == null) {
-            fechado = false;
-            return;
-        }
-
-        if (dia.equals("Dom") || dia.equals("Sun")) {
-            if (!company.getTime().getDom()) {
-                fechado = true;
-                return;
-            }
-            horaAbertura = company.getTime().getOpenDom();
-            horaFechamento = company.getTime().getCloseDom();
-        } else if (dia.equals("Seg") || dia.equals("Mon")) {
-            if (!company.getTime().getSeg()) {
-                fechado = true;
-                return;
-            }
-            horaAbertura = company.getTime().getOpenSeg();
-            horaFechamento = company.getTime().getCloseSeg();
-        } else if (dia.equals("Ter") || dia.equals("Tue")) {
-            if (!company.getTime().getTer()) {
-                fechado = true;
-                return;
-            }
-            horaAbertura = company.getTime().getOpenTer();
-            horaFechamento = company.getTime().getCloseTer();
-        } else if (dia.equals("Qua") || dia.equals("Wed")) {
-            if (!company.getTime().getQua()) {
-                fechado = true;
-                return;
-            }
-            horaAbertura = company.getTime().getOpenQua();
-            horaFechamento = company.getTime().getCloseQua();
-        } else if (dia.equals("Qui") || dia.equals("Thu")) {
-            if (!company.getTime().getQui()) {
-                fechado = true;
-                return;
-            }
-            horaAbertura = company.getTime().getOpenQui();
-            horaFechamento = company.getTime().getCloseQui();
-        } else if (dia.equals("Sex") || dia.equals("Fri")) {
-            if (!company.getTime().getSex()) {
-                fechado = true;
-                return;
-            }
-            horaAbertura = company.getTime().getOpenSex();
-            horaFechamento = company.getTime().getCloseSex();
-        } else if (dia.equals("Sab") || dia.equals("Sat")) {
-            if (!company.getTime().getSab()) {
-                fechado = true;
-                return;
-            }
-            horaAbertura = company.getTime().getOpenSab();
-            horaFechamento = company.getTime().getCloseSab();
-        }
-
-        System.out.println("");
-
-        Integer horaA = Integer.parseInt(horaAgora);
-
-        System.out.println("1 " + (horaA >= horaAbertura && horaFechamento < 0));
-        System.out.println("2 " + (horaA >= horaAbertura && horaFechamento < 0));
-        if (horaA >= horaAbertura && horaFechamento < 0) {
-            fechado = false;
-            return;
-        } else {
-            if (Integer.parseInt(horaAgora) >= horaAbertura && Integer.parseInt(horaAgora) <= horaFechamento) {
+            if (company.getTime() == null) {
                 fechado = false;
-            } else {
-                fechado = true;
+                return;
             }
 
+            if (dia.equals("Dom") || dia.equals("Sun")) {
+                if (!company.getTime().getDom()) {
+                    fechado = true;
+                    return;
+                }
+                horaAbertura = Integer.parseInt(company.getTime().getOpenDom().replace(":", "").trim());
+                horaFechamento = Integer.parseInt(company.getTime().getCloseDom().replace(":", "").trim());
+            } else if (dia.equals("Seg") || dia.equals("Mon")) {
+                if (!company.getTime().getSeg()) {
+                    fechado = true;
+                    return;
+                }
+                horaAbertura = Integer.parseInt(company.getTime().getOpenSeg().replace(":", "").trim());
+                horaFechamento = Integer.parseInt(company.getTime().getCloseSeg().replace(":", "").trim());
+            } else if (dia.equals("Ter") || dia.equals("Tue")) {
+                if (!company.getTime().getTer()) {
+                    fechado = true;
+                    return;
+                }
+                horaAbertura = Integer.parseInt(company.getTime().getOpenTer().replace(":", "").trim());
+                horaFechamento = Integer.parseInt(company.getTime().getCloseTer().replace(":", "").trim());
+            } else if (dia.equals("Qua") || dia.equals("Wed")) {
+                if (!company.getTime().getQua()) {
+                    fechado = true;
+                    return;
+                }
+                horaAbertura = Integer.parseInt(company.getTime().getOpenQua().replace(":", "").trim());
+                horaFechamento = Integer.parseInt(company.getTime().getCloseQua().replace(":", "").trim());
+            } else if (dia.equals("Qui") || dia.equals("Thu")) {
+                if (!company.getTime().getQui()) {
+                    fechado = true;
+                    return;
+                }
+                horaAbertura = Integer.parseInt(company.getTime().getOpenQui().replace(":", "").trim());
+                horaFechamento = Integer.parseInt(company.getTime().getCloseQui().replace(":", "").trim());
+            } else if (dia.equals("Sex") || dia.equals("Fri")) {
+                if (!company.getTime().getSex()) {
+                    fechado = true;
+                    return;
+                }
+                horaAbertura = Integer.parseInt(company.getTime().getOpenSex().replace(":", "").trim());
+                horaFechamento = Integer.parseInt(company.getTime().getCloseSex().replace(":", "").trim());
+            } else if (dia.equals("Sab") || dia.equals("Sat")) {
+                if (!company.getTime().getSab()) {
+                    fechado = true;
+                    return;
+                }
+                horaAbertura = Integer.parseInt(company.getTime().getOpenSab().replace(":", "").trim());
+                horaFechamento = Integer.parseInt(company.getTime().getCloseSab().replace(":", "").trim());
+            }
+
+            System.out.println("");
+
+            Integer horaA = Integer.parseInt(horaAgora.replace(":", "").trim());
+
+            System.out.println("1 " + (horaA >= horaAbertura && horaFechamento < 0));
+            System.out.println("2 " + (horaA >= horaAbertura && horaFechamento < 0));
+            if (horaA >= horaAbertura && horaFechamento < 0) {
+                fechado = false;
+                return;
+            } else {
+                if (horaA >= horaAbertura && horaA <= horaFechamento) {
+                    fechado = false;
+                } else {
+                    fechado = true;
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            fechado = false;
         }
 
     }
@@ -229,44 +235,55 @@ public class OrderMB implements Serializable {
     }
 
     public void addCart() {
-
-        if (order.getProducts() == null) {
-            order.setProducts(new ArrayList());
+        if (item.getProduct().getCategoryMain().getName().equals("Pizzas") && item.getFlavors() != null && item.getFlavors().size() == 0 && item.getProduct().getFlavorsPizza().size() > 0) {
+            PrimeFaces.current().executeScript("alerta('Selecione o sabor de pizza!')");
+            return;
         }
-        //REPROCESSAMENTO DOS ATRIBUTOS, CASO NAO SEJA LANÇADO O ITEM NÃO SERA ENVIADO!
-        BigDecimal totalAdicionais = BigDecimal.ZERO;
-        List<Attribute> atrs = new ArrayList();
-        if (item.getAttributes() != null) {
-            for (Attribute atr : item.getAttributes()) {
-                List<AttributeValue> novos = new ArrayList();
-                for (AttributeValue value : atr.getValues()) {
-                    if (value.getQuantity() != null && value.getQuantity().doubleValue() > 0 ) {
-                        novos.add(value);
-                        if (value.getTotal() != null) {
-                            totalAdicionais = totalAdicionais.add(value.getTotal());
+        if (item.getTotal().doubleValue() > 0) {
+            if (order.getProducts() == null) {
+                order.setProducts(new ArrayList());
+            }
+            //REPROCESSAMENTO DOS ATRIBUTOS, CASO NAO SEJA LANÇADO O ITEM NÃO SERA ENVIADO!
+            BigDecimal totalAdicionais = BigDecimal.ZERO;
+            List<Attribute> atrs = new ArrayList();
+            if (item.getAttributes() != null) {
+                for (Attribute atr : item.getAttributes()) {
+                    List<AttributeValue> novos = new ArrayList();
+                    for (AttributeValue value : atr.getValues()) {
+                        if (value.getQuantity() != null && value.getQuantity().doubleValue() > 0) {
+                            novos.add(value);
+                            if (value.getTotal() != null) {
+                                totalAdicionais = totalAdicionais.add(value.getTotal());
+                            }
                         }
                     }
-                }
-                atr.setValues(novos);
-                if (atr.getValues().size() > 0) {
+                    atr.setValues(novos);
+                    if (atr.getValues().size() > 0) {
 
-                    atrs.add(atr);
+                        atrs.add(atr);
+                    }
                 }
             }
+
+            item.setAttributes(atrs);
+            System.out.println("TOTAL ADS: " + totalAdicionais);
+            item.setTotalAds(totalAdicionais);
+            //item.setPrice(item.getProduct().getPrice());
+            //item.setTotal(item.getPrice().multiply(item.getQuantity()).add(item.getTotalAds()));
+
+            order.getProducts().add(item);
+            order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
+            calcularTotal();
+
+            totalAdicionais = BigDecimal.ZERO;
+            PrimeFaces.current().executeScript("closeModal('mdlPedir')");
+            PrimeFaces.current().executeScript("effect('ima-" + item.getProduct().getId() + "')");
+            item = new Item();
+            adicionais = new ArrayList[0];
+        } else {
+            PrimeFaces.current().executeScript("alerta('Selecione as opções!')");
         }
 
-        item.setAttributes(atrs);
-        System.out.println("TOTAL ADS: " + totalAdicionais);
-        item.setTotalAds(totalAdicionais);
-        //item.setPrice(item.getProduct().getPrice());
-        //item.setTotal(item.getPrice().multiply(item.getQuantity()).add(item.getTotalAds()));
-
-        order.getProducts().add(item);
-        order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
-        calcularTotal();
-        item = new Item();
-        adicionais = new ArrayList[0];
-        totalAdicionais = BigDecimal.ZERO;
     }
 
     private void calcularTotal() {
@@ -288,7 +305,7 @@ public class OrderMB implements Serializable {
         try {
             String nome = order.getClientInfo().getName().substring(0, 2);
             String foneNoMask = order.getClientInfo().getPhone().replace("-", "").replace("(", "").replace(")", "");
-            String foneCod = foneNoMask.substring(foneNoMask.length() - 4, foneNoMask.length()) + new Random().nextInt((9 - 1) + 1) + 0;
+            String foneCod = foneNoMask.substring(foneNoMask.length() - 4, foneNoMask.length()) + new Random().nextInt(9);
             return nome + "-" + foneCod;
         } catch (Exception e) {
             return new Random().nextInt(7) + "";
@@ -297,7 +314,7 @@ public class OrderMB implements Serializable {
 
     public void registarPedido() {
         try {
-            System.out.println("SIZ11111111111E: "+order.getProducts().size());
+            System.out.println("SIZ11111111111E: " + order.getProducts().size());
             if (order.getProducts().size() == 0 || order.getProducts().isEmpty()) {
                 System.out.println("alerta");
                 return;
@@ -406,18 +423,19 @@ public class OrderMB implements Serializable {
     }
 
     public void processarTotaisAdcs() {
-        item.setTotalAds(item.getAttributes().stream().filter(mm -> mm.getValues() != null).map(m -> m.getValues()).findAny().get().stream().filter(c -> c != null && c.getTotal() != null).map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
+        //item.setTotalAds(item.getAttributes().stream().filter(mm -> mm.getValues() != null).map(m -> m.getValues()).findAny().get().stream().filter(c -> c != null && c.getTotal() != null).map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
         BigDecimal totalAds = BigDecimal.ZERO;
-        for (Attribute at : item.getAttributes()) {
-            if (at.getValues() != null && at.getValues().size() > 0) {
-                for (AttributeValue av : at.getValues()) {
-                    if (av.getTotal() != null) {
-                        System.out.println(av.getName() + ": " + av.getQuantity() + " * " + av.getPrice() + " = " + av.getTotal());
-                        totalAds = totalAds.add(av.getTotal());
+        if (item.getAttributes() != null) {
+            for (Attribute at : item.getAttributes()) {
+                if (at.getValues() != null && at.getValues().size() > 0) {
+                    for (AttributeValue av : at.getValues()) {
+                        if (av.getTotal() != null) {
+                            System.out.println(av.getName() + ": " + av.getQuantity() + " * " + av.getPrice() + " = " + av.getTotal());
+                            totalAds = totalAds.add(av.getTotal());
+                        }
                     }
                 }
             }
-
         }
         item.setTotalAds(totalAds);
         System.out.println("ADS: " + item.getTotalAds());
@@ -436,7 +454,7 @@ public class OrderMB implements Serializable {
 
             NumberFormat nF = NumberFormat.getCurrencyInstance();
             nF.setCurrency(Currency.getInstance(new Locale("pt", "BR")));
-            return nF.format(val);
+            return nF.format(val).replace("BRL", "R$ ");
         } catch (Exception e) {
             System.out.println("ERRO AO TENTAR FORMATAR: " + val);
             return "R$ " + val;
@@ -500,10 +518,14 @@ public class OrderMB implements Serializable {
             item.setTotal(item.getPrice());
             return;
         }
-        if (item.getProduct().getRulePricePizza().equals("Média")) {
-            item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(new BigDecimal(item.getFlavors().size())));
+        if (item.getFlavors() != null && item.getFlavors().size() > 0) {
+            if (item.getProduct().getRulePricePizza().equals("Média")) {
+                item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(new BigDecimal(item.getFlavors().size())));
+            } else {
+                item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).max((BigDecimal o1, BigDecimal o2) -> o1.compareTo(o2)).get());
+            }
         } else {
-            item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).max((BigDecimal o1, BigDecimal o2) -> o1.compareTo(o2)).get());
+            item.setPrice(BigDecimal.ZERO);
         }
         System.out.println("PRICE: " + item.getPrice());
         item.setTotal(item.getPrice());

@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author JOAO PAULO
  */
 public class Address {
-    
+
     private int id;
     private String country;
     private String city;
@@ -151,6 +151,5 @@ public class Address {
         }
         return true;
     }
-    
-    
+
 }

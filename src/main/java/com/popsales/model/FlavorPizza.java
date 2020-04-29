@@ -5,6 +5,7 @@
  */
 package com.popsales.model;
 
+import com.popsales.util.OUtils;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -33,11 +34,31 @@ public class FlavorPizza {
         return flavor;
     }
 
+    public String htmlGetFlavor(Item i) {
+        try {
+            if (flavor != null) {
+                if (i.getProduct().getPromo()) {
+                    return "<span class='description-pizza'><strong>" + flavor + "</strong></div>  <div class='description-value'><small><s>" + OUtils.formatarMoeda(getPrice().doubleValue()) + "</s></small> <span class='color-value'>" + OUtils.formatarMoeda(i.getProduct().getPrice().doubleValue()) + "</span></span>";
+                } else {
+                    return "<span class='description-pizza'><strong>" + flavor + "</strong></div>  <div class='description-value'><span class='color-value'>" + OUtils.formatarMoeda(getPrice().doubleValue()) + "</span></span>";
+                }
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            return flavor;
+        }
+
+    }
+
     public void setFlavor(String flavor) {
         this.flavor = flavor;
     }
 
     public BigDecimal getPrice() {
+        if (price == null) {
+            return BigDecimal.ZERO;
+        }
         return price;
     }
 

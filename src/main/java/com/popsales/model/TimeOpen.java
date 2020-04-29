@@ -14,8 +14,8 @@ import java.util.Objects;
 public class TimeOpen {
 
     private Boolean dom, seg, ter, qua, qui, sex, sab;
-    private Integer openDom, openSeg, openTer, openQua, openQui, openSex, openSab;
-    private Integer closeDom, closeSeg, closeTer, closeQua, closeQui, closeSex, closeSab;
+    private String openDom, openSeg, openTer, openQua, openQui, openSex, openSab;
+    private String closeDom, closeSeg, closeTer, closeQua, closeQui, closeSex, closeSab;
 
     public Boolean getDom() {
         return dom;
@@ -73,115 +73,115 @@ public class TimeOpen {
         this.sab = sab;
     }
 
-    public Integer getOpenDom() {
+    public String getOpenDom() {
         return openDom;
     }
 
-    public void setOpenDom(Integer openDom) {
+    public void setOpenDom(String openDom) {
         this.openDom = openDom;
     }
 
-    public Integer getOpenSeg() {
+    public String getOpenSeg() {
         return openSeg;
     }
 
-    public void setOpenSeg(Integer openSeg) {
+    public void setOpenSeg(String openSeg) {
         this.openSeg = openSeg;
     }
 
-    public Integer getOpenTer() {
+    public String getOpenTer() {
         return openTer;
     }
 
-    public void setOpenTer(Integer openTer) {
+    public void setOpenTer(String openTer) {
         this.openTer = openTer;
     }
 
-    public Integer getOpenQua() {
+    public String getOpenQua() {
         return openQua;
     }
 
-    public void setOpenQua(Integer openQua) {
+    public void setOpenQua(String openQua) {
         this.openQua = openQua;
     }
 
-    public Integer getOpenQui() {
+    public String getOpenQui() {
         return openQui;
     }
 
-    public void setOpenQui(Integer openQui) {
+    public void setOpenQui(String openQui) {
         this.openQui = openQui;
     }
 
-    public Integer getOpenSex() {
+    public String getOpenSex() {
         return openSex;
     }
 
-    public void setOpenSex(Integer openSex) {
+    public void setOpenSex(String openSex) {
         this.openSex = openSex;
     }
 
-    public Integer getOpenSab() {
+    public String getOpenSab() {
         return openSab;
     }
 
-    public void setOpenSab(Integer openSab) {
+    public void setOpenSab(String openSab) {
         this.openSab = openSab;
     }
 
-    public Integer getCloseDom() {
+    public String getCloseDom() {
         return closeDom;
     }
 
-    public void setCloseDom(Integer closeDom) {
+    public void setCloseDom(String closeDom) {
         this.closeDom = closeDom;
     }
 
-    public Integer getCloseSeg() {
+    public String getCloseSeg() {
         return closeSeg;
     }
 
-    public void setCloseSeg(Integer closeSeg) {
+    public void setCloseSeg(String closeSeg) {
         this.closeSeg = closeSeg;
     }
 
-    public Integer getCloseTer() {
+    public String getCloseTer() {
         return closeTer;
     }
 
-    public void setCloseTer(Integer closeTer) {
+    public void setCloseTer(String closeTer) {
         this.closeTer = closeTer;
     }
 
-    public Integer getCloseQua() {
+    public String getCloseQua() {
         return closeQua;
     }
 
-    public void setCloseQua(Integer closeQua) {
+    public void setCloseQua(String closeQua) {
         this.closeQua = closeQua;
     }
 
-    public Integer getCloseQui() {
+    public String getCloseQui() {
         return closeQui;
     }
 
-    public void setCloseQui(Integer closeQui) {
+    public void setCloseQui(String closeQui) {
         this.closeQui = closeQui;
     }
 
-    public Integer getCloseSex() {
+    public String getCloseSex() {
         return closeSex;
     }
 
-    public void setCloseSex(Integer closeSex) {
+    public void setCloseSex(String closeSex) {
         this.closeSex = closeSex;
     }
 
-    public Integer getCloseSab() {
+    public String getCloseSab() {
         return closeSab;
     }
 
-    public void setCloseSab(Integer closeSab) {
+    public void setCloseSab(String closeSab) {
         this.closeSab = closeSab;
     }
 

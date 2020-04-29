@@ -23,6 +23,7 @@ public class Company {
     private BigDecimal deliveryCost;
     private String logo;
     private TimeOpen time;
+    private String funcionamento;
 
     public String getId() {
         return id;
@@ -45,7 +46,7 @@ public class Company {
     }
 
     public String getPhoneUnformat() {
-        if(phone == null){
+        if (phone == null) {
             phone = "";
         }
         return phone.replace("(", "").replace(")", "").replace("-", "").trim();
@@ -101,6 +102,14 @@ public class Company {
 
     public void setTime(TimeOpen time) {
         this.time = time;
+    }
+
+    public String getFuncionamento() {
+        return funcionamento;
+    }
+
+    public void setFuncionamento(String funcionamento) {
+        this.funcionamento = funcionamento;
     }
 
     @Override

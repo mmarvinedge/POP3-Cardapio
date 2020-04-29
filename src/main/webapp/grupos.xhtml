@@ -47,7 +47,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5">
                                 <div style="border-bottom: 1px solid #ccc;">
                                     <p:commandLink action="#{orderMB.setProduct(prod)}" style="width: 100%;     " 
-                                                   update=":mdlPedir" oncomplete="openModal('mdlPedir')"  >
+                                                   update=":mdlPedir" oncomplete="PF('ldg').hide(); openModal('mdlPedir')" onclick="PF('ldg').show()"   >
                                         <div class="row">
                                             <div class="col-xs-4" style="padding: 0;">
                                                 <div class="itm-img ima-#{prod.id}">
@@ -59,13 +59,21 @@
                                                     </center>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-8" style="display: inline-grid;">
+                                            <div class="col-xs-8" style=" ">
+                                                <div class="col-xs-12" style="    padding-left: 0;">
+                                                    <span style="color: #3e3e3e;font-weight: 400;font-size: 1.5rem;margin-bottom: 3px;"> #{prod.name}</span>
+                                                </div>
+                                                <div class="col-xs-12" style=" padding-left: 0;">
+                                                    <div style="font-size: 1.00rem;color: #717171;word-break: break-word;">#{prod.description}</div>
+                                                </div>
+                                                <div class="col-xs-12 text-right">
+                                                    <h:panelGroup rendered="#{prod.promo}">
+                                                        <s style="font-size: 1.46rem;font-weight: 400;color: #929292;WIDTH: auto;margin: 0;
+                                                           padding: 0;;">#{orderMB.formatarMoeda(prod.priceOriginal)}</s>
+                                                    </h:panelGroup>
 
-                                                <span style="color: #3e3e3e;font-weight: 400;font-size: 1.8rem;line-height: 1.50rem;margin-bottom: 9px;">#{prod.name}</span>
-                                                <h:panelGroup rendered="#{prod.description != null}">
-                                                    <span style="font-size: 1.00rem;line-height: 1.10rem;color: #717171;word-break: break-word;">#{prod.description}</span>
-                                                </h:panelGroup>
-                                                <span style="font-size: 2rem;font-weight: 400;color: #e83b62;">#{orderMB.formatarMoeda(prod.price)}</span>
+                                                    <span style="font-size: 2rem;font-weight: 400;color: #e83b62;">#{prod.price == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </p:commandLink>

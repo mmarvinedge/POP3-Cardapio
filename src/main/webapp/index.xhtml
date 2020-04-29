@@ -14,23 +14,23 @@
         <h:outputStylesheet name="css/all.min.css"   />
         <h:outputStylesheet name="css/sweetalert2.min.css"   />
 
-        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="256x256" />
-        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="128x128" />
-        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico" sizes="64x64" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico" sizes="256x256" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico" sizes="128x128" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico" sizes="64x64" />
 
 
-        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
-        <link rel="apple-touch-icon-precomposed" href="#{facesContext.externalContext.request.contextPath}/resources/img/sales.ico"/>
+        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
+        <link rel="apple-touch-icon-precomposed" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
 
 
-        <meta property="og:site_name" content="Cardápio #{orderMB.company.name}" />
-        <meta property="og:title" content="Cardápio #{orderMB.company.name}" />
+        <meta property="og:site_name" content="Cardápio Digital #{orderMB.company.name}" />
+        <meta property="og:title" content="Cardápio Digital #{orderMB.company.name}" />
         <meta property="og:description" content="Conheça o cardápio e faça seu pedido!" />
         <meta property="og:image" content="http://metre.ddns.net:88/popsales/min.jpg" />
-        <meta property="og:url" content="http://metre.ddns.net/popsales" />
+        <meta property="og:url" content="http://popsales.ddns.net" />
         <meta property="og:locale" content="pt_BR" />
         <meta property="og:type" content="article" />
 
@@ -157,8 +157,8 @@
                     PF('loading').hide();
                 }
 
-    //<![CDATA[
-                function confirm() {
+                //<![CDATA[
+                function finalizarPedido() {
                     Swal.fire({
                         title: 'Muito Bom',
                         text: "Seu pedido foi enviado!",
@@ -171,7 +171,7 @@
                             backGrupos();
                             window.location.replace("https://api.whatsapp.com/send?phone=55#{orderMB.company.phoneUnformat}&text=Acabei de registrar o pedido!");
                         }
-                    })
+                    });
                 }
                 //]]>
                 function alerta(msg) {
@@ -188,17 +188,18 @@
 
                 //Get the button:
                 mybutton = document.getElementById("myBtn");
+
                 $('img').attr('loading', 'lazy');
-    // When the user scrolls down 20px from the top of the document, show the button
+                // When the user scrolls down 20px from the top of the document, show the button
 
 
-    // When the user clicks on the button, scroll to the top of the document
+                // When the user clicks on the button, scroll to the top of the document
                 function topFunction() {
                     document.body.scrollTop = 0; // For Safari
                     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
                 }
 
-    //<![CDATA[
+                //<![CDATA[
                 (function (global) {
 
                     if (typeof (global) === "undefined") {
@@ -254,6 +255,29 @@
                         window.scrollTo(0, 1);
                     }, 0);
                 });
+
+
+<!-- Begin Inspectlet Asynchronous Code -->
+                (function () {
+                    window.__insp = window.__insp || [];
+                    __insp.push(['wid', 1278828457]);
+                    var ldinsp = function () {
+                        if (typeof window.__inspld != "undefined")
+                            return;
+                        window.__inspld = 1;
+                        var insp = document.createElement('script');
+                        insp.type = 'text/javascript';
+                        insp.async = true;
+                        insp.id = "inspsync";
+                        insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js?wid=1278828457&r=' + Math.floor(new Date().getTime() / 3600000);
+                        var x = document.getElementsByTagName('script')[0];
+                        x.parentNode.insertBefore(insp, x);
+                    };
+                    setTimeout(ldinsp, 0);
+                })();
+<!-- End Inspectlet Asynchronous Code -->
+
+
                 //]]>
             </script>
         </f:view>

@@ -41,6 +41,7 @@ body{
     margin-left: 5px;
     max-width: 52px;
     max-height: 52px;
+    height: 52px;
 }
 
 .nav .cart{
@@ -73,7 +74,7 @@ body{
 
 .badge-custom{
     text-decoration: none;
-    background: #e83b62 !important;
+    background: rgb(232,59,98) !important;
     padding: 5px;
     border-radius: 10px;
     color: white;
@@ -109,7 +110,7 @@ body{
 }
 
 .sidenav a:hover {
-    color: #e83b62;
+    color: rgb(232,59,98);
 }
 
 .sidenav .closebtn {
@@ -207,8 +208,8 @@ body{
 
 .btn-primary {
     color: #fff;
-    background-color: #e83b62 !important;
-    border-color: #e83b62 !important;
+    background-color: rgb(232,59,98) !important;
+    border-color: rgb(232,59,98) !important;
 }
 
 .btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus{
@@ -255,11 +256,11 @@ input[type=checkbox] {
 }
 
 input[type=checkbox]:checked {
-    background: #e83b62;
+    background: rgb(232,59,98);
     box-shadow: none;
     color: #fff;
     text-shadow: none;
-    border: 1px solid #e83b62;
+    border: 1px solid rgb(232,59,98);
 }
 
 input[type=checkbox]:before {
@@ -358,7 +359,7 @@ input[type=checkbox]:checked:before {
 }
 
 .ui-toggleswitch-checked .ui-toggleswitch-slider{
-    background: #e83b62;
+    background: rgb(232,59,98);
 }
 .ui-toggleswitch-checked  .ui-toggleswitch-slider:before{
     background: white;
@@ -420,7 +421,7 @@ label{
     z-index: 99; /* Make sure it does not overlap */
     border: none; /* Remove borders */
     outline: none; /* Remove outline */
-    background-color: #e83b62 !important; /* Set a background color */
+    background-color: rgb(232,59,98) !important; /* Set a background color */
     color: white; /* Text color */
     cursor: pointer; /* Add a mouse pointer on hover */
     padding: 15px; /* Some padding */
@@ -429,7 +430,7 @@ label{
 }
 
 #myBtn:hover {
-    background-color: #e83b62 !important; /* Add a dark-grey background on hover */
+    background-color: rgb(232,59,98) !important; /* Add a dark-grey background on hover */
 }
 
 .ui-chkbox .ui-chkbox-box {
@@ -438,7 +439,7 @@ label{
     -webkit-border-radius: 2px;
     border-radius: 2px;
     background:  white;
-    border-color: #e83b62  !important;
+    border-color: rgb(232,59,98)  !important;
 }
 .ui-selectmanycheckbox .ui-chkbox .ui-chkbox-box{
     width: auto !important;
@@ -461,7 +462,7 @@ footer {
     height: 50px;
     bottom: 0;
     width: 100%;
-    background: #e83b62;
+    background: rgb(232,59,98);
 }
 .fixed-bottom span{
     color: white;
@@ -541,9 +542,79 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,span{
     width: auto !important;
     font-size: 15px !important;
     padding: 5px !important;
-    border-color: #e83b62 !important;
-    background: #e83b62 !important;
+    border-color: rgb(232,59,98) !important;
+    background: rgb(232,59,98) !important;
     color: white !important; 
     text-shadow: none !important;
     box-shadow: none !important;
+}
+
+
+.color-value{
+    font-size: 2rem;font-weight: 400;color: #e83b62;
+}
+
+.description-pizza{
+    display: flex;
+}
+.description-value{
+    position: absolute;
+    right: 15px;
+}
+.description-value s{
+    color: #7F7F7F !important;
+}
+
+
+abel-float{
+  position: relative;
+  padding-top: 13px;
+}
+
+.label-float input{
+  border: 0;
+  border-bottom: 2px solid lightgrey;
+  outline: none;
+  min-width: 180px;
+  font-size: 16px;
+  transition: all .3s ease-out;
+  -webkit-transition: all .3s ease-out;
+  -moz-transition: all .3s ease-out;
+  -webkit-appearance:none;
+  border-radius: 0;
+}
+
+.label-float input:focus{
+  border-bottom: 2px solid #3951b2;
+}
+
+.label-float input::placeholder{
+  color:transparent;
+}
+
+.label-float label{
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 13px;
+  transition: all .3s ease-out;
+  -webkit-transition: all .3s ease-out;
+  -moz-transition: all .3s ease-out;
+}
+
+.label-float input:required:invalid + label{
+  color: red;
+}
+.label-float input:focus:required:invalid{
+  border-bottom: 2px solid red;
+}
+.label-float input:required:invalid + label:before{
+  content: '*';
+}
+.label-float input:focus + label,
+.label-float input:not(:placeholder-shown) + label{
+  font-size: 13px;
+  margin-top: 0;
+  color: #3951b2;
 }

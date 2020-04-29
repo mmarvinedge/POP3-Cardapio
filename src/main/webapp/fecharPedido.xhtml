@@ -19,7 +19,7 @@
                                 <i class="fa fa-arrow-left fa-2x"></i> 
                                 <span style="top: 4px;position: absolute;left: 50px;">Preencha os dados a baixo</span>
                             </p:commandLink>
-                            
+
                         </div>
                     </div>
                     <div class="row" style="padding: 10px;">
@@ -94,8 +94,12 @@
                                         border-radius: 5px;">Endereço de Entrega</h3>
                                 </div>
 
-                                <div class="col-xs-12" >
-                                    <b:inputText label="Endereço e Nº" placeholder="Rua Central, 190" value="#{orderMB.order.address.street}"  />
+                                <div class="col-xs-9" >
+                                    <b:inputText label="Endereço" placeholder="Rua Central, 190" value="#{orderMB.order.address.street}"  />
+                                    <b:message for="@previous" />
+                                </div>
+                                <div class="col-xs-3" style="padding-left: 0 !important;;">
+                                    <b:inputText label="Nº" placeholder="" value="#{orderMB.order.address.streetNumber}"  />
                                     <b:message for="@previous" />
                                 </div>
                                 <div class="col-xs-12">
@@ -187,7 +191,7 @@
                         <div class="col-xs-12">
                             <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{orderMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid;" 
                                            update="@form"
-                                           action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="if (!args.validationFailed){ confirm();}PF('ldg').hide();  "/>
+                                           action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="if (!args.validationFailed){ finalizarPedido();}PF('ldg').hide();  "/>
                         </div>
                     </div>
 
