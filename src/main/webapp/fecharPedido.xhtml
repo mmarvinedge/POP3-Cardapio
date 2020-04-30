@@ -107,7 +107,11 @@
 
                                 </div>
                                 <div class="col-xs-6">
-                                    <b:inputText label="Bairro" value="#{orderMB.order.address.auto}"  required="true" requiredMessage="Informe o bairro!" />
+                                    <b:selectOneMenu id="bair" label="Bairro" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Informe o bairro!">
+                                        <f:selectItem itemLabel="..." itemValue="" />
+                                        <f:selectItems value="#{orderMB.listaBairros()}" var="b"
+                                                       itemLabel="#{b}" itemValue="#{b}" />
+                                    </b:selectOneMenu>
                                     <b:message for="@previous" />
                                 </div>
                                 <div class="col-xs-6">

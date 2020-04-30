@@ -606,4 +606,17 @@ public class OrderMB implements Serializable {
         this.horario = horario;
     }
 
+    public List<String> listaBairros() {
+        List<String> bairros = new ArrayList();
+        if (company.getAddress().getCity() != null) {
+            try {
+                bairros = categoriaService.getBairros(company.getAddress().getCity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return bairros;
+    }
+
 }

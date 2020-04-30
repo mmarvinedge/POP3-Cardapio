@@ -14,16 +14,16 @@
         <h:outputStylesheet name="css/all.min.css"   />
         <h:outputStylesheet name="css/sweetalert2.min.css"   />
 
-        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico" sizes="256x256" />
-        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico" sizes="128x128" />
-        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico" sizes="64x64" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="256x256" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="128x128" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="64x64" />
 
 
-        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
-        <link rel="apple-touch-icon-precomposed" href="#{facesContext.externalContext.request.contextPath}/resources/img/fav-icon.ico"/>
+        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
 
 
         <meta property="og:site_name" content="Cardápio Digital #{orderMB.company.name}" />
@@ -38,7 +38,7 @@
     <h:body>
         <f:view locale="pt-BR">
             <h:panelGroup id="page">
-                <h:panelGroup id="welcome" rendered="#{orderMB.home}" layout="block" style="background: #31353d;    height: 100%;width: 100%; position: fixed;">
+                <h:panelGroup id="welcome" rendered="#{!orderMB.home}" layout="block" style="background: #31353d;    height: 100%;width: 100%; position: fixed;">
                     <p:blockUI block="welcome" widgetVar="la"  animate="true"  >
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
                     </p:blockUI>
@@ -68,7 +68,7 @@
                     </div>
 
                 </h:panelGroup>
-                <h:panelGroup id="order" rendered="#{!orderMB.home}" layout="block"  style="height: 100%;width: 100%; position: fixed;">
+                <h:panelGroup id="order" rendered="#{orderMB.home}" layout="block"  style="height: 100%;width: 100%; position: fixed;">
                     <p:blockUI block="order" widgetVar="la2"  animate="true"  >
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
                     </p:blockUI>

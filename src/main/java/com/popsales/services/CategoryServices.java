@@ -7,6 +7,7 @@ package com.popsales.services;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.popsales.model.Bairro;
 import com.popsales.model.Category;
 import com.popsales.model.Company;
 import com.popsales.model.Order;
@@ -14,6 +15,8 @@ import com.popsales.model.Product;
 import com.popsales.util.Constantes;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.ejb.Stateless;
@@ -21,7 +24,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  *
@@ -110,6 +112,7 @@ public class CategoryServices {
 
         return saida;
     }
+
     public List<Product> getProductsPromo(String idCompany) throws IOException {
         List<Product> saida = new ArrayList();
         Request request = new Request.Builder()
@@ -146,6 +149,39 @@ public class CategoryServices {
         Response response = httpClient.newCall(request).execute();
         String b = response.body().toString();
         System.out.println(b);
+    }
+
+    public List<String> getBairros(String city) throws IOException {
+        List<String> saida = new ArrayList();
+        Request request = new Request.Builder()
+                .url("http://metre.ddns.net:88/bairro.php?cidade=" + city)
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (response.code() == 202) {
+            throw new IOException("Nenhum dado retornado!");
+        } else {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+        }
+
+        // Get response body
+        String json = response.body().string();
+        System.out.println("JSON: " + json);
+        List<Bairro> bairs = new Gson().fromJson(json, new TypeToken<List<Bairro>>() {
+        }.getType());
+        for (Bairro bair : bairs) {
+            saida.add(bair.getBairro());
+        }
+        Collections.sort(saida, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
+        saida.add("Não Possui na lista!");
+        return saida;
     }
 
 }
