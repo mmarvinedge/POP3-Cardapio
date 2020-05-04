@@ -23,21 +23,13 @@
                         top: 5px;">&times;</button>
             </div>
 
-            <div class="modal-header" style="    background-image: url('#{facesContext.externalContext.request.contextPath}/resources/img/back.jpg');        height: 150px; min-height: 150px;    background-size: 100%; background-repeat: none;  max-height: 150px;padding: 16px 32px;">
+            <div class="modal-header" style="    background-image: url('#{facesContext.externalContext.request.contextPath}/resources/img/back.jpg');        
+
+                 #{orderMB.product.description == null ? 'height: 75px; min-height: 75px;max-height: 150px;' : 'height: 150px; min-height: 150px;max-height: 150px;'}
+                 background-size: 100%; background-repeat: none;  padding: 16px 32px;">
 
 
-                <div class="" style="position: absolute;
-                     top: 45px;
-                     width: 95%;
-                     background: rgba(255,255,255,0.7);
-                     padding: 10px;
-                     border-radius: 15px;
-                     left: 10px;
-                     height: 100px;
-                     padding-top: 5px;
-                     margin-top: 0px;
-                     line-height: normal;
-                     padding-bottom: 0px;">
+                <div class="" style="#{orderMB.product.description == null ? '' : 'position: absolute;top: 45px;width: 95%;background: rgba(255,255,255,0.7);padding: 10px;border-radius: 15px;left: 10px;height: 100px;padding-top: 5px;margin-top: 0px;line-height: normal;padding-bottom: 0px;'}">
                     <small >#{orderMB.product.description}</small>
                 </div>
 
@@ -60,55 +52,52 @@
                         <div class="row" style="padding: 10px;">
                             <div class="col-xs-12">
                                 <div>
-                                    <div style="margin-top: 5px; padding: 8px;width: auto !important;background: rgb(232,59,98);
-                                         color: white;display: inline-block;border-radius: 5px;margin-bottom: 10px;">Selecione até #{orderMB.item.product.maxPizza} sabor(es)</div>
-                                    <p:selectManyCheckbox value="#{orderMB.item.flavors}" converter="Converter"  layout="grid" columns="1"  >
-                                        <f:selectItems value="#{orderMB.item.product.flavorsPizza}" var="flav"  itemLabelEscaped="false"
-                                                       itemLabel="#{flav.htmlGetFlavor(orderMB.item)}" itemValue="#{flav}"
-                                                       itemDisabled="#{orderMB.item.flavors.size() == orderMB.item.product.maxPizza and orderMB.item.flavors.indexOf(flav) == -1}"
-                                                       />
-                                        <p:ajax event="change" listener="#{orderMB.processarTotalPizza()}" update=":frmModal:grpValue, @this" onstart="PF('ldga').show()" oncomplete="PF('ldga').hide()"  />
-                                    </p:selectManyCheckbox>
+                                    <div class="lbl-adicionais">Selecione até #{orderMB.item.product.maxPizza} sabor(es)</div>
+                                    <div class="adicionais">
+                                        <p:selectManyCheckbox value="#{orderMB.item.flavors}" converter="Converter"  layout="grid" columns="1"  >
+                                            <f:selectItems value="#{orderMB.item.product.flavorsPizza}" var="flav"  itemLabelEscaped="false"
+                                                           itemLabel="#{flav.htmlGetFlavor(orderMB.item)}" itemValue="#{flav}"
+                                                           itemDisabled="#{orderMB.item.flavors.size() == orderMB.item.product.maxPizza and orderMB.item.flavors.indexOf(flav) == -1}"
+                                                           />
+                                            <p:ajax event="change" listener="#{orderMB.processarTotalPizza()}" update=":frmModal:grpValue, @this" onstart="PF('ldga').show()" oncomplete="PF('ldga').hide()"  />
+                                        </p:selectManyCheckbox>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </h:panelGroup>
 
-
                     <h:panelGroup rendered="#{orderMB.item.attributes.size() > 0}">
                         <div class="row" style="padding: 10px;">
                             <div class="col-xs-12">
                                 <ui:repeat id="rpt" value="#{orderMB.item.attributes}" var="at" varStatus="varie">
-                                    <div style="    margin-top: 5px;
-                                         padding: 8px;
-                                         width: auto !important;
-                                         background: rgb(232,59,98);
-                                         color: white;
-                                         display: inline-block;
-                                         border-radius: 5px;     margin-bottom: 10px;">Selecione até #{at.quantity} #{at.description}</div> 
-                                    <ui:repeat id="ra" value="#{at.values}" var="it" varStatus="vaia">
-                                        <div class="row" style="border-bottom: 1px solid #ccc !important;margin-bottom: 5px;">
-                                            <div class="col-xs-8">
-                                                <small>
-                                                    #{orderMB.formatarMoeda(it.price)} 
-                                                </small><br/>
-                                                <strong>
-                                                    #{it.name}
-                                                </strong>
+
+                                    <div class="lbl-adicionais">Selecione até #{at.quantity} #{at.description}</div> 
+                                    <div class="adicionais">
+                                        <ui:repeat id="ra" value="#{at.values}" var="it" varStatus="vaia">
+                                            <div class="row" style="border-bottom: 1px solid #ccc !important;margin-bottom: 5px;">
+                                                <div class="col-xs-8">
+                                                    <small>
+                                                        #{orderMB.formatarMoeda(it.price)} 
+                                                    </small><br/>
+                                                    <strong>
+                                                        #{it.name}
+                                                    </strong>
+                                                </div>
+                                                <div class="col-xs-4 text-right" style="    max-width: 166px !important; float: right;">
+                                                    <h:panelGrid columns="3" style="float: right;     max-width: 166px !important"  >
+                                                        <p:commandLink id="btnMinus" action="#{orderMB.minQnt(it,at)}"  disabled="#{(at.travado and it.quantity == 0) or it.quantity == 0}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true" >
+                                                            <i class="fa fa-minus-circle fa-2x " style="color: #e83b62;"></i> 
+                                                        </p:commandLink>
+                                                        <h:outputText id="totQnt" value="#{it.quantity}"  style="font-size: 20px;margin-right: 5px;margin-left: 5px;font-weight: bolder;" />
+                                                        <p:commandLink id="btnPlus" action="#{orderMB.addQnt(it,at)}"  disabled="#{at.travado}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true">
+                                                            <i class="fa fa-plus-circle fa-2x " style="color: #e83b62;"></i> 
+                                                        </p:commandLink>
+                                                    </h:panelGrid>
+                                                </div>
                                             </div>
-                                            <div class="col-xs-4 text-right" style="    max-width: 166px !important; float: right;">
-                                                <h:panelGrid columns="3" style="float: right;     max-width: 166px !important"  >
-                                                    <p:commandLink id="btnMinus" action="#{orderMB.minQnt(it,at)}"  disabled="#{(at.travado and it.quantity == 0) or it.quantity == 0}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true" >
-                                                        <i class="fa fa-minus-circle fa-2x " style="color: #e83b62;"></i> 
-                                                    </p:commandLink>
-                                                    <h:outputText id="totQnt" value="#{it.quantity}"  style="font-size: 20px;margin-right: 5px;margin-left: 5px;font-weight: bolder;" />
-                                                    <p:commandLink id="btnPlus" action="#{orderMB.addQnt(it,at)}"  disabled="#{at.travado}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true">
-                                                        <i class="fa fa-plus-circle fa-2x " style="color: #e83b62;"></i> 
-                                                    </p:commandLink>
-                                                </h:panelGrid>
-                                            </div>
-                                        </div>
-                                    </ui:repeat>
+                                        </ui:repeat>
+                                    </div>
                                 </ui:repeat>
                             </div>
                         </div>
@@ -116,8 +105,10 @@
 
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
-                            <label>Recado</label>
-                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this" />
+                            <label class="lbl-adicionais" >
+                                Recado
+                            </label>
+                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this"  placeholder="Ex: Sem Cebola, mal passado"/>
                         </div>
                     </div>
                     <p:remoteCommand name="complete" action="#{orderMB.change()}" />

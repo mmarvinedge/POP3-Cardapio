@@ -107,9 +107,10 @@
 
                                 </div>
                                 <div class="col-xs-6">
+
                                     <b:selectOneMenu id="bair" label="Bairro" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Informe o bairro!">
                                         <f:selectItem itemLabel="..." itemValue="" />
-                                        <f:selectItems value="#{orderMB.listaBairros()}" var="b"
+                                        <f:selectItems value="#{orderMB.bairros}" var="b"
                                                        itemLabel="#{b}" itemValue="#{b}" />
                                     </b:selectOneMenu>
                                     <b:message for="@previous" />
@@ -161,36 +162,42 @@
                                  border-radius: 5px;">TOTAIS</h3>
                         </div>
 
-                        <div class="col-xs-6" >
-                            <strong>Subtotal</strong>
-                        </div>
-                        <div class="col-xs-6" >
-                            <b:inputText  value="#{orderMB.order.subtotal}" readonly="true" styleClass="text-right">
-                                <f:convertNumber type="currency" />
-                            </b:inputText>
-                        </div>
-                        <h:panelGroup id="grpValorEntrega">
-                            <h:panelGroup  rendered="#{orderMB.order.delivery}">
-                                <div class="col-xs-6" >
-                                    <strong>Taxa de Entrega</strong>
-                                </div>
-                                <div class="col-xs-6" >
-                                    <b:inputText value="#{orderMB.order.deliveryCost}" readonly="true" styleClass="text-right" >
-                                        <f:convertNumber type="currency" />
-                                    </b:inputText>
-                                </div>
-                            </h:panelGroup>
-                        </h:panelGroup>
-                        <div class="col-xs-6" >
-                            <strong>TOTAL</strong>
-                        </div>
-                        <div class="col-xs-6" >
-                            <b:inputText value="#{orderMB.order.total}"  readonly="true"  styleClass="text-right" >
-                                <f:convertNumber type="currency" />
-                            </b:inputText>
-                        </div>
 
+                        <div class="col-xs-12" >
+                            <b:inputTextarea  value="#{orderMB.order.observations}" placeholder="Observações" rows="4">
+                                <f:convertNumber type="currency" />
+                            </b:inputTextarea>
+                        </div>
                     </div>
+                    <div class="col-xs-6" >
+                        <strong>Subtotal</strong>
+                    </div>
+                    <div class="col-xs-6" >
+                        <b:inputText  value="#{orderMB.order.subtotal}" readonly="true" styleClass="text-right">
+                            <f:convertNumber type="currency" />
+                        </b:inputText>
+                    </div>
+                    <h:panelGroup id="grpValorEntrega">
+                        <h:panelGroup  rendered="#{orderMB.order.delivery}">
+                            <div class="col-xs-6" >
+                                <strong>Taxa de Entrega</strong>
+                            </div>
+                            <div class="col-xs-6" >
+                                <b:inputText value="#{orderMB.order.deliveryCost}" readonly="true" styleClass="text-right" >
+                                    <f:convertNumber type="currency" />
+                                </b:inputText>
+                            </div>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <div class="col-xs-6" >
+                        <strong>TOTAL</strong>
+                    </div>
+                    <div class="col-xs-6" >
+                        <b:inputText value="#{orderMB.order.total}"  readonly="true"  styleClass="text-right" style="font-weight: bolder;" >
+                            <f:convertNumber type="currency" />
+                        </b:inputText>
+                    </div>
+
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
                             <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{orderMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid;" 
@@ -216,7 +223,14 @@
                         });
                     </script>
                 </h:form>
+
+
+
+
+
             </p:panel>
+
+
 
         </h:panelGroup>
     </h:panelGroup>

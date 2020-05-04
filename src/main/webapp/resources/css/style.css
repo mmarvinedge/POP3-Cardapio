@@ -551,7 +551,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,span{
 
 
 .color-value{
-    font-size: 2rem;font-weight: 400;color: #e83b62;
+    font-size: 1.6rem;font-weight: 400;color: #e83b62;
 }
 
 .description-pizza{
@@ -567,60 +567,73 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,span{
 
 
 abel-float{
-  position: relative;
-  padding-top: 13px;
+    position: relative;
+    padding-top: 13px;
 }
 
 .label-float input{
-  border: 0;
-  border-bottom: 2px solid lightgrey;
-  outline: none;
-  min-width: 180px;
-  font-size: 16px;
-  transition: all .3s ease-out;
-  -webkit-transition: all .3s ease-out;
-  -moz-transition: all .3s ease-out;
-  -webkit-appearance:none;
-  border-radius: 0;
+    border: 0;
+    border-bottom: 2px solid lightgrey;
+    outline: none;
+    min-width: 180px;
+    font-size: 16px;
+    transition: all .3s ease-out;
+    -webkit-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
+    -webkit-appearance:none;
+    border-radius: 0;
 }
 
 .label-float input:focus{
-  border-bottom: 2px solid #3951b2;
+    border-bottom: 2px solid #3951b2;
 }
 
 .label-float input::placeholder{
-  color:transparent;
+    color:transparent;
 }
 
 .label-float label{
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-top: 13px;
-  transition: all .3s ease-out;
-  -webkit-transition: all .3s ease-out;
-  -moz-transition: all .3s ease-out;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 13px;
+    transition: all .3s ease-out;
+    -webkit-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
 }
 
 .label-float input:required:invalid + label{
-  color: red;
+    color: red;
 }
 .label-float input:focus:required:invalid{
-  border-bottom: 2px solid red;
+    border-bottom: 2px solid red;
 }
 .label-float input:required:invalid + label:before{
-  content: '*';
+    content: '*';
 }
 .label-float input:focus + label,
 .label-float input:not(:placeholder-shown) + label{
-  font-size: 13px;
-  margin-top: 0;
-  color: #3951b2;
+    font-size: 13px;
+    margin-top: 0;
+    color: #3951b2;
 }
 .badge-danger{
     background: #f15353;
     padding: 5px;
     border-radius: 10px;
     color: white;
+}
+
+.lbl-adicionais{
+    margin-top: 5px;padding: 8px;width: auto !important;background: rgb(232,59,98);color: white;display: inline-block;border-radius: 5px;margin-bottom: 0px;width: 100% !important;
+    text-align: center;
+}
+.adicionais{
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+    border-left: 1px solid #ccc !important;
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+    padding-left: 5px !important;
 }

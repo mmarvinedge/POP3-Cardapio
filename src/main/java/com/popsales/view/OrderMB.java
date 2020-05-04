@@ -9,7 +9,6 @@ import com.popsales.model.Attribute;
 import com.popsales.model.AttributeValue;
 import com.popsales.model.Category;
 import com.popsales.model.Company;
-import com.popsales.model.FlavorPizza;
 import com.popsales.model.Item;
 import com.popsales.model.Merchant;
 import com.popsales.model.Order;
@@ -33,6 +32,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.primefaces.PrimeFaces;
 
 /**
@@ -47,6 +48,9 @@ public class OrderMB implements Serializable {
     public Boolean fechado = true;
 
     public String horario = "";
+
+    private String bairroManual;
+    private List<String> bairros = new ArrayList();
 
     CategoryServices categoriaService = new CategoryServices();
 
@@ -188,6 +192,7 @@ public class OrderMB implements Serializable {
     public void init() {
 
         loadCategorias();
+        listaBairros();
     }
 
     private void loadCategorias() {
@@ -536,7 +541,7 @@ public class OrderMB implements Serializable {
             item.setPrice(BigDecimal.ZERO);
         }
         System.out.println("PRICE: " + item.getPrice());
-        item.setTotal(item.getPrice());
+        item.setTotal(item.getPrice().multiply(item.getQuantity()));
 
     }
 
@@ -607,16 +612,34 @@ public class OrderMB implements Serializable {
     }
 
     public List<String> listaBairros() {
-        List<String> bairros = new ArrayList();
         if (company.getAddress().getCity() != null) {
             try {
                 bairros = categoriaService.getBairros(company.getAddress().getCity());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
         return bairros;
     }
 
+    public String getBairroManual() {
+        return bairroManual;
+    }
+
+    public void setBairroManual(String bairroManual) {
+        this.bairroManual = bairroManual;
+    }
+
+    public List<String> getBairros() {
+        return bairros;
+    }
+
+    public void setBairros(List<String> bairros) {
+        this.bairros = bairros;
+    }
+
+    public void adicionarBairro() {
+        bairros.add(bairroManual);
+        order.getAddress().setAuto(bairroManual);
+    }
 }
