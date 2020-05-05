@@ -11,7 +11,7 @@
                 <div class="col-xs-7" style="padding-top: 15px;">
                     <span style="    font-size: 20px;font-weight: bolder;color: #e83b62;margin-top: 20px;">Carrinho</span>
                 </div>
-                <div class="col-xs-5">
+                <div class="col-xs-5" style="margin: 0;padding: 0;">
                     <a href="javascript:void(0)"  onclick="closeNav()" style="font-size: 18px;    margin-left: 50px;">
                         <i class="fa fa-arrow-right fa-2x"></i>
                     </a>
@@ -32,14 +32,14 @@
                                     <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
                                         <span class="title-item">#{prod.product.name} </span><br/>
                                         <b:row style="margin-right: -30px;">
-                                            <div class="col-xs-5" style="    margin: 0px;">
+                                            <div class="col-xs-6" style="    margin: 0px;">
                                                 <small style="    color: #b9b9b9;font-size: 100%;">#{prod.quantity} x #{orderMB.formatarMoeda(prod.price)}
                                                     <h:panelGroup rendered="#{prod.totalAds > 0}">
                                                         <br/>Ads: #{orderMB.formatarMoeda(prod.totalAds)}
                                                     </h:panelGroup>
                                                 </small>
                                             </div>
-                                            <div class="col-xs-7 pull-right text-right" style="color: #e83b62;     margin: 0px;">
+                                            <div class="col-xs-6 pull-right text-right" style="color: #e83b62;     margin: 0px;">
                                                 <h3 style="font-weight: bolder; color: #e83b62; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
                                             </div>
                                         </b:row>
@@ -60,7 +60,7 @@
                 <p:blockUI block="order" widgetVar="ldg2"  >
                     <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
                 </p:blockUI>
-                <p:commandLink id="btnLink" value="Fechar Pedido"  styleClass="btn btn-primary" disabled="#{orderMB.fechado}" action="#{actionMB.setAcaoFechar('fechar', orderMB.order.products.size())}" onstart="PF('ldg2').show()" oncomplete="closeNav(); PF('ldg2').hide()" style="width: 100%; height: 50px; color: white;border-radius: 0px;"  />
+                <p:commandLink id="btnLink" value="Fechar Pedido"  styleClass="btn btn-primary" disabled="#{orderMB.fechado}" action="#{actionMB.setAcaoFechar('fechar', orderMB.order.products.size())}" onstart="PF('ldg2').show()" oncomplete="closeNav(); PF('ldg2').hide()" style="width: 100%; height: 50px; color: white;border-radius: 0px;     display: inline-grid;"  />
             </div>
         </h:form>
     </div>

@@ -6,6 +6,7 @@
 package com.popsales.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.popsales.model.Bairro;
 import com.popsales.model.Category;
@@ -139,15 +140,15 @@ public class CategoryServices {
 
     public void sendOrder(Order order, String companyID) throws IOException {
         System.out.println(Constantes.URL);
-
-        RequestBody body = RequestBody.create(new Gson().toJson(order), Constantes.JSON); // new
+        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm:ss").create();
+        RequestBody body = RequestBody.create(gson.toJson(order), Constantes.JSON); // new
         // RequestBody body = RequestBody.create(JSON, json); // old
         Request request = new Request.Builder()
                 .url(Constantes.URL + "/order/")
                 .post(body)
                 .build();
         Response response = httpClient.newCall(request).execute();
-        String b = response.body().toString();
+        String b = response.body().string();
         System.out.println(b);
     }
 

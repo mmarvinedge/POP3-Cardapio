@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class OrderMB implements Serializable {
     public Boolean fechado = true;
 
     public String horario = "";
+    private String ord;
 
     private String bairroManual;
     private List<String> bairros = new ArrayList();
@@ -71,6 +73,7 @@ public class OrderMB implements Serializable {
         receber = true;
 
         idCompany = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+
         if (idCompany == null) {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String url = request.getRequestURL().toString().replace("index.jsf", "") + "notfound/";
@@ -88,6 +91,10 @@ public class OrderMB implements Serializable {
 
             } catch (Exception e) {
             }
+        }
+
+        if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("order") != null) {
+            ord = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("order");
         }
 
     }
@@ -333,7 +340,7 @@ public class OrderMB implements Serializable {
                 return;
             }
             order.setNum_order(genCodigo());
-            order.setDtRegister(OUtils.formataData(new Date(), "dd/MM/yyyy HH:mm:ss"));
+            order.setDtRegister(OUtils.formataData(new Date(), "yyyy-MM-dd HH:mm:ss"));
             order.setStatus("Aguardando");
             order.setMerchant(new Merchant(company));
             for (Item it : order.getProducts()) {

@@ -5,7 +5,7 @@
  */
 
 function openNav() {
-    document.getElementById("mySidenav").style.width = "350px";
+    document.getElementById("mySidenav").style.width = "95%";
 }
 
 function closeNav() {

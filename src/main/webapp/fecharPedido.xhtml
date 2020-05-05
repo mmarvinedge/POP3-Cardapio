@@ -22,7 +22,7 @@
 
                         </div>
                     </div>
-                    <div class="row" style="padding: 10px;">
+                    <div class="row" style="padding: 0px;">
                         <div class="col-xs-12" >
                             <h3  style="    background: #31353d;
                                  color: white;
@@ -33,8 +33,16 @@
                             <ui:repeat value="#{orderMB.order.products}" var="prod">
                                 <b:row style="    margin-left: 0;margin-right: 0;" class="item">
                                     <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
-                                        <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}" class="img-reponsive" width="70"/>
+                                        <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}" class="img-reponsive" width="60" style="max-width: 60px;"/>
+                                        <p:commandLink styleClass="text-danger" action="#{orderMB.removeCart(prod)}" immediate="true" update="@form" style="padding: 0;  color: white;
+                                                       position: absolute;
+                                                       left: 0;
+                                                       top: 0;
+                                                       color: #ff3535;">
+                                            <i class="fa fa-trash fa-2x" />
+                                        </p:commandLink>
                                     </div>
+
                                     <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
                                         <span class="title-item" style="color: #31353d;">#{prod.product.name} </span><br/>
                                         <b:row style="margin-right: -30px;">
@@ -49,154 +57,162 @@
                                                 <h3 style="font-weight: bolder; color: #e83b62; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
                                             </div>
                                         </b:row>
-                                        <p:commandLink styleClass="text-danger" action="#{orderMB.removeCart(prod)}" immediate="true" update="@form" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;     color: #ff3535;">
-                                            <i class="fa fa-trash" />
-                                        </p:commandLink>
                                     </div>
                                 </b:row>
                             </ui:repeat>
 
                         </div>
                     </div>
-                    <div class="row" style="padding: 10px;">
-                        <div class="col-xs-12" >
-                            <h3 style="    background: #31353d;
-                                color: white;
-                                text-align: center;
-                                padding: 5px;  margin-top: 0px;
-                                border-radius: 5px;">Seus Dados</h3>
-                        </div>
-                        <div class="col-xs-12">
-                            <b:inputText label="Nome Completo" value="#{orderMB.order.clientInfo.name}"  required="true" requiredMessage="Infome o nome"  update="@this"/>
-                            <b:message for="@previous" />
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="ui-fone">
-                                <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}" required="true" requiredMessage="Informe o telefone" type="tel" update="@this" />
-                                <b:message for="@previous" />
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-
-                            <p:selectOneRadio value="#{orderMB.order.delivery}" columns="1" layout="grid">
-                                <f:selectItem itemLabel="Quero Receber em Casa" itemValue="true" />
-                                <f:selectItem itemLabel="Quero Retirar no Local" itemValue="false" />
-                                <p:ajax event="change" listener="#{orderMB.adicionarRemoverTaxa()}" update="@form" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
-                            </p:selectOneRadio>
-                        </div>
-                        <h:panelGroup id="endereco">
-                            <h:panelGroup rendered="#{orderMB.order.delivery}">
-                                <div class="col-xs-12" style="margin-top: 15px;" >
+                    <div class="row" style="padding: 0px;">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="row" style="padding: 10px;">
+                                <div class="col-xs-12" >
                                     <h3 style="    background: #31353d;
                                         color: white;
                                         text-align: center;
                                         padding: 5px;  margin-top: 0px;
-                                        border-radius: 5px;">Endereço de Entrega</h3>
+                                        border-radius: 5px;">Seus Dados</h3>
                                 </div>
-
-                                <div class="col-xs-9" >
-                                    <b:inputText label="Endereço" placeholder="Rua Central, 190" value="#{orderMB.order.address.street}"  />
-                                    <b:message for="@previous" />
-                                </div>
-                                <div class="col-xs-3" style="padding-left: 0 !important;;">
-                                    <b:inputText label="Nº" placeholder="" value="#{orderMB.order.address.streetNumber}"  />
+                                <div class="col-xs-12">
+                                    <b:inputText label="Nome Completo" value="#{orderMB.order.clientInfo.name}"  required="true" requiredMessage="Infome o nome"  update="@this"/>
                                     <b:message for="@previous" />
                                 </div>
                                 <div class="col-xs-12">
-                                    <b:inputText label="Complemento" placeholder="Casa Apartamento"   value="#{orderMB.order.address.suburb}"/>
+                                    <div class="ui-fone">
+                                        <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}" required="true" requiredMessage="Informe o telefone" type="tel" update="@this" />
+                                        <b:message for="@previous" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
 
+                                    <p:selectOneRadio value="#{orderMB.order.delivery}" columns="1" layout="grid">
+                                        <f:selectItem itemLabel="Quero Receber em Casa" itemValue="true" />
+                                        <f:selectItem itemLabel="Quero Retirar no Local" itemValue="false" />
+                                        <p:ajax event="change" listener="#{orderMB.adicionarRemoverTaxa()}" update="@form" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                                    </p:selectOneRadio>
                                 </div>
-                                <div class="col-xs-6">
+                                <h:panelGroup id="endereco">
+                                    <h:panelGroup rendered="#{orderMB.order.delivery}">
+                                        <div class="col-xs-12" style="margin-top: 15px;" >
+                                            <h3 style="    background: #31353d;
+                                                color: white;
+                                                text-align: center;
+                                                padding: 5px;  margin-top: 0px;
+                                                border-radius: 5px;">Endereço de Entrega</h3>
+                                        </div>
 
-                                    <b:selectOneMenu id="bair" label="Bairro" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Informe o bairro!">
-                                        <f:selectItem itemLabel="..." itemValue="" />
-                                        <f:selectItems value="#{orderMB.bairros}" var="b"
-                                                       itemLabel="#{b}" itemValue="#{b}" />
-                                    </b:selectOneMenu>
-                                    <b:message for="@previous" />
-                                </div>
-                                <div class="col-xs-6">
-                                    <b:inputText label="Cidade" readonly="true" value="#{orderMB.order.address.city}" />
-                                </div>
-                            </h:panelGroup>
-                        </h:panelGroup>
+                                        <div class="col-xs-9" >
+                                            <b:inputText label="Endereço" placeholder="Rua Central, 190" value="#{orderMB.order.address.street}"  />
+                                            <b:message for="@previous" />
+                                        </div>
+                                        <div class="col-xs-3" style="padding-left: 0 !important;;">
+                                            <b:inputText label="Nº" placeholder="" value="#{orderMB.order.address.streetNumber}"  />
+                                            <b:message for="@previous" />
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <b:inputText label="Complemento" placeholder="Casa Apartamento"   value="#{orderMB.order.address.suburb}"/>
 
-                    </div>
-                    <div class="row" style="padding: 10px;">
-                        <div class="col-xs-12" >
-                            <h3  style="    background: #31353d;
-                                 color: white;
-                                 text-align: center;
-                                 padding: 5px;  margin-top: 0px;
-                                 border-radius: 5px;">Pagamento</h3>
-                        </div>
-                        <div class="col-xs-12">
-                            <b:selectOneMenu label="Forma" value="#{orderMB.order.forma}">
-                                <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" />
-                                <f:selectItem itemLabel="Cartão" itemValue="Cartão" />
-                                <p:ajax event="change" update="grpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
-                            </b:selectOneMenu>
-                        </div>
-                        <h:panelGroup id="grpTroco">
-                            <h:panelGroup rendered="#{orderMB.order.forma == 'Dinheiro'}">
-                                <div class="col-xs-3">
-                                    <p:outputLabel value="Troco?" /><br/>
-                                    <p:toggleSwitch label="Troco?" value="#{orderMB.order.troco}"  >
-                                        <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
-                                    </p:toggleSwitch>
-                                </div>
-                                <div class="col-xs-9">
-                                    <h:panelGroup id="gpTroco" >
-                                        <b:inputText type="number" id="iptTroco" label="Para quanto?"  value="#{orderMB.order.trocoPara}"  rendered="#{orderMB.order.troco}"/>
+                                        </div>
+                                        <div class="col-xs-6">
+
+                                            <b:selectOneMenu id="bair" label="Bairro" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Informe o bairro!">
+                                                <f:selectItem itemLabel="..." itemValue="" />
+                                                <f:selectItems value="#{orderMB.bairros}" var="b"
+                                                               itemLabel="#{b}" itemValue="#{b}" />
+                                            </b:selectOneMenu>
+                                            <b:message for="@previous" />
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <b:inputText label="Cidade" readonly="true" value="#{orderMB.order.address.city}" />
+                                        </div>
                                     </h:panelGroup>
+                                </h:panelGroup>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="row" style="padding: 10px;">
+                                <div class="col-xs-12" >
+                                    <h3  style="    background: #31353d;
+                                         color: white;
+                                         text-align: center;
+                                         padding: 5px;  margin-top: 0px;
+                                         border-radius: 5px;">Pagamento</h3>
                                 </div>
-                            </h:panelGroup>
-                        </h:panelGroup>
+                                <div class="col-xs-12">
+                                    <b:selectOneMenu label="Forma" value="#{orderMB.order.forma}">
+                                        <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" />
+                                        <f:selectItem itemLabel="Cartão" itemValue="Cartão" />
+                                        <p:ajax event="change" update="grpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                                    </b:selectOneMenu>
+                                </div>
+                                <h:panelGroup id="grpTroco">
+                                    <h:panelGroup rendered="#{orderMB.order.forma == 'Dinheiro'}">
+                                        <div class="col-xs-3">
+                                            <p:outputLabel value="Troco?" /><br/>
+                                            <p:toggleSwitch label="Troco?" value="#{orderMB.order.troco}"  >
+                                                <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                                            </p:toggleSwitch>
+                                        </div>
+                                        <div class="col-xs-9">
+                                            <h:panelGroup id="gpTroco" >
+                                                <b:inputText type="number" id="iptTroco" label="Para quanto?"  value="#{orderMB.order.trocoPara}"  rendered="#{orderMB.order.troco}"/>
+                                            </h:panelGroup>
+                                        </div>
+                                    </h:panelGroup>
+                                </h:panelGroup>
 
 
-                        <div class="col-xs-12" >
-                            <h3  style="    background: #31353d;
-                                 color: white;
-                                 text-align: center;
-                                 padding: 5px;
-                                 border-radius: 5px;">TOTAIS</h3>
-                        </div>
+                                <div class="col-xs-12" >
+                                    <h3  style="    background: #31353d;
+                                         color: white;
+                                         text-align: center;
+                                         padding: 5px;
+                                         border-radius: 5px;">TOTAIS</h3>
+                                </div>
 
 
-                        <div class="col-xs-12" >
-                            <b:inputTextarea  value="#{orderMB.order.observations}" placeholder="Observações" rows="4">
-                                <f:convertNumber type="currency" />
-                            </b:inputTextarea>
-                        </div>
-                    </div>
-                    <div class="col-xs-6" >
-                        <strong>Subtotal</strong>
-                    </div>
-                    <div class="col-xs-6" >
-                        <b:inputText  value="#{orderMB.order.subtotal}" readonly="true" styleClass="text-right">
-                            <f:convertNumber type="currency" />
-                        </b:inputText>
-                    </div>
-                    <h:panelGroup id="grpValorEntrega">
-                        <h:panelGroup  rendered="#{orderMB.order.delivery}">
-                            <div class="col-xs-6" >
-                                <strong>Taxa de Entrega</strong>
+                                <div class="col-xs-12" >
+                                    <b:inputTextarea  value="#{orderMB.order.observations}" placeholder="Observações" rows="4">
+                                        <f:convertNumber type="currency" />
+                                    </b:inputTextarea>
+                                </div>
+                                <div class="col-xs-6" >
+                                    <strong>Subtotal</strong>
+                                </div>
+                                <div class="col-xs-6" >
+                                    <b:inputText  value="#{orderMB.order.subtotal}" readonly="true" styleClass="text-right">
+                                        <f:convertNumber type="currency" />
+                                    </b:inputText>
+                                </div>
+                                <h:panelGroup id="grpValorEntrega">
+                                    <h:panelGroup  rendered="#{orderMB.order.delivery}">
+                                        <div class="col-xs-6" >
+                                            <strong>Taxa de Entrega</strong>
+                                        </div>
+                                        <div class="col-xs-6" >
+                                            <b:inputText value="#{orderMB.order.deliveryCost}" readonly="true" styleClass="text-right" >
+                                                <f:convertNumber type="currency" />
+                                            </b:inputText>
+                                        </div>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                                <div class="col-xs-6" >
+                                    <strong>TOTAL</strong>
+                                </div>
+                                <div class="col-xs-6" >
+                                    <b:inputText value="#{orderMB.order.total}"  readonly="true"  styleClass="text-right" style="font-weight: bolder;" >
+                                        <f:convertNumber type="currency" />
+                                    </b:inputText>
+                                </div>
                             </div>
-                            <div class="col-xs-6" >
-                                <b:inputText value="#{orderMB.order.deliveryCost}" readonly="true" styleClass="text-right" >
-                                    <f:convertNumber type="currency" />
-                                </b:inputText>
-                            </div>
-                        </h:panelGroup>
-                    </h:panelGroup>
-                    <div class="col-xs-6" >
-                        <strong>TOTAL</strong>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6"></div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6"></div>
                     </div>
-                    <div class="col-xs-6" >
-                        <b:inputText value="#{orderMB.order.total}"  readonly="true"  styleClass="text-right" style="font-weight: bolder;" >
-                            <f:convertNumber type="currency" />
-                        </b:inputText>
-                    </div>
+
+
+
 
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">

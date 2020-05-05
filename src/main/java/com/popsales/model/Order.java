@@ -50,6 +50,7 @@ public class Order {
     private Integer deliveryLimit;
     private String discount;
     private String dtRegister;
+   // private Date data;
 
     public Order() {
         products = new ArrayList();
@@ -323,5 +324,7 @@ public class Order {
     public void setNum_order(String num_order) {
         this.num_order = num_order;
     }
+
+
 
 }
