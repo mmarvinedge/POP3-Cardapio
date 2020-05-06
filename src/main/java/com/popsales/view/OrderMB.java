@@ -619,6 +619,7 @@ public class OrderMB implements Serializable {
     }
 
     public List<String> listaBairros() {
+        System.out.println("COMPNY "+company == null);
         if (company.getAddress().getCity() != null) {
             try {
                 bairros = categoriaService.getBairros(company.getAddress().getCity());

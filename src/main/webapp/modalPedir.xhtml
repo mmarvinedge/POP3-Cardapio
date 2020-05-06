@@ -105,10 +105,7 @@
 
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
-                            <label class="lbl-adicionais" >
-                                Recado
-                            </label>
-                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this"  placeholder="Ex: Sem Cebola, mal passado"/>
+                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this"  placeholder="Recado Ex: Sem Cebola, mal passado"/>
                         </div>
                     </div>
                     <p:remoteCommand name="complete" action="#{orderMB.change()}" />
