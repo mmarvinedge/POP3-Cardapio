@@ -22,6 +22,7 @@ public class Attribute implements Serializable {
     private String type;
     private Boolean highestPrice;
     private String quantityType;
+    private Boolean disabled;
     private Integer quantity;
     private BigDecimal price;
     private String rule;
@@ -44,12 +45,13 @@ public class Attribute implements Serializable {
         this.rule = at.getRule();
         this.values = at.getValues();
         if (values != null) {
-           List<AttributeValue> vals = new ArrayList();
+            List<AttributeValue> vals = new ArrayList();
             for (AttributeValue value : values) {
                 vals.add(new AttributeValue(value));
             }
             values = vals;
         }
+        this.disabled = at.getDisabled();
 
     }
 
@@ -142,6 +144,17 @@ public class Attribute implements Serializable {
 
     public void setTravado(Boolean travado) {
         this.travado = travado;
+    }
+
+    public Boolean getDisabled() {
+        if (disabled == null) {
+            disabled = false;
+        }
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
     @Override

@@ -70,34 +70,37 @@
                     <h:panelGroup rendered="#{orderMB.item.attributes.size() > 0}">
                         <div class="row" style="padding: 10px;">
                             <div class="col-xs-12">
-                                <ui:repeat id="rpt" value="#{orderMB.item.attributes}" var="at" varStatus="varie">
-
-                                    <div class="lbl-adicionais">Selecione até #{at.quantity} #{at.description}</div> 
-                                    <div class="adicionais">
-                                        <ui:repeat id="ra" value="#{at.values}" var="it" varStatus="vaia">
-                                            <div class="row" style="border-bottom: 1px solid #ccc !important;margin-bottom: 5px;">
-                                                <div class="col-xs-8">
-                                                    <small>
-                                                        #{orderMB.formatarMoeda(it.price)} 
-                                                    </small><br/>
-                                                    <strong>
-                                                        #{it.name}
-                                                    </strong>
-                                                </div>
-                                                <div class="col-xs-4 text-right" style="    max-width: 166px !important; float: right;">
-                                                    <h:panelGrid columns="3" style="float: right;     max-width: 166px !important"  >
-                                                        <p:commandLink id="btnMinus" action="#{orderMB.minQnt(it,at)}"  disabled="#{(at.travado and it.quantity == 0) or it.quantity == 0}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true" >
-                                                            <i class="fa fa-minus-circle fa-2x " style="color: #e83b62;"></i> 
-                                                        </p:commandLink>
-                                                        <h:outputText id="totQnt" value="#{it.quantity}"  style="font-size: 20px;margin-right: 5px;margin-left: 5px;font-weight: bolder;" />
-                                                        <p:commandLink id="btnPlus" action="#{orderMB.addQnt(it,at)}"  disabled="#{at.travado}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true">
-                                                            <i class="fa fa-plus-circle fa-2x " style="color: #e83b62;"></i> 
-                                                        </p:commandLink>
-                                                    </h:panelGrid>
-                                                </div>
-                                            </div>
-                                        </ui:repeat>
-                                    </div>
+                                <ui:repeat id="rpt" value="#{orderMB.item.attributes}" var="at" varStatus="varie" >
+                                    <h:panelGroup rendered="#{at.disabled == false}">
+                                        <div class="lbl-adicionais">Selecione até #{at.quantity} #{at.description}</div> 
+                                        <div class="adicionais">
+                                            <ui:repeat id="ra" value="#{at.values}" var="it" varStatus="vaia"  >
+                                                <h:panelGroup  rendered="#{it.disabled == false}">
+                                                    <div class="row" style="border-bottom: 1px solid #ccc !important;margin-bottom: 5px;">
+                                                        <div class="col-xs-8">
+                                                            <small>
+                                                                #{orderMB.formatarMoeda(it.price)} 
+                                                            </small><br/>
+                                                            <strong>
+                                                                #{it.name} 
+                                                            </strong>
+                                                        </div>
+                                                        <div class="col-xs-4 text-right" style="    max-width: 166px !important; float: right;">
+                                                            <h:panelGrid columns="3" style="float: right;     max-width: 166px !important"  >
+                                                                <p:commandLink id="btnMinus" action="#{orderMB.minQnt(it,at)}"  disabled="#{(at.travado and it.quantity == 0) or it.quantity == 0}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true" >
+                                                                    <i class="fa fa-minus-circle fa-2x " style="color: #e83b62;"></i> 
+                                                                </p:commandLink>
+                                                                <h:outputText id="totQnt" value="#{it.quantity}"  style="font-size: 20px;margin-right: 5px;margin-left: 5px;font-weight: bolder;" />
+                                                                <p:commandLink id="btnPlus" action="#{orderMB.addQnt(it,at)}"  disabled="#{at.travado}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true">
+                                                                    <i class="fa fa-plus-circle fa-2x " style="color: #e83b62;"></i> 
+                                                                </p:commandLink>
+                                                            </h:panelGrid>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+                                            </ui:repeat>
+                                        </div>
+                                    </h:panelGroup>
                                 </ui:repeat>
                             </div>
                         </div>
