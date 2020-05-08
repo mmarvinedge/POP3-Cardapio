@@ -25,6 +25,7 @@ public class Company {
     private TimeOpen time;
     private String funcionamento;
     private String messageWelcome;
+    private List<Bairro> bairros;
 
     public String getId() {
         return id;
@@ -122,6 +123,14 @@ public class Company {
 
     public void setMessageWelcome(String messageWelcome) {
         this.messageWelcome = messageWelcome;
+    }
+
+    public List<Bairro> getBairros() {
+        return bairros;
+    }
+
+    public void setBairros(List<Bairro> bairros) {
+        this.bairros = bairros;
     }
 
     @Override

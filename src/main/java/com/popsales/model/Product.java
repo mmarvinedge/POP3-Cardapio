@@ -40,6 +40,7 @@ public class Product implements Serializable {
     private Integer maxPizza;
     private List<FlavorPizza> flavorsPizza;
     private String rulePricePizza;
+    private ProductDay productDay;
 
     public String getId() {
         return id;
@@ -224,6 +225,14 @@ public class Product implements Serializable {
 
     public void setPriceOriginal(BigDecimal priceOriginal) {
         this.priceOriginal = priceOriginal;
+    }
+
+    public ProductDay getProductDay() {
+        return productDay;
+    }
+
+    public void setProductDay(ProductDay productDay) {
+        this.productDay = productDay;
     }
 
     @Override

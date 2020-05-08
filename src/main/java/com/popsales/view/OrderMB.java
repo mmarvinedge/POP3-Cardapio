@@ -7,6 +7,7 @@ package com.popsales.view;
 
 import com.popsales.model.Attribute;
 import com.popsales.model.AttributeValue;
+import com.popsales.model.Bairro;
 import com.popsales.model.Category;
 import com.popsales.model.Company;
 import com.popsales.model.Item;
@@ -20,21 +21,20 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import org.primefaces.PrimeFaces;
 
 /**
@@ -50,9 +50,11 @@ public class OrderMB implements Serializable {
 
     public String horario = "";
     private String ord;
+    private String dia = "";
 
     private String bairroManual;
-    private List<String> bairros = new ArrayList();
+    private List<Bairro> bairros = new ArrayList();
+    private List<Bairro> bairrosParams = new ArrayList();
 
     CategoryServices categoriaService = new CategoryServices();
 
@@ -88,7 +90,9 @@ public class OrderMB implements Serializable {
                     String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
                     order.getClientInfo().setPhone(OUtils.formataNinePhone(phone));
                 }
-
+                if (company.getBairros() != null) {
+                    bairrosParams = company.getBairros();
+                }
             } catch (Exception e) {
             }
         }
@@ -96,12 +100,12 @@ public class OrderMB implements Serializable {
         if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("order") != null) {
             ord = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("order");
         }
-
     }
 
     public void tratarEstabelecimentoAberto() {
         try {
             String dia = new SimpleDateFormat("EE").format(new Date());
+
             System.out.println("DIA: " + dia);
             String horaAgora = new SimpleDateFormat("HH:mm").format(new Date());
             System.out.println("HORA: " + horaAgora);
@@ -171,6 +175,7 @@ public class OrderMB implements Serializable {
                 horaFechamento = Integer.parseInt(company.getTime().getCloseSab().replace(":", "").trim());
                 horario = company.getTime().getOpenSab() + " às " + company.getTime().getCloseSab();
             }
+            this.dia = dia;
 
             System.out.println("");
 
@@ -193,6 +198,30 @@ public class OrderMB implements Serializable {
             fechado = false;
         }
 
+    }
+
+    public Boolean productoIsNotVendidoDia(Product p) {
+        if (p.getProductDay() == null) {
+            return false;
+        }
+        if (dia.equals("Dom") || dia.equals("Sun")) {
+            return p.getProductDay().getNaoVenderDom() == true;
+        } else if (dia.equals("Seg") || dia.equals("Mon")) {
+            return p.getProductDay().getNaoVenderSeg() == true;
+
+        } else if (dia.equals("Ter") || dia.equals("Tue")) {
+            return p.getProductDay().getNaoVenderTer() == true;
+        } else if (dia.equals("Qua") || dia.equals("Wed")) {
+            return p.getProductDay().getNaoVenderQua() == true;
+        } else if (dia.equals("Qui") || dia.equals("Thu")) {
+            return p.getProductDay().getNaoVenderQui() == true;
+        } else if (dia.equals("Sex") || dia.equals("Fri")) {
+            return p.getProductDay().getNaoVenderSex() == true;
+        } else if (dia.equals("Sab") || dia.equals("Sat")) {
+            return p.getProductDay().getNaoVenderSab() == true;
+        } else {
+            return false;
+        }
     }
 
     @PostConstruct
@@ -618,14 +647,24 @@ public class OrderMB implements Serializable {
         this.horario = horario;
     }
 
-    public List<String> listaBairros() {
-        System.out.println("COMPNY "+company == null);
-        if (company.getAddress().getCity() != null) {
-            try {
-                bairros = categoriaService.getBairros(company.getAddress().getCity());
-            } catch (Exception e) {
-                e.printStackTrace();
+    public List<Bairro> listaBairros() {
+
+        if (company.getDeliveryCost() != null) {
+            if (company.getAddress().getCity() != null) {
+                try {
+                    List<String> bairros = categoriaService.getBairros(company.getAddress().getCity());
+                    for (String bairro : bairros) {
+                        this.bairros.add(new Bairro(bairro, company.getDeliveryCost()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            for (Bairro bairrosParam : bairrosParams) {
+                this.bairros.add(new Bairro(bairrosParam.getBairro(), bairrosParam.getTaxa()));
+            }
+
         }
         return bairros;
     }
@@ -638,16 +677,31 @@ public class OrderMB implements Serializable {
         this.bairroManual = bairroManual;
     }
 
-    public List<String> getBairros() {
+    public List<Bairro> getBairros() {
         return bairros;
     }
 
-    public void setBairros(List<String> bairros) {
+    public void setBairros(List<Bairro> bairros) {
         this.bairros = bairros;
     }
 
     public void adicionarBairro() {
-        bairros.add(bairroManual);
-        order.getAddress().setAuto(bairroManual);
+      
     }
+
+    public void validarTaxaServico() {
+        System.out.println("CALL");
+        if (company.getDeliveryCost() == null) {
+            System.out.println("CALL 1");
+            if (order.getAddress().getAuto() != null) {
+                System.out.println("CALL 2");
+                Optional<Bairro> find = bairrosParams.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
+                if (find.isPresent()) {
+                    order.setDeliveryCost(find.get().getTaxa());
+                    calcularTotal();
+                }
+            }
+        }
+    }
+    
 }

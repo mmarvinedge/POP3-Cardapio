@@ -50,15 +50,14 @@ body{
     position: absolute;
     height: 60px;
     background: #26292f;
-    width: 90px;
-
+    width: 70px;
     margin-top:auto;
     margin-bottom:auto;
     text-align:center;
 }
 .nav .cart a{
     position: absolute;
-    width: 90px;
+    width: 70px;
     right: 0;
     height: 58px;
     text-decoration: none;
@@ -637,4 +636,31 @@ abel-float{
     margin-top: 0px !important;
     padding-top: 0px !important;
     padding-left: 5px !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px white; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background:  rgb(232,59,98);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(232,59,98); 
+}
+
+
+.custom-modal {
+    margin: 0px !important;
 }
