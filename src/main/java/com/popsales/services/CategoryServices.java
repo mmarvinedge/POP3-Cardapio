@@ -61,6 +61,30 @@ public class CategoryServices {
 
         return comp;
     }
+    public Company loadCompanyName(String name) throws IOException, Exception {
+        if (name == null) {
+            throw new Exception("NAO CHEGOU ID DA COMPANIA");
+        }
+        Company comp = new Company();
+        Request request = new Request.Builder()
+                .url(Constantes.URL + "/company/name/" + name)
+                .get()
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            // Get response body
+            String json = response.body().string();
+
+            comp = new Gson().fromJson(json, Company.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("Erro Carai");
+        }
+
+        return comp;
+    }
 
     public List<Category> getCategoryList(String idCompany) throws IOException, Exception {
         if (idCompany == null) {

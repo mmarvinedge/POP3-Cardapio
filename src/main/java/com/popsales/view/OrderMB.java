@@ -73,9 +73,24 @@ public class OrderMB implements Serializable {
 
     public OrderMB() {
         receber = true;
+        System.out.println("INIT");
 
-        idCompany = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-
+        String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
+        System.out.println("NAME: "+name);
+        if (name != null) {
+            try {
+                Company cop = categoriaService.loadCompanyName(name);
+                if (cop != null) {
+                    company = cop;
+                    idCompany = company.getId();
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(OrderMB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            idCompany = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+        }
+        System.out.println("idCompany: " + idCompany);
         if (idCompany == null) {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String url = request.getRequestURL().toString().replace("index.jsf", "") + "notfound/";
@@ -166,7 +181,7 @@ public class OrderMB implements Serializable {
                 horaAbertura = Integer.parseInt(company.getTime().getOpenSex().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseSex().replace(":", "").trim());
                 horario = company.getTime().getOpenSex() + " às " + company.getTime().getCloseSex();
-            } else if (dia.equals("Sab") || dia.equals("Sat")) {
+            } else if (dia.equals("Sab") || dia.equals("Sat") || dia.equals("Sáb") ) {
                 if (!company.getTime().getSab()) {
                     fechado = true;
                     return;
@@ -238,7 +253,7 @@ public class OrderMB implements Serializable {
             categories = categoriaService.getCategoryList(idCompany);
             productsPromo = categoriaService.getProductsPromo(idCompany);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("NAO FOI POSSIVEL CARREGAR O ID COMPANY");
         }
 
     }
@@ -686,7 +701,7 @@ public class OrderMB implements Serializable {
     }
 
     public void adicionarBairro() {
-      
+
     }
 
     public void validarTaxaServico() {
@@ -703,5 +718,5 @@ public class OrderMB implements Serializable {
             }
         }
     }
-    
+
 }

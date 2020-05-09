@@ -3,9 +3,46 @@
                xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
                       http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
 
-    <url-mapping id="delivery">
-        <pattern value="/delivery/#{id}" />
+    <url-mapping id="indice">
+        <pattern value="/#{id}" />
+        <view-id value="/index.jsf" />
+    </url-mapping>
+    <url-mapping id="indice2">
+        <pattern value="/#{id}" />
         <view-id value="/index.xhtml" />
     </url-mapping>
+    
+        <url-mapping id="indice3">
+        <pattern value="/#{id}/" />
+        <view-id value="/index.jsf" />
+    </url-mapping>
+    <url-mapping id="indice4">
+        <pattern value="/#{id}/" />
+        <view-id value="/index.xhtml" />
+    </url-mapping>
+        
+
+        
+    <url-mapping id="name">
+        <pattern value="/rest/#{name}" />
+        <view-id value="/index.jsf" />
+    </url-mapping>
+    <url-mapping id="name2">
+        <pattern value="/rest/#{name}" />
+        <view-id value="/index.xhtml" />
+    </url-mapping>
+        
+
+    <url-mapping id="name3">
+        <pattern value="/rest/#{name}/" />
+        <view-id value="/index.jsf" />
+    </url-mapping>
+    <url-mapping id="name4">
+        <pattern value="/rest/#{name}/" />
+        <view-id value="/index.xhtml" />
+    </url-mapping>
+        
+
+	
 
 </pretty-config>

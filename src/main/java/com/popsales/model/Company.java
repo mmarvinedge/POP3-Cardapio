@@ -26,6 +26,7 @@ public class Company {
     private String funcionamento;
     private String messageWelcome;
     private List<Bairro> bairros;
+    private String nameUrl;
 
     public String getId() {
         return id;
@@ -136,6 +137,14 @@ public class Company {
     @Override
     public String toString() {
         return "Company{" + "id=" + id + ", companyName=" + companyName + ", name=" + name + ", phone=" + phone + ", owner=" + owner + ", address=" + address + ", deliveryCost=" + deliveryCost + ", logo=" + logo + ", time=" + time + '}';
+    }
+
+    public String getNameUrl() {
+        return nameUrl;
+    }
+
+    public void setNameUrl(String nameUrl) {
+        this.nameUrl = nameUrl;
     }
 
 }
