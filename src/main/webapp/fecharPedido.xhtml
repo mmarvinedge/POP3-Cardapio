@@ -53,6 +53,9 @@
                                     <div class="row" style="margin-top: 10px;">
                                         <h:panelGroup id="endereco">
                                             <h:panelGroup rendered="#{orderMB.order.delivery}">
+
+
+
                                                 <div class="col-xs-8"  >
                                                     <b:inputText label="Endereço" placeholder="Rua Central" value="#{orderMB.order.address.street}"   required="true" requiredMessage="Obrigatorio!">
                                                         <p:ajax event="blur" update="@this" />
@@ -72,13 +75,13 @@
 
                                                 </div>
                                                 <div class="col-xs-6">
-
-                                                    <b:selectOneMenu id="bair" label="Bairro" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Obrigatorio!"
-                                                                     onselect="#{orderMB.validarTaxaServico()}"  update="@form"    >
+                                                    <p:outputLabel for="bair" value="Bairro" />
+                                                    <p:selectOneMenu id="bair"  label="Bairro" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Obrigatorio!" filterMatchMode="contains" filter="true" style="width: 100% !important;     border-bottom: 1px solid #ccc !important;border-left: 1px solid #ccc;">
                                                         <f:selectItem itemLabel="..." itemValue="" />
                                                         <f:selectItems value="#{orderMB.bairros}" var="b"
                                                                        itemLabel="#{b.bairro}" itemValue="#{b.bairro}" />
-                                                    </b:selectOneMenu>
+                                                        <p:ajax event="itemSelect" listener="#{orderMB.validarTaxaServico()}" update="@form" />
+                                                    </p:selectOneMenu>
                                                     <b:message for="@previous" />
                                                 </div>
                                                 <div class="col-xs-6">
@@ -92,31 +95,31 @@
                                 </p:tab>
 
                                 <p:tab  title="Produtos">
-                                
-                                        <ui:repeat value="#{orderMB.order.products}" var="prod">
-                                            <b:row style="" class="item">
-                                                <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
-                                                    <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}" class="img-reponsive" width="60" style="max-width: 60px;"/>
-                                                </div>
 
-                                                <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
-                                                    <span class="title-item" style="color: #31353d;">#{prod.product.name} </span><br/>
-                                                    <b:row >
-                                                        <div class="col-xs-6" style="    margin: 0px;">
-                                                            <small style="    color: #999999;font-size: 12px;">#{prod.quantity} x #{orderMB.formatarMoeda(prod.price)}
-                                                                <h:panelGroup rendered="#{prod.totalAds > 0}">
-                                                                    <br/>Ads: #{orderMB.formatarMoeda(prod.totalAds)}
-                                                                </h:panelGroup>
-                                                            </small>
-                                                        </div>
-                                                        <div class="col-xs-6 pull-right text-right" style="color: #e83b62;     margin: 0px;">
-                                                            <h3 style="font-weight: bolder; color: #e83b62; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
-                                                        </div>
-                                                    </b:row>
-                                                </div>
-                                            </b:row>
-                                        </ui:repeat>
-                                
+                                    <ui:repeat value="#{orderMB.order.products}" var="prod">
+                                        <b:row style="" class="item">
+                                            <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
+                                                <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}" class="img-reponsive" width="60" style="max-width: 60px;"/>
+                                            </div>
+
+                                            <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
+                                                <span class="title-item" style="color: #31353d;">#{prod.product.name} </span><br/>
+                                                <b:row >
+                                                    <div class="col-xs-6" style="    margin: 0px;">
+                                                        <small style="    color: #999999;font-size: 12px;">#{prod.quantity} x #{orderMB.formatarMoeda(prod.price)}
+                                                            <h:panelGroup rendered="#{prod.totalAds > 0}">
+                                                                <br/>Ads: #{orderMB.formatarMoeda(prod.totalAds)}
+                                                            </h:panelGroup>
+                                                        </small>
+                                                    </div>
+                                                    <div class="col-xs-6 pull-right text-right" style="color: #e83b62;     margin: 0px;">
+                                                        <h3 style="font-weight: bolder; color: #e83b62; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
+                                                    </div>
+                                                </b:row>
+                                            </div>
+                                        </b:row>
+                                    </ui:repeat>
+
                                 </p:tab>
                                 <p:tab  title="Finalizar">
                                     <div class="row">

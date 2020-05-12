@@ -15,7 +15,9 @@ body {
 .ui-widget{
     font-family: 'Roboto', sans-serif !important;
 }
-
+html {
+    scroll-behavior: smooth;
+}
 
 body{
     margin: 0;
@@ -689,4 +691,35 @@ abel-float{
     text-shadow: none !important;
     box-shadow: none !important; 
     font-weight: 300 !important;
+}
+
+.ui-wizard-nav-next,.ui-wizard-nav-back {
+    float: right;
+    height: 45px;
+}
+.ui-wizard-step-title{
+    text-shadow: none !important;
+    font-weight: 200 !important;
+    border: none !important;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger{
+    width: 30px !important;
+    background: white !important;
+}
+.ui-selectonemenu label.ui-selectonemenu-label {
+    box-shadow: none !important;;
+    border: none !important;
+    text-shadow: none !important;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+    position: absolute !important;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
+    position: absolute !important;
+}
+.ui-wizard-content {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
 }

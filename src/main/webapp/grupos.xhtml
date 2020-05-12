@@ -20,8 +20,8 @@
                     <p:blockUI block="pnl" widgetVar="ldg"  >
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
                     </p:blockUI>
-                    <div class="container-fluid testimonial-group">
-                        <div class="row"  style="    margin-top: 5px;">
+                    <div  class="container-fluid testimonial-group">
+                        <div id="contant" class="row rowfull"  style="    margin-top: 5px;" onscroll="scrolled(this)"  >
                             <ui:repeat value="#{orderMB.categories}" var="cate">
                                 <div class="col-xs-4 " >
                                     <p:commandLink action="#{actionMB.setAcao('itens')}" actionListener="#{orderMB.selectGroup(cate,cate.id)}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); " style="display: flow-root; text-align: center"  >
@@ -37,8 +37,17 @@
                                     </p:commandLink> 
                                 </div>
                             </ui:repeat>
+
                         </div>
                     </div>
+                    <button id="slideLeft" type="button"   style="    position: absolute;top: 20px;z-index: 3000;border-radius: 50%;     height: 40px;width: 40px;border: transparent;color: white;background: #e83b62; display: none;"
+                            onclick="changeback()">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                    <button id="slideRight" type="button" onclick="changeNext()"  style="    position: absolute;top: 20px;z-index: 3000;border-radius: 50%;right: 0;    height: 40px;width: 40px;border: transparent;color: white;background: #e83b62;">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+
                     <div class="row" style="margin-left: -15px;margin-right: -22px;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 contain" style="border-top: 1px solid #ccc; padding-top: 10px;padding-bottom: 10px; ">
                             <h:panelGroup layout="block" rendered="#{orderMB.productsPromo.size() == 0}" >
@@ -93,6 +102,45 @@
                 </p:panel>
 
             </h:form>
+            <script>
+                $(window).on('load', function () {
+
+                    var buttonRight = document.getElementById('slideRight');
+                    var buttonLeft = document.getElementById('slideLeft');
+                    buttonLeft.style.display = 'none';
+
+
+                });
+
+                function changeNext() {
+                    document.getElementById('contant').scrollLeft += 75;
+                }
+                ;
+
+                function changeback() {
+                    document.getElementById('contant').scrollLeft -= 75;
+                }
+                ;
+                function scrolled(o)
+                {
+                    var buttonRight = document.getElementById('slideRight');
+                    var buttonLeft = document.getElementById('slideLeft');
+                    //visible height + pixel scrolled = total height
+
+                    if (o.scrollLeft === 0) {
+                        buttonLeft.style.display = 'none';
+                    } else {
+                        buttonLeft.style.display = '';
+                    }
+
+                    if (o.offsetWidth + o.scrollLeft == o.scrollWidth)
+                    {
+                        buttonRight.style.display = 'none';
+                    } else {
+                        buttonRight.style.display = '';
+                    }
+                }
+            </script>
         </h:panelGroup>
     </h:panelGroup>
 

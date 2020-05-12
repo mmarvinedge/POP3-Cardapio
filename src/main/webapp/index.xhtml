@@ -120,7 +120,7 @@
                                                          border-color: #9d1534;
                                                          height: 45px !important;
                                                          box-shadow: none;
-                                                         margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide()" update="pnlend" />
+                                                         margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); $('.select2style').select2();" update="pnlend" />
                                     </div>
                                 </div>
                             </footer>
@@ -208,7 +208,6 @@
 
                         if (global.location.hash !== _hash) {
                             global.location.hash = _hash;
-                            console.log($('.modal.in, .modal.show').length);
                             if ($('.modal.in, .modal.show').length > 0) {
                                 closeModal('mdlPedir');
                             } else {
@@ -256,6 +255,8 @@
                     setTimeout(ldinsp, 0);
                 })();
 <!-- End Inspectlet Asynchronous Code -->
+
+
 
 
                 //]]>
