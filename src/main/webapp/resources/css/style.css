@@ -15,9 +15,7 @@ body {
 .ui-widget{
     font-family: 'Roboto', sans-serif !important;
 }
-*{
-    overflow-x: hidden;
-}
+
 
 body{
     margin: 0;
@@ -34,7 +32,6 @@ body{
 .nav .logo {
     text-align: left;
     width: calc(90% - 20px);
-    padding-top: 5px;
     padding-left: 5px;
 }
 .nav .logo img {
@@ -69,6 +66,7 @@ body{
     width: 100%;
     margin-bottom: 50px;
     padding-bottom: 25px;
+    overflow-x: hidden !important;
 }
 
 .badge-custom{
@@ -628,6 +626,7 @@ abel-float{
 .lbl-adicionais{
     margin-top: 5px;padding: 8px;width: auto !important;background: rgb(232,59,98);color: white;display: inline-block;border-radius: 5px;margin-bottom: 0px;width: 100% !important;
     text-align: center;
+    margin-bottom: 5px;
 }
 .adicionais{
     margin-left: 5px !important;

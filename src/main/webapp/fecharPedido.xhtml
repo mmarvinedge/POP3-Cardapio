@@ -15,7 +15,7 @@
                 <h:form id="frmFechar">
                     <div class="row" style="padding-top: 5px; padding-bottom: 5px;     margin-left: 0px; margin-right: 0px; border-bottom: 1px solid #ccc;">
                         <div class="col-xs-12 " style="    padding-left: 5px;">
-                            <p:commandLink action="#{actionMB.setAcao('grupo')}" immediate="true"   style="color: #e83b62;">
+                            <p:commandLink action="#{actionMB.setAcao('grupo')}"  onclick="PF('ldg').show()" oncomplete="PF('ldg').hide()" immediate="true"   style="color: #e83b62;">
                                 <i class="fa fa-arrow-left fa-2x"></i> 
                                 <span style="top: 4px;position: absolute;left: 35px;">Preencha os dados a baixo</span>
                             </p:commandLink>
@@ -53,9 +53,6 @@
                                     <div class="row" style="margin-top: 10px;">
                                         <h:panelGroup id="endereco">
                                             <h:panelGroup rendered="#{orderMB.order.delivery}">
-
-
-                                            
                                                 <div class="col-xs-8"  >
                                                     <b:inputText label="Endereço" placeholder="Rua Central" value="#{orderMB.order.address.street}"   required="true" requiredMessage="Obrigatorio!">
                                                         <p:ajax event="blur" update="@this" />

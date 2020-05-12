@@ -9,32 +9,27 @@
     <b:modal id="mdlPedir"  title="" styleClass="modalPseudoClass custom-modal fade-scale" size="modal-lg" headerClass="head-hidden" >
         <h:form id="frmModal" >
 
-            <div class="hea">
-                <h3 class="" style="    margin-top: 5px;margin-bottom: 5px; font-size: 18px; top: 0;position: absolute; color: white;font-weight: bolder;left: 10px; width: 88%;" >#{orderMB.product.name}</h3>
-                <button type="button" class="close" data-dismiss="modal" style="     background: rgba(255,255,255,0.4);
-                        border-radius: 50%;
-                        color: #ffffff;
-                        right: 10px;
-                        position: absolute;
-                        height: 36px;
-                        width: 36px;
-                        opacity: .7;
-                        font-size: 37px;
-                        top: 5px;">&times;</button>
-            </div>
+            <div class="hea" style="background: #31353d;padding: 15px; border-bottom-left-radius: 30px;border-bottom-right-radius: 30px; padding-top: 10px;">
+                
+                <div class="row">
+                    <div class="col-xs-2">
+                        <a type="button"  data-dismiss="modal" > <i class="fa fa-arrow-left fa-2x" style="color: white;"></i> </a>
+                    </div>
+                    <div class="col-xs-10" style="    padding-left: 5px;padding-right: 0;" >
+                        <h4 class="" style="color: white;margin: 0; text-transform: uppercase;     margin-top: 4px;" >#{orderMB.product.name}</h4>
+                    </div>
+                </div>
+                <div class="image" style="margin-top: 10px;">
+                    <center>
+                        <img  role="presentation" src="#{orderMB.product.imageBase64}"  style="width: 104px; height: 104px; border-radius: 50%; margin-bottom: 10px;"/><br/>
+                        <small style="color: white; text-justify: auto; margin-top: 5px; text-transform: lowercase; font-weight: 300;">
+                            #{orderMB.product.description}
+                        </small>
+                    </center>    
 
-            <div class="modal-header" style="    background-image: url('#{facesContext.externalContext.request.contextPath}/resources/img/back.jpg');        
-
-                 #{orderMB.product.description == null ? 'height: 75px; min-height: 75px;max-height: 150px;' : 'height: 150px; min-height: 150px;max-height: 150px;'}
-                 background-size: 100%; background-repeat: none;  padding: 16px 32px;">
-
-
-                <div class="" style="#{orderMB.product.description == null ? '' : 'position: absolute;top: 45px;width: 95%;background: rgba(255,255,255,0.7);padding: 10px;border-radius: 15px;left: 10px;height: 100px;padding-top: 5px;margin-top: 0px;line-height: normal;padding-bottom: 0px;'}">
-                    <small >#{orderMB.product.description}</small>
                 </div>
 
             </div>
-
 
 
 
@@ -72,7 +67,7 @@
                             <div class="col-xs-12">
                                 <ui:repeat id="rpt" value="#{orderMB.item.attributes}" var="at" varStatus="varie" >
                                     <h:panelGroup rendered="#{at.disabled == false}">
-                                        <div class="lbl-adicionais">Selecione até #{at.quantity} #{at.description}</div> 
+                                        <div class="lbl-adicionais" >Selecione até #{at.quantity} #{at.description}</div> 
                                         <div class="adicionais">
                                             <ui:repeat id="ra" value="#{at.values}" var="it" varStatus="vaia"  >
                                                 <h:panelGroup  rendered="#{it.disabled == false}">
@@ -108,25 +103,22 @@
 
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
-                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this"  placeholder="Recado Ex: Sem Cebola, mal passado"/>
+                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this"  placeholder="Recado Ex: Sem Cebola, mal passado" style="margin-bottom: 0px;"/>
                         </div>
                     </div>
                     <p:remoteCommand name="complete" action="#{orderMB.change()}" />
                     <div class="row">
-                        <div class="col-md-3 text-left" style="padding-left: 25px;padding-right: 25px;">
-                            <strong>Quantidade</strong>
+                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 text-left" style="padding-left: 25px;padding-right: 25px;">
                             <b:touchSpin id="spin1"   min="1" max="50" step="1" value="#{orderMB.item.quantity}" style="text-align: center;     " 
                                          style-class="ipt-touch"   onchange="PF('ldga').show(); complete(); PF('ldga').hide();"    >
                             </b:touchSpin>
                         </div>
 
-                        <div class="col-md-5">
+              
 
-                        </div>
-
-                        <div class="col-md-4" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
                             <p:messages id="msgs" closable="true" />
-                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" oncomplete="if (!args.validationFailed)  {}"  style="padding: 15px;     margin-top: 32px;"
+                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" oncomplete="if (!args.validationFailed)  {}"  style="padding: 15px;     margin-top: 15px;"
                                            update=":grpNumbers,:frmMySide, pnlend,frmModal:msgs" disabled="#{orderMB.fechado}">
                                 <div class="row">
                                     <div class="col-xs-5 text-left bold">
@@ -138,7 +130,7 @@
 
                                     </div>
                                     <div class="col-xs-7 text-right">
-                                        <strong>Adicionar Item</strong>
+                                        <i class="fa fa-plus"></i> <strong>Adicionar Item</strong>
                                     </div>
                                 </div>
                             </p:commandLink>

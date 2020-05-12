@@ -502,11 +502,8 @@ public class OrderMB implements Serializable {
             }
         }
         item.setTotalAds(totalAds);
-        System.out.println("ADS: " + item.getTotalAds());
-        System.out.println("QNT: " + item.getQuantity());
         BigDecimal total = (item.getPrice().add(item.getTotalAds())).multiply(item.getQuantity());
         item.setTotal(total);
-        System.out.println("ITEM TOTAL: " + item.getTotal());
         PrimeFaces.current().ajax().update("frmModal:grp");
     }
 

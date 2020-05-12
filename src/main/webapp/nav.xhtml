@@ -5,8 +5,12 @@
       xmlns:p="http://primefaces.org/ui">
     <div class="nav" id="myHeader">
         <div class="logo">
-            <img src="#{orderMB.company.logo}" style="    border-radius: 50%;"/>
-            <span style="color: white;font-weight: bolder;font-size: 15px;">#{orderMB.company.name}</span><br/>
+            <img src="#{orderMB.company.logo}" style="    border-radius: 50%; margin-top: 5px;"/>
+            <div style="display: inline-grid;">
+                <span style="color: white;font-weight: bolder;font-size: 15px;">#{orderMB.company.name}</span>
+                <small style="color: white;">#{orderMB.company.phone}</small>
+            </div>
+
         </div>
         <div class="cart">
             <p:commandLink  onclick="openNav()">
