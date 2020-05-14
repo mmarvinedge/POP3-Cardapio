@@ -76,7 +76,7 @@ public class OrderMB implements Serializable {
         System.out.println("INIT");
 
         String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
-        System.out.println("NAME: "+name);
+        System.out.println("NAME: " + name);
         if (name != null) {
             try {
                 Company cop = categoriaService.loadCompanyName(name);
@@ -181,7 +181,7 @@ public class OrderMB implements Serializable {
                 horaAbertura = Integer.parseInt(company.getTime().getOpenSex().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseSex().replace(":", "").trim());
                 horario = company.getTime().getOpenSex() + " às " + company.getTime().getCloseSex();
-            } else if (dia.equals("Sab") || dia.equals("Sat") || dia.equals("Sáb") ) {
+            } else if (dia.equals("Sab") || dia.equals("Sat") || dia.equals("Sáb")) {
                 if (!company.getTime().getSab()) {
                     fechado = true;
                     return;
@@ -216,6 +216,9 @@ public class OrderMB implements Serializable {
     }
 
     public Boolean productoIsNotVendidoDia(Product p) {
+        if (!p.getEnabled()) {
+            return true;
+        }
         if (p.getProductDay() == null) {
             return false;
         }

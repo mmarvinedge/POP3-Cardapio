@@ -76,7 +76,7 @@
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <p:outputLabel for="bair" value="Bairro" />
-                                                    <p:selectOneMenu id="bair"  label="Bairro" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Obrigatorio!" filterMatchMode="contains" filter="true" style="width: 100% !important;     border-bottom: 1px solid #ccc !important;border-left: 1px solid #ccc;">
+                                                    <p:selectOneMenu id="bair"  label="Bairro" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     border-bottom: 1px solid #ccc !important;border-left: 1px solid #ccc;">
                                                         <f:selectItem itemLabel="..." itemValue="" />
                                                         <f:selectItems value="#{orderMB.bairros}" var="b"
                                                                        itemLabel="#{b.bairro}" itemValue="#{b.bairro}" />
@@ -220,7 +220,29 @@
 
             </p:panel>
 
+            <script>
+                function contains(itemLabel, filterValue) {
 
+                    return itemLabel.includes(filterValue) || specialCharacters(itemLabel).includes(filterValue);
+
+                }
+
+                function specialCharacters(input) {
+
+                    var c = input.toLowerCase();
+                    c = c.replace(new RegExp("\\s", 'g'), "");
+                    c = c.replace(new RegExp("[àáâãäå]", 'g'), "a");
+                    c = c.replace(new RegExp("æ", 'g'), "ae");
+                    c = c.replace(new RegExp("ç", 'g'), "c");
+                    c = c.replace(new RegExp("[èéêë]", 'g'), "e");
+                    c = c.replace(new RegExp("[ìíîï]", 'g'), "i");
+                    c = c.replace(new RegExp("[òóôõö]", 'g'), "o");
+                    c = c.replace(new RegExp("œ", 'g'), "oe");
+                    c = c.replace(new RegExp("[ùúûü]", 'g'), "u");
+                    c = c.replace(new RegExp("[ýÿ]", 'g'), "y");
+                    return c;
+                }
+            </script>
 
         </h:panelGroup>
     </h:panelGroup>

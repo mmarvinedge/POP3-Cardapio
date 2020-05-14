@@ -21,7 +21,7 @@ public class Product implements Serializable {
     private String sku;
     private String name;
     private String order;
-    private Boolean enable;
+    private Boolean enabled;
     private String description;
     private Boolean availability;
     private String imageType;
@@ -82,12 +82,15 @@ public class Product implements Serializable {
         this.companyId = companyId;
     }
 
-    public Boolean getEnable() {
-        return enable;
+    public Boolean getEnabled() {
+        if (enabled == null) {
+            return true;
+        }
+        return enabled;
     }
 
-    public void setEnable(Boolean enable) {
-        this.enable = enable;
+    public void setEnable(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getOrder() {
@@ -237,7 +240,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "Product{" + " sku=" + sku + ", name=" + name + ", order=" + order + ", enable=" + enable + ", description=" + description + ", availability=" + availability + ", imageType=" + imageType + ", imageBase64=" + imageBase64 + ", price=" + price + ", companyId=" + companyId + ", attributes=" + attributes + '}';
+        return "Product{" + " sku=" + sku + ", name=" + name + ", order=" + order + ", enable=" + enabled + ", description=" + description + ", availability=" + availability + ", imageType=" + imageType + ", imageBase64=" + imageBase64 + ", price=" + price + ", companyId=" + companyId + ", attributes=" + attributes + '}';
     }
 
 }

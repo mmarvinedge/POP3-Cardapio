@@ -27,6 +27,7 @@ public class Company {
     private String messageWelcome;
     private List<Bairro> bairros;
     private String nameUrl;
+    private String aproxTime;
 
     public String getId() {
         return id;
@@ -145,6 +146,14 @@ public class Company {
 
     public void setNameUrl(String nameUrl) {
         this.nameUrl = nameUrl;
+    }
+
+    public String getAproxTime() {
+        return aproxTime;
+    }
+
+    public void setAproxTime(String aproxTime) {
+        this.aproxTime = aproxTime;
     }
 
 }
