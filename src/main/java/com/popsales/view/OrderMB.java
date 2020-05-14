@@ -14,6 +14,7 @@ import com.popsales.model.Item;
 import com.popsales.model.Merchant;
 import com.popsales.model.Order;
 import com.popsales.model.Product;
+import com.popsales.model.dto.EnderecoDTO;
 import com.popsales.services.CategoryServices;
 import com.popsales.util.OUtils;
 import java.io.IOException;
@@ -30,12 +31,13 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.PrimeFaces;
+import org.primefaces.event.FlowEvent;
+import static org.primefaces.shaded.commons.io.IOUtils.skip;
 
 /**
  *
@@ -56,6 +58,9 @@ public class OrderMB implements Serializable {
     private List<Bairro> bairros = new ArrayList();
     private List<Bairro> bairrosParams = new ArrayList();
 
+    private List<EnderecoDTO> enderecos = new ArrayList();
+    private EnderecoDTO enderecoFiltro;
+
     CategoryServices categoriaService = new CategoryServices();
 
     private String idCompany = null;
@@ -73,6 +78,7 @@ public class OrderMB implements Serializable {
 
     public OrderMB() {
         receber = true;
+        enderecoFiltro = new EnderecoDTO();
         System.out.println("INIT");
 
         String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
@@ -717,6 +723,63 @@ public class OrderMB implements Serializable {
                 }
             }
         }
+    }
+
+    public List<EnderecoDTO> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<EnderecoDTO> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public EnderecoDTO getEnderecoFiltro() {
+        return enderecoFiltro;
+    }
+
+    public void setEnderecoFiltro(EnderecoDTO enderecoFiltro) {
+        this.enderecoFiltro = enderecoFiltro;
+    }
+
+    public List<EnderecoDTO> pesquisarEndereco(String end) {
+        PrimeFaces.current().executeScript("PF('ldg').show()");
+        try {
+            System.out.println("END: " + end);
+            enderecos = categoriaService.buscarEndereco(end, company.getAddress().getState(), company.getAddress().getCity());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        PrimeFaces.current().executeScript("PF('ldg').hide()");
+        return enderecos;
+    }
+
+    public void selectEndereco() {
+        System.out.println("enderecoFiltro: " + enderecoFiltro.toString());
+        order.getAddress().setStreet(enderecoFiltro.getTipo_logradouro() + " " + enderecoFiltro.getLogradouro());
+        order.getAddress().setAuto(enderecoFiltro.getBairro());
+        //PrimeFaces.current().executeScript("document.getElementById('input_frmFechar:numeroEnd').focus();");
+        enderecoFiltro.getBairro();
+    }
+
+    public String onFlowProcess(FlowEvent event) {
+        if (event.getNewStep().equals("entrega") || event.getOldStep().equals("entrega")) {
+            adicionarRemoverTaxa();
+        }
+        return event.getNewStep();
+    }
+
+    public void setarParaRetirada() {
+        adicionarRemoverTaxa();
+        order.setDelivery(false);
+
+    }
+
+    public String iconHome() {
+        return "<i class='fa fa-home' style='color: #e83b62'></i>";
+    }
+
+    public String iconStore() {
+        return "<i class='fa fa-store' style='color: #e83b62'></i>";
     }
 
 }

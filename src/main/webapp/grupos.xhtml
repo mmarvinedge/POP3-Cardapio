@@ -27,7 +27,7 @@
                                     <p:commandLink action="#{actionMB.setAcao('itens')}" actionListener="#{orderMB.selectGroup(cate,cate.id)}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); " style="display: flow-root; text-align: center"  >
                                         <div  style="display: inline-block;text-align: center;transition: color 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);">
                                             <div style="    margin: 0;border-radius: 50%;width: 60px;height: 60px;overflow: hidden;position: relative;z-index: 1; ">
-                                                <img style="position: absolute;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);top: 50%;left: 50%;z-index: 0;height: 100%;-o-object-fit: cover;object-fit: cover; "
+                                                <img style="position: absolute;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);top: 50%;left: 50%;z-index: 0;height: 100%;-o-object-fit: cover;object-fit: cover; max-width: 72px; max-height: 72px;"
                                                      src="#{cate.img == null ? 'https://www.qgjeitinhocaseiro.com/wp-content/uploads/2019/10/como-fazer-sandu%C3%ADche-artigo-crop.jpg' : cate.img}"  />
                                             </div>
                                             <span style="    text-align: center;margin-top: 10px;display: block;font-size: 14px;font-weight: 300;line-height: 2rem;color: #717171; text-transform: uppercase;">
@@ -108,14 +108,17 @@
 
             </h:form>
             <script>
-                $(window).on('load', function () {
-
+                $(document).ready(function () {
+                    console.log('alooooooooooo');
                     var buttonRight = document.getElementById('slideRight');
                     var buttonLeft = document.getElementById('slideLeft');
                     buttonLeft.style.display = 'none';
-
-
+                    if (!check('contant')) {
+                        buttonRight.style.display = 'none';
+                    }
                 });
+
+
 
                 function changeNext() {
                     $('#contant').animate({scrollLeft: '+=75'}, 300);
@@ -150,6 +153,41 @@
                         $("#slideRight").show(1000);
                         // buttonRight.style.display = '';
                     }
+                }
+
+                function isScrollable(el) {
+
+                    /*The scrollTop() method sets or returns the  
+                     vertical scrollbar position for the selected elements*/
+                    var y1 = el.scrollTop;
+                    el.scrollTop += 1;
+                    var y2 = el.scrollTop;
+                    el.scrollTop -= 1;
+                    var y3 = el.scrollTop;
+                    el.scrollTop = y1;
+
+                    /*The scrollLeft() method returns the horizontal  
+                     scrollbar position for the selected elements.*/
+                    var x1 = el.scrollLeft;
+                    el.scrollLeft += 1;
+                    var x2 = el.scrollLeft;
+                    el.scrollLeft -= 1;
+                    var x3 = el.scrollLeft;
+                    el.scrollLeft = x1;
+
+                    //returns true or false accordingly 
+                    return {
+                        horizontallyScrollable: x1 !== x2 || x2 !== x3,
+                        verticallyScrollable: y1 !== y2 || y2 !== y3
+                    }
+                }
+
+                function check(id) {
+                    /*the data is JSON type, convert it to string and then 
+                     check the element with given id for scrollbar*/
+                    var jsonObj = JSON.stringify(isScrollable(document.getElementById(id)));
+                    var jsonObj2 = JSON.parse(jsonObj);
+                    return jsonObj2['horizontallyScrollable'];
                 }
             </script>
         </h:panelGroup>

@@ -21,7 +21,7 @@
                 </div>
                 <div class="image" style="margin-top: 10px;">
                     <center>
-                        <img  role="presentation" src="#{orderMB.product.imageBase64}"  style="width: 104px; height: 104px; border-radius: 50%; margin-bottom: 10px;"/><br/>
+                        <img  role="presentation" src="#{orderMB.product.imageBase64}"  style="max-width:  98px; max-height: 98px; border-radius: 50%; margin-bottom: 10px;"/><br/>
                         <small style="color: white; text-justify: auto; margin-top: 5px; text-transform: lowercase; font-weight: 300;">
                             #{orderMB.product.description}
                         </small>
@@ -118,7 +118,7 @@
 
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
                             <p:messages id="msgs" closable="true" />
-                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" oncomplete="if (!args.validationFailed)  {}"  style="padding: 15px;     margin-top: 15px;"
+                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();"  style="padding: 15px;     margin-top: 15px;"
                                            update=":grpNumbers,:frmMySide, pnlend,frmModal:msgs" disabled="#{orderMB.fechado}">
                                 <div class="row">
                                     <div class="col-xs-5 text-left bold">

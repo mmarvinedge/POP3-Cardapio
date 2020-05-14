@@ -13,6 +13,7 @@ import com.popsales.model.Category;
 import com.popsales.model.Company;
 import com.popsales.model.Order;
 import com.popsales.model.Product;
+import com.popsales.model.dto.EnderecoDTO;
 import com.popsales.util.Constantes;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class CategoryServices {
 
         return comp;
     }
+
     public Company loadCompanyName(String name) throws IOException, Exception {
         if (name == null) {
             throw new Exception("NAO CHEGOU ID DA COMPANIA");
@@ -133,6 +135,33 @@ public class CategoryServices {
         String json = response.body().string();
 
         saida = new Gson().fromJson(json, new TypeToken<List<Product>>() {
+        }.getType());
+
+        return saida;
+    }
+
+    public List<EnderecoDTO> buscarEndereco(String endereco, String uf, String cidade) throws IOException {
+        List<EnderecoDTO> saida = new ArrayList();
+        endereco = endereco.toUpperCase().replace(" ", "%20").replace("RUA", "").replace("AV.", "").replace("AVENIDA", "").replace("TRAVESSA", "");
+
+
+        Request request = new Request.Builder()
+                .url("http://metre.ddns.net:88/endereco.php?cep=" + endereco + "&uf=" + uf + "&cidade=" + cidade)
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (response.code() == 202) {
+            throw new IOException("Nenhum dado retornado!");
+        } else {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+        }
+
+        // Get response body
+        String json = response.body().string();
+
+        saida = new Gson().fromJson(json, new TypeToken<List<EnderecoDTO>>() {
         }.getType());
 
         return saida;

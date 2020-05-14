@@ -27,7 +27,7 @@
                             <ui:repeat value="#{orderMB.order.products}" var="prod">
                                 <b:row style="    margin-left: 0;margin-right: 0;" class="item">
                                     <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
-                                        <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}" class="img-reponsive" width="70"/>
+                                        <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}" class="img-reponsive" style="max-width: 72px; max-height: 72px;"/>
                                     </div>
                                     <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
                                         <span class="title-item">#{prod.product.name} </span><br/>

@@ -38,7 +38,7 @@
     <h:body>
         <f:view locale="pt-BR">
 
-            <h:panelGroup id="page">
+            <h:panelGroup id="page" >
                 <h:panelGroup id="welcome" rendered="#{orderMB.home}" layout="block" style="background: #31353d;    height: 100%;width: 100%; position: fixed;">
                     <p:blockUI block="welcome" widgetVar="la"  animate="true"  >
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
@@ -143,9 +143,7 @@
             <h:outputScript name="js/all.min.js"   />
             <h:outputScript name="js/functions.js"   />
             <h:outputScript name="js/jquery.mask.js"   />
-            <h:outputScript name="js/load.js"   />
             <h:outputScript name="js/sweetalert2.all.min.js"   />
-            <h:outputStylesheet name="js/hide-address-bar.js" />
 
 
 
@@ -153,90 +151,92 @@
 
 
             <script>
-                function callBack() {
-                    PF('loading').show();
-                    backGrupos();
-                    PF('loading').hide();
-                }
 
-                //<![CDATA[
-                function finalizarPedido() {
-                    backGrupos();
-                    window.location.replace("https://api.whatsapp.com/send?phone=55#{orderMB.company.phoneUnformat}&text=Pedido foi enviado!");
-                }
-                //]]>
-                function alerta(msg) {
-                    Swal.fire({
+
+
+                        function callBack() {
+                        PF('loading').show();
+                        backGrupos();
+                        PF('loading').hide();
+                        }
+
+                        //<![CDATA[
+                        function finalizarPedido() {
+                        backGrupos();
+                        window.location.replace("https://api.whatsapp.c
+                        om / send?phone = 55#{orderMB.company.phoneUnformat} & text = Pedido foi enviado!");
+                                }                             //]]>
+                        function alerta(msg) {
+                        Swal.fire({
                         title: 'Atenção',
-                        text: msg,
-                        icon: 'warning',
+                        text: msg, icon: 'warning',
                         showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'OK!'
-                    });
-                }
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK!'
+                        });
+                                }
 
 
-                //Get the button:
-                mybutton = document.getElementById("myBtn");
-                $('img').attr('loading', 'lazy');
-                // When the user scrolls down 20px from the top of the document, show the button
+                        //Get the button:
+                        mybutton = document.getElementById("myBtn");
+                        $('img').attr('loading', 'lazy');
+                        // When the user s crolls down 20px from the top of t he document, show the button
 
 
-                // When the user clicks on the button, scroll to the top of the document
-                function topFunction() {
-                    document.body.scrollTop = 0; // For Safari
-                    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-                }
+                        // When the user c licks on the button, scroll to the top of the document
+                        function topFunction() {
+                        document.body.scrollTop = 0; // For Safari
+                        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+                        }
 
-                //<![CDATA[
-                (function (global) {
+                        //<![CDATA[
+                        (function (global) {
 
-                    if (typeof (global) === "undefined") {
+                        if (typeof (global) === "undefined") {
                         throw new Error("window is undefined");
-                    }
+                        }
 
-                    var _hash = "!";
-                    var noBackPlease = function () {
+                        var _hash = "!";
+                        var noBackPlease = function () {
                         global.location.href += "#";
                         // making sure we have the fruit available for juice (^__^)
                         global.setTimeout(function () {
-                            global.location.href += "!";
+                        global.location.href += "!";
                         }, 50);
-                    };
-                    global.onhashchange = function () {
+                        };
+                        global.onhashchange = function () {
 
                         if (global.location.hash !== _hash) {
-                            global.location.hash = _hash;
-                            if ($('.modal.in, .modal.show').length > 0) {
-                                closeModal('mdlPedir');
-                            } else {
-                                // backGrupos();
-                            }
+                        global.location.hash = _hash;
+                        if ($('.modal.in, .modal.show').length > 0) {
+                        closeModal('mdlPedir');
+                        } else {
+                        // backGrupos();
+                        }
 
 
                         }
-                    };
-                    global.onload = function () {
+                        };
+                        global.onload = function () {
                         noBackPlease();
                         // disables backspace on page except on input fields and textarea..
                         document.body.onkeydown = function (e) {
-                            var elm = e.target.nodeName.toLowerCase();
-                            if (e.which === 8 && (elm !== 'input' && elm !== 'textarea')) {
-                                e.preventDefault();
-                            }
-                            // stopping event bubbling up the DOM tree..
-                            e.stopPropagation();
+                        var elm = e.target.nodeName.toLowerCase();
+                        if (e.which === 8 && (elm !== 'input' && elm !== 'textarea')) {
+                        e.preventDefault();
+                        }
+                        // stopping event bubbling up the DOM tree..
+                        e.stopPropagation();
                         };
-                    }
+                        }
 
-                })(window);
-                window.addEventListener("load", function () {
-                    setTimeout(function () {
+                        })(window);
+                        window.addEventListener("load", function () {
+                        setTimeout(function () {
                         // This hides the address bar:
                         window.scrollTo(0, 1);
-                    }, 0);
-                });<!-- Begin Inspectlet Asynchronous Code -->
+                        }, 0);
+                        });<!-- Begin Inspectlet Asynchronous Code -->
                 (function () {
                     window.__insp = window.__insp || [];
                     __insp.push(['wid', 1278828457]);
@@ -258,9 +258,10 @@
 
 
 
-
                 //]]>
             </script>
+
+
         </f:view>
     </h:body>
 </html>
