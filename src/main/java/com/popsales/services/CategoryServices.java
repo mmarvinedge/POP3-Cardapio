@@ -222,7 +222,6 @@ public class CategoryServices {
 
         // Get response body
         String json = response.body().string();
-        System.out.println("JSON: " + json);
         List<Bairro> bairs = new Gson().fromJson(json, new TypeToken<List<Bairro>>() {
         }.getType());
         for (Bairro bair : bairs) {

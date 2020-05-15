@@ -79,10 +79,8 @@ public class OrderMB implements Serializable {
     public OrderMB() {
         receber = true;
         enderecoFiltro = new EnderecoDTO();
-        System.out.println("INIT");
 
         String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
-        System.out.println("NAME: " + name);
         if (name != null) {
             try {
                 Company cop = categoriaService.loadCompanyName(name);
@@ -96,7 +94,6 @@ public class OrderMB implements Serializable {
         } else {
             idCompany = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
         }
-        System.out.println("idCompany: " + idCompany);
         if (idCompany == null) {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String url = request.getRequestURL().toString().replace("index.jsf", "") + "notfound/";
@@ -127,9 +124,7 @@ public class OrderMB implements Serializable {
         try {
             String dia = new SimpleDateFormat("EE").format(new Date());
 
-            System.out.println("DIA: " + dia);
             String horaAgora = new SimpleDateFormat("HH:mm").format(new Date());
-            System.out.println("HORA: " + horaAgora);
 
             Integer horaAbertura = 0;
             Integer horaFechamento = 0;
@@ -144,12 +139,20 @@ public class OrderMB implements Serializable {
                     fechado = true;
                     return;
                 }
+                if (company.getTime().getOpenDom() == null && company.getTime().getCloseDom() == null) {
+                    fechado = false;
+                    return;
+                }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenDom().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseDom().replace(":", "").trim());
                 horario = company.getTime().getOpenDom() + " às " + company.getTime().getCloseDom();
             } else if (dia.equals("Seg") || dia.equals("Mon")) {
                 if (!company.getTime().getSeg()) {
                     fechado = true;
+                    return;
+                }
+                if (company.getTime().getOpenSeg() == null && company.getTime().getCloseSeg() == null) {
+                    fechado = false;
                     return;
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenSeg().replace(":", "").trim());
@@ -160,12 +163,20 @@ public class OrderMB implements Serializable {
                     fechado = true;
                     return;
                 }
+                if (company.getTime().getOpenTer() == null && company.getTime().getCloseTer() == null) {
+                    fechado = false;
+                    return;
+                }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenTer().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseTer().replace(":", "").trim());
                 horario = company.getTime().getOpenTer() + " às " + company.getTime().getCloseTer();
             } else if (dia.equals("Qua") || dia.equals("Wed")) {
                 if (!company.getTime().getQua()) {
                     fechado = true;
+                    return;
+                }
+                if (company.getTime().getOpenQua() == null && company.getTime().getCloseQua() == null) {
+                    fechado = false;
                     return;
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenQua().replace(":", "").trim());
@@ -176,12 +187,20 @@ public class OrderMB implements Serializable {
                     fechado = true;
                     return;
                 }
+                if (company.getTime().getOpenQui() == null && company.getTime().getCloseQui() == null) {
+                    fechado = false;
+                    return;
+                }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenQui().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseQui().replace(":", "").trim());
                 horario = company.getTime().getOpenQui() + " às " + company.getTime().getCloseQui();
             } else if (dia.equals("Sex") || dia.equals("Fri")) {
                 if (!company.getTime().getSex()) {
                     fechado = true;
+                    return;
+                }
+                if (company.getTime().getOpenSex() == null && company.getTime().getCloseSex() == null) {
+                    fechado = false;
                     return;
                 }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenSex().replace(":", "").trim());
@@ -192,17 +211,18 @@ public class OrderMB implements Serializable {
                     fechado = true;
                     return;
                 }
+                if (company.getTime().getOpenSab() == null && company.getTime().getCloseSab() == null) {
+                    fechado = false;
+                    return;
+                }
                 horaAbertura = Integer.parseInt(company.getTime().getOpenSab().replace(":", "").trim());
                 horaFechamento = Integer.parseInt(company.getTime().getCloseSab().replace(":", "").trim());
                 horario = company.getTime().getOpenSab() + " às " + company.getTime().getCloseSab();
             }
             this.dia = dia;
 
-            System.out.println("");
-
             Integer horaA = Integer.parseInt(horaAgora.replace(":", "").trim());
 
-            System.out.println("1 " + (horaA >= horaAbertura && horaFechamento < horaAbertura));
             if (horaA >= horaAbertura && horaFechamento < horaAbertura) {
                 fechado = false;
                 return;
@@ -300,7 +320,6 @@ public class OrderMB implements Serializable {
             }
             categorySelected = category;
             products = categoriaService.getProducts(idCompany, id);
-            System.out.println("PRODUCTS");
         } catch (IOException ex) {
             PrimeFaces.current().executeScript("connectionErrorMsg('" + ex.getMessage() + "')");
             Logger.getLogger(OrderMB.class.getName()).log(Level.SEVERE, null, ex);
@@ -339,7 +358,6 @@ public class OrderMB implements Serializable {
             }
 
             item.setAttributes(atrs);
-            System.out.println("TOTAL ADS: " + totalAdicionais);
             item.setTotalAds(totalAdicionais);
             //item.setPrice(item.getProduct().getPrice());
             //item.setTotal(item.getPrice().multiply(item.getQuantity()).add(item.getTotalAds()));
@@ -366,7 +384,6 @@ public class OrderMB implements Serializable {
     public void removeCart(Item i) {
         order.getProducts().remove(i);
         order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
-        System.out.println("SIZE: " + order.getProducts().size());
         calcularTotal();
         PrimeFaces.current().ajax().update("outPutTotal");
         PrimeFaces.current().ajax().update("grpNumbers");
@@ -387,9 +404,7 @@ public class OrderMB implements Serializable {
 
     public void registarPedido() {
         try {
-            System.out.println("SIZ11111111111E: " + order.getProducts().size());
             if (order.getProducts().size() == 0 || order.getProducts().isEmpty()) {
-                System.out.println("alerta");
                 return;
             }
             order.setNum_order(genCodigo());
@@ -503,7 +518,6 @@ public class OrderMB implements Serializable {
                 if (at.getValues() != null && at.getValues().size() > 0) {
                     for (AttributeValue av : at.getValues()) {
                         if (av.getTotal() != null) {
-                            System.out.println(av.getName() + ": " + av.getQuantity() + " * " + av.getPrice() + " = " + av.getTotal());
                             totalAds = totalAds.add(av.getTotal());
                         }
                     }
@@ -526,7 +540,6 @@ public class OrderMB implements Serializable {
             nF.setCurrency(Currency.getInstance(new Locale("pt", "BR")));
             return nF.format(val).replace("BRL", "R$ ");
         } catch (Exception e) {
-            System.out.println("ERRO AO TENTAR FORMATAR: " + val);
             return "R$ " + val;
         }
     }
@@ -582,7 +595,6 @@ public class OrderMB implements Serializable {
         if (item == null || item.getPrice() == null || item.getQuantity() == null) {
             return;
         }
-        System.out.println("REGRA: " + item.getProduct().getRulePricePizza());
         if (item.getProduct().getPromo()) {
             item.setPrice(item.getProduct().getPrice());
             item.setTotal(item.getPrice());
@@ -597,7 +609,6 @@ public class OrderMB implements Serializable {
         } else {
             item.setPrice(BigDecimal.ZERO);
         }
-        System.out.println("PRICE: " + item.getPrice());
         item.setTotal(item.getPrice().multiply(item.getQuantity()));
 
     }
@@ -711,11 +722,8 @@ public class OrderMB implements Serializable {
     }
 
     public void validarTaxaServico() {
-        System.out.println("CALL");
         if (company.getDeliveryCost() == null) {
-            System.out.println("CALL 1");
             if (order.getAddress().getAuto() != null) {
-                System.out.println("CALL 2");
                 Optional<Bairro> find = bairrosParams.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
                 if (find.isPresent()) {
                     order.setDeliveryCost(find.get().getTaxa());
@@ -744,7 +752,6 @@ public class OrderMB implements Serializable {
     public List<EnderecoDTO> pesquisarEndereco(String end) {
         PrimeFaces.current().executeScript("PF('ldg').show()");
         try {
-            System.out.println("END: " + end);
             enderecos = categoriaService.buscarEndereco(end, company.getAddress().getState(), company.getAddress().getCity());
         } catch (Exception e) {
             e.printStackTrace();
@@ -754,7 +761,6 @@ public class OrderMB implements Serializable {
     }
 
     public void selectEndereco() {
-        System.out.println("enderecoFiltro: " + enderecoFiltro.toString());
         order.getAddress().setStreet(enderecoFiltro.getTipo_logradouro() + " " + enderecoFiltro.getLogradouro());
         order.getAddress().setAuto(enderecoFiltro.getBairro());
         //PrimeFaces.current().executeScript("document.getElementById('input_frmFechar:numeroEnd').focus();");
