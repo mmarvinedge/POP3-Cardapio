@@ -308,6 +308,7 @@ public class OrderMB implements Serializable {
         } else {
             order.setDeliveryCost(BigDecimal.ZERO);
         }
+        System.out.println("ORDER: "+order.getDeliveryCost());
         calcularTotal();
     }
 
@@ -425,6 +426,7 @@ public class OrderMB implements Serializable {
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
+            order.setDelivery(true);
             order.setDeliveryCost(company.getDeliveryCost());
 
         } catch (Exception e) {
@@ -765,6 +767,8 @@ public class OrderMB implements Serializable {
         order.getAddress().setAuto(enderecoFiltro.getBairro());
         //PrimeFaces.current().executeScript("document.getElementById('input_frmFechar:numeroEnd').focus();");
         enderecoFiltro.getBairro();
+        PrimeFaces.current().ajax().update("frmFechar:endereco");
+        PrimeFaces.current().executeScript("$('.numberHome').focus();");
     }
 
     public String onFlowProcess(FlowEvent event) {

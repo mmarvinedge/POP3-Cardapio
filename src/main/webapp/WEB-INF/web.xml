@@ -3,6 +3,13 @@
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Production</param-value>
+        <!--<param-value>Devlopment</param-value>-->
+    </context-param>
+    
+    <context-param>
+        <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+        <param-value>-1</param-value>
+        <!-- (-1) habilita o cache indefinidamente e (0) Desabilita-->
     </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -22,11 +29,7 @@
         <welcome-file>index.jsf</welcome-file>
     </welcome-file-list>
     
-    <context-param>
-        <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
-        <param-value>-1</param-value>
-        <!-- (-1) habilita o cache indefinidamente e (0) Desabilita-->
-    </context-param>
+
     
     <context-param>
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>

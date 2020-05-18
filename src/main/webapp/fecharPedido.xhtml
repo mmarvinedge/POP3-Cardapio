@@ -9,6 +9,7 @@
       xmlns:o="http://omnifaces.org/ui">
     <h:panelGroup id="fechamento">
         <h:panelGroup rendered="#{actionMB.acao == 'fechar'}">
+
             <p:panel id="pnl" >
                 <p:blockUI block="pnl" widgetVar="ldg"  >
                     <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
@@ -26,40 +27,42 @@
 
                     <div class="row" style="padding: 5px;">
                         <div class="col-xs-12" >
-                            <p:wizard    widgetVar="wizardWidget" onnext="PF('ldg').show();PF('ldg').hide()"  backLabel="Voltar" nextLabel="Próximo" styleClass="customwizard" flowListener="#{orderMB.onFlowProcess}" 
-                                         updateModelOnPrev="true">
+                            <p:wizard id="wizard"   widgetVar="wizardWidget" onnext="PF('ldg').show();PF('ldg').hide()"  backLabel="Voltar" nextLabel="Próximo" styleClass="customwizard" flowListener="#{orderMB.onFlowProcess}" 
+                                      updateModelOnPrev="true">
 
 
                                 <p:tab id="personal" title="Dados">
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <b:inputText label="Nome Completo"  value="#{orderMB.order.clientInfo.name}"  required="true" requiredMessage="Infome o nome"  update="@this"/>
+                                            <b:inputText label="Nome Completo"  value="#{orderMB.order.clientInfo.name}"  required="true" requiredMessage="Infome o nome"  update="@this" style="height: 40px !important;"/>
                                             <b:message for="@previous" />
                                         </div>
                                         <div class="col-xs-12">
                                             <div class="ui-fone">
-                                                <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}" required="true" requiredMessage="Informe o telefone" type="tel" update="@this" styleClass="ui-fone" style-class="ui-fone" />
+                                                <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}" required="true"  requiredMessage="Informe o telefone" type="tel" update="@this" styleClass="ui-fone" style-class="ui-fone" style="height: 40px !important;" />
                                                 <b:message for="@previous" />
                                             </div>
                                         </div>
+                                        <div class="col-xs-12" >
+                                            <hr/>
+                                            <center>
+                                                <p:selectBooleanButton value="#{orderMB.order.delivery}"  style="    background: #e83b62 !important;
+                                                                       border: 1px solid #e83b62 !important;
+                                                                       box-shadow: none !important;
+                                                                       text-shadow: none !important;
+                                                                       padding: 15px;
+                                                                       color: white !important;"
+                                                                       offLabel="Quero Receber em Casa" onLabel="Quero Retirar na Loja"
+                                                                       >
+                                                    <p:ajax event="change" update="wizard"   onstart="PF('ldg').show()" oncomplete="PF('ldg').hide();" listener="#{orderMB.adicionarRemoverTaxa()}"/>
+                                                </p:selectBooleanButton>
+                                            </center>
+                                            <hr/>
+                                        </div>
                                     </div>
                                 </p:tab>
-                                <p:tab id="entrega" title="Entrega">
-
-
-
-
+                                <p:tab id="entrega" title="Entrega" rendered="#{orderMB.order.delivery}" >
                                     <h:panelGroup id="endereco">
-                                        <div class="row" style="padding: 5px;">
-                                            <div class="col-xs-12" >
-                                                <p:selectOneRadio  value="#{orderMB.order.delivery}"  immediate="true"   layout="responsive" columns="1">
-                                                    <f:selectItem itemLabel="#{orderMB.iconHome()} Quero Receber Em Casa!" itemValue="true" itemEscaped="false" /> 
-                                                    <f:selectItem itemLabel="#{orderMB.iconStore()} Quero Buscar na Loja" itemValue="false" itemEscaped="false" /> 
-                                                    <p:ajax event="change" listener="#{orderMB.adicionarRemoverTaxa()}" update="endereco"  onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
-                                                </p:selectOneRadio>
-                                            </div>
-                                        </div>
-
                                         <div class="row" style="margin-top: 10px;">
                                             <h:panelGroup rendered="#{orderMB.order.delivery}">
                                                 <div class="col-xs-12">
@@ -78,7 +81,7 @@
                                                                 <br/>
                                                                 #{band.bairro} - #{band.cidade}
                                                             </p:column>
-                                                            <p:ajax event="itemSelect" update="endereco" listener="#{orderMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); $('.numberHome ').focus();" process="@this" />
+                                                            <p:ajax event="itemSelect"  listener="#{orderMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); $('#input_frmFechar:numeroEnd').focus();"  />
                                                         </p:autoComplete>
                                                     </div>
                                                 </div>
@@ -255,12 +258,10 @@
                     <script>
                         $(document).ready(function () {
                             var SPMaskBehavior = function (val) {
-                                console.log('val: ' + val);
                                 return val.replace(/\D/g, '').length === 11 ? '(00)00000-0000' : '(00)0000-00009';
                             },
                                     spOptions = {
                                         onKeyUp: function (val, e, field, options) {
-                                            console.log('val: ' + val + ' ' + field);
                                             field.mask(SPMaskBehavior.apply({}, arguments), options);
                                         }
                                     };
