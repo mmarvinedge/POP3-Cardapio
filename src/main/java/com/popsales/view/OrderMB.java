@@ -16,6 +16,7 @@ import com.popsales.model.Order;
 import com.popsales.model.Product;
 import com.popsales.model.dto.EnderecoDTO;
 import com.popsales.services.CategoryServices;
+import com.popsales.services.OrderService;
 import com.popsales.util.OUtils;
 import java.io.IOException;
 import java.io.Serializable;
@@ -62,6 +63,7 @@ public class OrderMB implements Serializable {
     private EnderecoDTO enderecoFiltro;
 
     CategoryServices categoriaService = new CategoryServices();
+    OrderService orderService = new OrderService();
 
     private String idCompany = null;
     private Company company = new Company();
@@ -106,6 +108,18 @@ public class OrderMB implements Serializable {
                 order.getAddress().setCity((company.getAddress() != null && company.getAddress().getCity() != null) ? company.getAddress().getCity() : "");
                 if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel") != null) {
                     String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
+                    try {
+                        System.out.println("telefoneeeeeeeeeeeeee "+OUtils.formataNinePhone(phone));
+                        Order o = new Order() ;
+                        o = orderService.lastOrderByPhone(idCompany, phone);
+                        System.out.println(o.getAddress().getCity());
+                        if(o != null) {
+                            order.getClientInfo().setName(o.getClientInfo().getName());
+                            order.setAddress(o.getAddress());
+                        } 
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     order.getClientInfo().setPhone(OUtils.formataNinePhone(phone));
                 }
                 if (company.getBairros() != null) {
@@ -308,6 +322,7 @@ public class OrderMB implements Serializable {
         } else {
             order.setDeliveryCost(BigDecimal.ZERO);
         }
+        System.out.println("ORDER: "+order.getDeliveryCost());
         calcularTotal();
     }
 
@@ -425,6 +440,7 @@ public class OrderMB implements Serializable {
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
+            order.setDelivery(true);
             order.setDeliveryCost(company.getDeliveryCost());
 
         } catch (Exception e) {
@@ -765,6 +781,8 @@ public class OrderMB implements Serializable {
         order.getAddress().setAuto(enderecoFiltro.getBairro());
         //PrimeFaces.current().executeScript("document.getElementById('input_frmFechar:numeroEnd').focus();");
         enderecoFiltro.getBairro();
+        PrimeFaces.current().ajax().update("frmFechar:endereco");
+        PrimeFaces.current().executeScript("$('.numberHome').focus();");
     }
 
     public String onFlowProcess(FlowEvent event) {

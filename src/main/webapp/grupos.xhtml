@@ -23,14 +23,15 @@
                     <div  class="container-fluid testimonial-group">
                         <div id="contant" class="row rowfull"  style="    margin-top: 5px; padding-left: 15px;padding-right: 15px;" onscroll="scrolled(this)"  >
                             <ui:repeat value="#{orderMB.categories}" var="cate">
-                                <h:panelGroup layout="block" class="col-xs-4 "  rendered="#{cate != null and cate.name != null}">
+                                <h:panelGroup layout="block" class="col-xs-4 "  rendered="#{cate != null and cate.name != null}" style="width: auto !important;">
                                     <p:commandLink action="#{actionMB.setAcao('itens')}" actionListener="#{orderMB.selectGroup(cate,cate.id)}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); " style="display: flow-root; text-align: center"  >
                                         <div  style="display: inline-block;text-align: center;transition: color 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);">
-                                            <div style="    margin: 0;border-radius: 50%;width: 60px;height: 60px;overflow: hidden;position: relative;z-index: 1; ">
+                                            <div style="    margin: 0;border-radius: 50%;width: 60px;height: 60px;overflow: hidden;position: relative;z-index: 1; display: block;margin-left: auto;
+                                                 margin-right: auto ">
                                                 <img style="position: absolute;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);top: 50%;left: 50%;z-index: 0;height: 100%;-o-object-fit: cover;object-fit: cover; max-width: 72px; max-height: 72px;"
                                                      src="#{cate.img == null ? 'https://www.qgjeitinhocaseiro.com/wp-content/uploads/2019/10/como-fazer-sandu%C3%ADche-artigo-crop.jpg' : cate.img}"  />
                                             </div>
-                                            <span style="    text-align: center;margin-top: 10px;display: block;font-size: 14px;font-weight: 300;line-height: 2rem;color: #717171; text-transform: uppercase;">
+                                            <span style="    text-align: center;margin-top: 10px;display: block;font-size: 14px;font-weight: 500;line-height: 2rem;color: #717171; text-transform: uppercase;">
                                                 #{cate.name}
                                             </span>
                                         </div>
@@ -41,11 +42,11 @@
 
                         </div>
                     </div>
-                    <button id="slideLeft" type="button"   style="    position: absolute;top: 55px;z-index: 3000;border-radius: 50%;     height: 40px;width: 40px;border: transparent;color: white;background: #e83b62; display: none; margin-left: 3px;"
+                    <button id="slideLeft" type="button"   style="    position: absolute;top: 55px;z-index: 1000;border-radius: 50%;     height: 40px;width: 40px;border: transparent;color: white;background: #e83b62; display: none; margin-left: 3px;"
                             onclick="changeback()">
                         <i class="fa fa-arrow-left"></i>
                     </button>
-                    <button id="slideRight" type="button" onclick="changeNext()"  style="    position: absolute;top: 55px;z-index: 3000;border-radius: 50%;right: 0;    height: 40px;width: 40px;border: transparent;color: white;background: #e83b62;  margin-right: 5px;">
+                    <button id="slideRight" type="button" onclick="changeNext()"  style="    position: absolute;top: 55px;z-index: 1000;border-radius: 50%;right: 0;    height: 40px;width: 40px;border: transparent;color: white;background: #e83b62;  margin-right: 5px;">
                         <i class="fa fa-arrow-right"></i>
                     </button>
 
