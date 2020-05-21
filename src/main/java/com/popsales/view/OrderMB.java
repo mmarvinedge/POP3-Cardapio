@@ -109,14 +109,14 @@ public class OrderMB implements Serializable {
                 if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel") != null) {
                     String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
                     try {
-                        System.out.println("telefoneeeeeeeeeeeeee "+OUtils.formataNinePhone(phone));
-                        Order o = new Order() ;
+                        System.out.println("telefoneeeeeeeeeeeeee " + OUtils.formataNinePhone(phone));
+                        Order o = new Order();
                         o = orderService.lastOrderByPhone(idCompany, phone);
                         System.out.println(o.getAddress().getCity());
-                        if(o != null) {
+                        if (o != null) {
                             order.getClientInfo().setName(o.getClientInfo().getName());
                             order.setAddress(o.getAddress());
-                        } 
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -318,15 +318,21 @@ public class OrderMB implements Serializable {
 
     public void adicionarRemoverTaxa() {
         System.out.println("IS DELIVERY: " + order.getDelivery());
-        if (company.getDeliveryCost() != null) {
-            if (order.getAddress().getAuto() != null) {
-                if (order != null && order.getDelivery()) {
-                    order.setDeliveryCost(company.getDeliveryCost());
-                } else {
-                    order.setDeliveryCost(BigDecimal.ZERO);
+        if (order.getDelivery()) {
+            if (company.getDeliveryCost() != null) {
+                if (order.getAddress().getAuto() != null) {
+                    if (order != null && order.getDelivery()) {
+                        order.setDeliveryCost(company.getDeliveryCost());
+                    } else {
+                        order.setDeliveryCost(BigDecimal.ZERO);
+                    }
+                    System.out.println("ORDER: " + order.getDeliveryCost());
                 }
-                System.out.println("ORDER: " + order.getDeliveryCost());
+            } else {
+
             }
+        } else {
+            order.setDeliveryCost(BigDecimal.ZERO);
         }
 
         calcularTotal();
