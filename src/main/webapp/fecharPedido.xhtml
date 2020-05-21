@@ -115,6 +115,7 @@
                                                 </div>
                                                 <div class="col-xs-4" style="padding-left: 0 !important;;">
                                                     <b:inputText id="numeroEnd" styleClass="numberHome" label="Nº" placeholder="" value="#{orderMB.order.address.streetNumber}"  required="#{params['validate'] == null or params['validate'] == true ? true : params['validate']}" required-message="Obrigatorio!"  >
+                                                        <p:ajax event="blur" update="@this" />
                                                     </b:inputText>
                                                     <b:message for="@previous" />
                                                 </div>

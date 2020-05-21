@@ -317,12 +317,18 @@ public class OrderMB implements Serializable {
     }
 
     public void adicionarRemoverTaxa() {
-        if (order != null && order.getDelivery()) {
-            order.setDeliveryCost(company.getDeliveryCost());
-        } else {
-            order.setDeliveryCost(BigDecimal.ZERO);
+        System.out.println("IS DELIVERY: " + order.getDelivery());
+        if (company.getDeliveryCost() != null) {
+            if (order.getAddress().getAuto() != null) {
+                if (order != null && order.getDelivery()) {
+                    order.setDeliveryCost(company.getDeliveryCost());
+                } else {
+                    order.setDeliveryCost(BigDecimal.ZERO);
+                }
+                System.out.println("ORDER: " + order.getDeliveryCost());
+            }
         }
-        System.out.println("ORDER: "+order.getDeliveryCost());
+
         calcularTotal();
     }
 
@@ -783,6 +789,9 @@ public class OrderMB implements Serializable {
         enderecoFiltro.getBairro();
         PrimeFaces.current().ajax().update("frmFechar:endereco");
         PrimeFaces.current().executeScript("$('.numberHome').focus();");
+
+        adicionarRemoverTaxa();
+        validarTaxaServico();
     }
 
     public String onFlowProcess(FlowEvent event) {
