@@ -63,15 +63,15 @@
                                 </p:tab>
                                 <p:tab id="entrega" title="Entrega" rendered="#{orderMB.order.delivery}" >
                                     <h:panelGroup id="endereco">
-                                        <div class="row" style="padding: 5px;">
+                                        <!--<div class="row" style="padding: 5px;">
                                             <div class="col-xs-12" >
-                                                <p:selectOneRadio  value="#{orderMB.order.delivery}"  immediate="true"   layout="responsive" columns="1">
-                                                    <f:selectItem itemLabel="#{orderMB.iconHome()} Quero Receber Em Casa!" itemValue="true" itemEscaped="false" /> 
-                                                    <f:selectItem itemLabel="#{orderMB.iconStore()} Quero Buscar na Loja" itemValue="false" itemEscaped="false" /> 
-                                                    <p:ajax event="change" listener="#{orderMB.adicionarRemoverTaxa()}" update="@this,endereco"  onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
+                                                <p:selectOneRadio  value="{orderMB.order.delivery}"  immediate="true"   layout="responsive" columns="1">
+                                                    <f:selectItem itemLabel="{orderMB.iconHome()} Quero Receber Em Casa!" itemValue="true" itemEscaped="false" /> 
+                                                    <f:selectItem itemLabel="{orderMB.iconStore()} Quero Buscar na Loja" itemValue="false" itemEscaped="false" /> 
+                                                    <p:ajax event="change" listener="{orderMB.adicionarRemoverTaxa()}" update="@this,endereco"  onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
                                                 </p:selectOneRadio>
                                             </div>
-                                        </div>
+                                        </div>-->
 
                                         <div class="row" style="margin-top: 10px;">
                                             <h:panelGroup rendered="#{orderMB.order.delivery}">
