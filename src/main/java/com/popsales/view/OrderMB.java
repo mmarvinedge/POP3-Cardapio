@@ -112,7 +112,7 @@ public class OrderMB implements Serializable {
                         System.out.println("telefoneeeeeeeeeeeeee " + OUtils.formataNinePhone(phone));
                         Order o = new Order();
                         o = orderService.lastOrderByPhone(idCompany, phone);
-                        System.out.println(o.getAddress().getCity());
+                        
                         if (o != null) {
                             order.getClientInfo().setName(o.getClientInfo().getName());
                             order.setAddress(o.getAddress());
@@ -435,6 +435,9 @@ public class OrderMB implements Serializable {
                 return;
             }
             order.setNum_order(genCodigo());
+            if(order.getNum_order().length() <= 3){
+                return;
+            }
             order.setDtRegister(OUtils.formataData(new Date(), "yyyy-MM-dd HH:mm:ss"));
             order.setStatus("Aguardando");
             order.setMerchant(new Merchant(company));

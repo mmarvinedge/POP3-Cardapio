@@ -1,11 +1,15 @@
 package com.popsales.model;
 
+import javax.validation.constraints.NotNull;
+
 public class ClientInfo {
 
     private String birthdate;
     private String email;
+    @NotNull
     private String phone;
     private String cpf;
+    @NotNull
     private String name;
     private String clientID;
 

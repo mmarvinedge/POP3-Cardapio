@@ -34,12 +34,12 @@
                                 <p:tab id="personal" title="Dados">
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <b:inputText label="Nome Completo"  value="#{orderMB.order.clientInfo.name}"  required="true" requiredMessage="Infome o nome"  update="@this" style="height: 40px !important;"/>
-                                            <b:message for="@previous" />
+                                            <b:inputText label="Nome Completo"  value="#{orderMB.order.clientInfo.name}"   requiredMessage="Infome o nome"  update="@this" style="height: 40px !important;"/>
+                                            <b:message for="@previous" /> 
                                         </div>
                                         <div class="col-xs-12">
                                             <div class="ui-fone">
-                                                <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}" required="true"  requiredMessage="Informe o telefone" type="tel" update="@this" styleClass="ui-fone" style-class="ui-fone" style="height: 40px !important;" />
+                                                <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}"   requiredMessage="Informe o telefone" type="tel" update="@this" styleClass="ui-fone" style-class="ui-fone" style="height: 40px !important;" />
                                                 <b:message for="@previous" />
                                             </div>
                                         </div>
