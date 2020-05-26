@@ -114,8 +114,12 @@ public class OrderMB implements Serializable {
                         o = orderService.lastOrderByPhone(idCompany, phone);
                         System.out.println(o.getAddress().getCity());
                         if (o != null) {
+                            if (o.getAddress().getCity().equalsIgnoreCase(company.getAddress().getCity())) {
+                                order.setAddress(o.getAddress());
+                            } else {
+                                order.getAddress().setCity(company.getAddress().getCity());
+                            }
                             order.getClientInfo().setName(o.getClientInfo().getName());
-                            order.setAddress(o.getAddress());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
