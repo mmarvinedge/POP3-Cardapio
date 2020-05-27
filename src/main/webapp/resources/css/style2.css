@@ -797,3 +797,8 @@ abel-float{
     100% {
         left: 107%;
         right: -8%; } }
+
+
+.ui-autocomplete-panel .ui-autocomplete-item  .ui-state-highlight{
+    background: red !important;
+}

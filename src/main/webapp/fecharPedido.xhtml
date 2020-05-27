@@ -42,7 +42,6 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-12" >
-                                            <hr/>
                                             <center>
                                                 <p:selectBooleanButton value="#{orderMB.order.delivery}"  style="    background: #e83b62 !important;
                                                                        border: 1px solid #e83b62 !important;
@@ -55,7 +54,6 @@
                                                     <p:ajax event="change" update="wizard"   onstart="PF('ldg').show()" oncomplete="PF('ldg').hide();" listener="#{orderMB.adicionarRemoverTaxa()}"/>
                                                 </p:selectBooleanButton>
                                             </center>
-                                            <hr/>
                                         </div>
                                     </div>
                                 </p:tab>
@@ -80,6 +78,7 @@
                                                         <p:autoComplete id="ban" value="#{orderMB.enderecoFiltro}"   var="band" minQueryLength="5" 
                                                                         queryDelay="500"  converter="Converter"
                                                                         forceSelection="true"
+                                                                        immediate="true"
                                                                         completeMethod="#{orderMB.pesquisarEndereco}" 
                                                                         style="width: 100% !important;" maxResults="4" 
                                                                         itemValue="#{band}" itemLabel="#{band.logradouro}" 
@@ -89,7 +88,7 @@
                                                                 <br/>
                                                                 #{band.bairro} - #{band.cidade}
                                                             </p:column>
-                                                            <p:ajax event="itemSelect"  listener="#{orderMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); $('#input_frmFechar:numeroEnd').focus();"  />
+                                                            <p:ajax event="itemSelect"  listener="#{orderMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); $('.numberHome').focus()" immediate="true" />
                                                         </p:autoComplete>
                                                     </div>
                                                 </div>

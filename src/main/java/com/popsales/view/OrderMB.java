@@ -809,10 +809,10 @@ public class OrderMB implements Serializable {
         //PrimeFaces.current().executeScript("document.getElementById('input_frmFechar:numeroEnd').focus();");
         enderecoFiltro.getBairro();
         PrimeFaces.current().ajax().update("frmFechar:endereco");
-        PrimeFaces.current().executeScript("$('.numberHome').focus();");
 
         adicionarRemoverTaxa();
         validarTaxaServico();
+        PrimeFaces.current().executeScript("$('.numberHome').focus()");
     }
 
     public String onFlowProcess(FlowEvent event) {
