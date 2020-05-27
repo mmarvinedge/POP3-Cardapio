@@ -112,7 +112,6 @@ public class OrderMB implements Serializable {
                         System.out.println("telefoneeeeeeeeeeeeee " + OUtils.formataNinePhone(phone));
                         Order o = new Order();
                         o = orderService.lastOrderByPhone(idCompany, phone);
-                        
                         if (o != null) {
                             if (o.getAddress().getCity().equalsIgnoreCase(company.getAddress().getCity())) {
                                 order.setAddress(o.getAddress());
@@ -438,8 +437,15 @@ public class OrderMB implements Serializable {
             if (order.getProducts().size() == 0 || order.getProducts().isEmpty()) {
                 return;
             }
+
             order.setNum_order(genCodigo());
-            if(order.getNum_order().length() <= 3){
+            if (order.getNum_order().length() <= 3) {
+                PrimeFaces.current().executeScript("alerta('Algo deu errado, refaça o pedido!')");
+                return;
+            }
+            if (order.getClientInfo() == null || order.getClientInfo().getName() == null || order.getClientInfo().getName().isEmpty()) {
+                PrimeFaces.current().executeScript("alerta('Preencha os dados da entrega!')");
+                PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
                 return;
             }
             order.setDtRegister(OUtils.formataData(new Date(), "yyyy-MM-dd HH:mm:ss"));
@@ -461,7 +467,9 @@ public class OrderMB implements Serializable {
             }
             order.setDelivery(true);
             order.setDeliveryCost(company.getDeliveryCost());
-
+            PrimeFaces.current().executeScript("finalizarPedido();");
+            PrimeFaces.current().executeScript("PF('ldg').hide()");
+            PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
         } catch (Exception e) {
             e.printStackTrace();
         }

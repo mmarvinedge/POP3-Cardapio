@@ -29,8 +29,6 @@
                         <div class="col-xs-12" >
                             <p:wizard id="wizard"   widgetVar="wizardWidget" onnext="PF('ldg').show();PF('ldg').hide()"  backLabel="Voltar" nextLabel="Próximo" styleClass="customwizard" flowListener="#{orderMB.onFlowProcess}" 
                                       updateModelOnPrev="true">
-
-
                                 <p:tab id="personal" title="Dados">
                                     <div class="row">
                                         <div class="col-xs-12">
@@ -250,7 +248,7 @@
                                             </h:panelGroup>
                                             <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{orderMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid;" 
                                                            update="@form" 
-                                                           action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="if (!args.validationFailed){ finalizarPedido();}PF('ldg').hide();  "/>
+                                                           action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete=""/>
                                         </div>
                                     </div>
                                 </p:tab>
