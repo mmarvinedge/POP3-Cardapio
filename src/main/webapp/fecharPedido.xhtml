@@ -42,9 +42,9 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-12" >
-                                            <center>
-                                                <p:selectBooleanButton value="#{orderMB.order.delivery}"  style="    background: #e83b62 !important;
-                                                                       border: 1px solid #e83b62 !important;
+                                            <center><hr/>
+                                                <p:selectBooleanButton value="#{orderMB.order.delivery}"  style="    background: #31353d !important;
+                                                                       border: 1px solid #31353d !important;
                                                                        box-shadow: none !important;
                                                                        text-shadow: none !important;
                                                                        padding: 15px;
@@ -78,7 +78,6 @@
                                                         <p:autoComplete id="ban" value="#{orderMB.enderecoFiltro}"   var="band" minQueryLength="5" 
                                                                         queryDelay="500"  converter="Converter"
                                                                         forceSelection="true"
-                                                                        immediate="true"
                                                                         completeMethod="#{orderMB.pesquisarEndereco}" 
                                                                         style="width: 100% !important;" maxResults="4" 
                                                                         itemValue="#{band}" itemLabel="#{band.logradouro}" 
@@ -88,7 +87,7 @@
                                                                 <br/>
                                                                 #{band.bairro} - #{band.cidade}
                                                             </p:column>
-                                                            <p:ajax event="itemSelect"  listener="#{orderMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); $('.numberHome').focus()" immediate="true" />
+                                                            <p:ajax event="itemSelect"  listener="#{orderMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); $('#input_frmFechar:numeroEnd').focus()"  />
                                                         </p:autoComplete>
                                                     </div>
                                                 </div>
@@ -124,7 +123,7 @@
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <p:outputLabel for="bair" value="Bairro" />
-                                                    <p:selectOneMenu id="bair"  label="Bairro #{params['validate']}" value="#{orderMB.order.address.auto}" required="#{params['validate'] == null or params['validate'] == true ? true : params['validate']}" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     border-bottom: 1px solid #ccc !important;border-left: 1px solid #ccc;">
+                                                    <p:selectOneMenu id="bair"  label="Bairro #{params['validate']}" value="#{orderMB.order.address.auto}" required="#{params['validate'] == null or params['validate'] == true ? true : params['validate']}" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     ">
                                                         <f:selectItem itemLabel="..." itemValue="" />
                                                         <f:selectItems value="#{orderMB.bairros}" var="b"
                                                                        itemLabel="#{b.bairro}" itemValue="#{b.bairro}" />

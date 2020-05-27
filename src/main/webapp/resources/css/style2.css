@@ -699,7 +699,7 @@ abel-float{
 }
 .ui-wizard-step-title{
     text-shadow: none !important;
-    font-weight: 200 !important;
+    font-weight: 300 !important;
     border: none !important;
 }
 .ui-selectonemenu .ui-selectonemenu-trigger{
@@ -800,5 +800,20 @@ abel-float{
 
 
 .ui-autocomplete-panel .ui-autocomplete-item  .ui-state-highlight{
-    background: red !important;
+
+}
+tr.ui-autocomplete-item.ui-autocomplete-row.ui-widget-content.ui-corner-all.ui-state-highlight{
+    background: #e83b62 !important;
+    border: 1px solid #e83b62 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    color: white !important;
+}
+
+.alert {
+    padding: 5px !important;
+}
+.bf-message-detail {
+    padding-left: 0px !important;
+    font-size: 13px !important ;
 }
