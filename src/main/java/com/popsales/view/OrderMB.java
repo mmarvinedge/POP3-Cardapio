@@ -835,5 +835,5 @@ public class OrderMB implements Serializable {
     public String iconStore() {
         return "<i class='fa fa-store' style='color: #e83b62'></i>";
     }
-
+    
 }
