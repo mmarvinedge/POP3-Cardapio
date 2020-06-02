@@ -816,6 +816,7 @@ public class OrderMB implements Serializable {
     }
 
     public String onFlowProcess(FlowEvent event) {
+
         if (event.getNewStep().equals("entrega") || event.getOldStep().equals("entrega")) {
             adicionarRemoverTaxa();
         }
@@ -835,5 +836,70 @@ public class OrderMB implements Serializable {
     public String iconStore() {
         return "<i class='fa fa-store' style='color: #e83b62'></i>";
     }
+
+    public String cardHome(Boolean bol) {
+        return "<div class='card " + (bol == false ? "" : "box-selected") + "'  style='" + (bol == true ? "" : "    border: 1px solid #e83b62 !important;\n"
+                + "    background: white !important;\n"
+                + "    color: #e83b62 !important;\n"
+                + "    font-weight: 800;") + "' >\n"
+                + "                                                        <center>\n"
+                + "                                                            <i class=\"fa fa-home fa-2x\"></i> \n"
+                + "                                                        </center>\n"
+                + "                                                        <div class=\"card-body\">\n"
+                + "                                                            <center>\n"
+                + "                                                                <p class=\"card-text\">Receber em casa</p>\n"
+                + "                                                            </center>\n"
+                + "                                                        </div>\n"
+                + "                                                    </div>";
+    }
+
+    public String cardStore(Boolean bol) {
+        return "<div class='card " + (bol == true ? "" : "box-selected") + "'  style='" + (bol == false ? "" : "border: 1px solid #e83b62 !important;\n"
+                + "    background: white !important;\n"
+                + "    color: #e83b62 !important;\n"
+                + "    font-weight: 800;") + "' >\n"
+                + "                                                        <center>\n"
+                + "                                                            <i class=\"fa fa-store-alt fa-2x\"></i> \n"
+                + "                                                        </center>\n"
+                + "                                                        <div class=\"card-body\">\n"
+                + "                                                            <center>\n"
+                + "                                                                <p class=\"card-text\">Retirar na loja</p>\n"
+                + "                                                            </center>\n"
+                + "                                                        </div>\n"
+                + "                                                    </div>";
+    }
+
+    public String cardDinheiro(Boolean bol) {
+        return "<div class=\"col-xs-4\" style='    width: 100%;padding: 0margin: 0;'><div class='card2 " + (bol == true ? "box-selected" : "") + "'  style='" + (bol == false ? "" : "border: 1px solid #e83b62 !important;\n"
+                + "    background: white !important;\n"
+                + "    color: #e83b62 !important;\n"
+                + "    font-weight: 800;") + "' >\n"
+                + "                                                        <center>\n"
+                + "                                                            <i class=\"far fa-money-bill-alt fa-2x\" style='margin-top: 5px;'></i> \n"
+                + "                                                        </center>\n"
+                + "                                                        <div class=\"card-body\">\n"
+                + "                                                            <center>\n"
+                + "                                                                <p class=\"card-text\">Dinheiro</p>\n"
+                + "                                                            </center>\n"
+                + "                                                        </div>\n"
+                + "                                                    </div></div>";
+    }
+
+    public String cardCartaoCredito(Boolean bol, String type) {
+        return " <div class=\"col-xs-4\" style='    width: 100%;padding: 0margin: 0;'><div class='card2 " + (bol == true ? "box-selected" : "") + "'  style='" + (bol == false ? "" : "border: 1px solid #e83b62 !important;\n"
+                + "    background: white !important;\n"
+                + "    color: #e83b62 !important;\n"
+                + "    font-weight: 800;") + "' >\n"
+                + "                                                        <center>\n"
+                + "                                                            <i class=\"far fa-credit-card fa-2x\" style='margin-top: 5px;'></i> \n"
+                + "                                                        </center>\n"
+                + "                                                        <div class=\"card-body\">\n"
+                + "                                                            <center>\n"
+                + "                                                                <p class=\"card-text\">"+type+"</p>\n"
+                + "                                                            </center>\n"
+                + "                                                        </div>\n"
+                + "                                                    </div></div>";
+    }
+
 
 }

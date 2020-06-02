@@ -8,8 +8,8 @@
     
     <context-param>
         <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
-        <param-value>-1</param-value>
-         <!--(-1) habilita o cache indefinidamente e (0) Desabilita-->
+        <param-value>0</param-value>
+        <!--(-1) habilita o cache indefinidamente e (0) Desabilita-->
     </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
