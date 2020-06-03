@@ -451,11 +451,16 @@ label{
 
 .ui-selectmanycheckbox label{
     font-size: 16px !important;
+    width: calc(100% - 60px) !important;
+    margin-left: 20px !important;
+}
+.ui-selectmanycheckbox tbody tr{
+    margin
+    border-bottom: 1px solid #ccc !important;
 }
 .ui-selectmanycheckbox.ui-widget td, .ui-selectoneradio.ui-widget td{
     font-size: 24px !important;
 }
-
 
 footer {
     position: fixed;
@@ -915,4 +920,16 @@ button, a{
     box-shadow: transparent !important;
     outline:0 !important;
 
+}
+
+.no-padding{
+    padding: 0 !important;
+}
+
+#customCheckbox {
+    width: 100% !important;
+}
+
+.sizeGrid {
+    width: 100%;
 }
