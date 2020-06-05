@@ -37,7 +37,7 @@
                                         </div>
                                         <div class="col-xs-12">
                                             <div class="ui-fone">
-                                                <b:inputText label="Telefone"  value="#{orderMB.order.clientInfo.phone}"   requiredMessage="Informe o telefone" type="tel" required="true" update="@this" styleClass="ui-fone" style-class="ui-fone" style="height: 40px !important;" />
+                                                <b:inputText label="Telefone" placeholder="(00)0000-0000" typeaheadMinLength="10" value="#{orderMB.order.clientInfo.phone}" requiredMessage="Informe o telefone" type="tel" required="true" update="@this" styleClass="ui-fone" style-class="ui-fone" style="height: 40px !important;" />
                                                 <b:message for="@previous" />
                                             </div>
                                         </div>

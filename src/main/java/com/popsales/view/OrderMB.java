@@ -895,11 +895,11 @@ public class OrderMB implements Serializable {
                 + "                                                        </center>\n"
                 + "                                                        <div class=\"card-body\">\n"
                 + "                                                            <center>\n"
-                + "                                                                <p class=\"card-text\">"+type+"</p>\n"
+                + "                                                                <p class=\"card-text\">" + type + "</p>\n"
                 + "                                                            </center>\n"
                 + "                                                        </div>\n"
                 + "                                                    </div></div>";
     }
 
-
+    
 }

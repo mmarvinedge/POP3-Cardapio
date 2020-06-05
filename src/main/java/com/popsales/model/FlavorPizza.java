@@ -104,7 +104,6 @@ public class FlavorPizza {
 
     public String descricao(Item i) {
         if (description != null) {
-            System.out.println("siadiashdsuiadhsauidhsauidhaiudhuiasgduisag");
             return "<div class='col-xs-12 no-padding'><i style='font-size: 12px; color: gray; font-weight: 400; display: inline-table;'>" + description + "</i></div>";
         } else {
             return "<div class='col-xs-12 no-padding'><i style='font-size: 12px; color: gray; font-weight: 400; display: inline-table;'>Pizzas</i></div>";
