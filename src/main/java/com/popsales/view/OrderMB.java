@@ -830,20 +830,20 @@ public class OrderMB implements Serializable {
     }
 
     public String iconHome() {
-        return "<i class='fa fa-home' style='color: #e83b62'></i>";
+        return "<i class='fa fa-home' style='color: #95c70d'></i>";
     }
 
     public String iconStore() {
-        return "<i class='fa fa-store' style='color: #e83b62'></i>";
+        return "<i class='fa fa-store' style='color: #95c70d'></i>";
     }
 
     public String cardHome(Boolean bol) {
-        return "<div class='card " + (bol == false ? "" : "box-selected") + "'  style='" + (bol == true ? "" : "    border: 1px solid #e83b62 !important;\n"
+        return "<div class='card " + (bol == false ? "" : "box-selected") + "'  style='" + (bol == true ? "" : "    border: 1px solid #95c70d !important;\n"
                 + "    background: white !important;\n"
-                + "    color: #e83b62 !important;\n"
+                + "    color: #95c70d !important;\n"
                 + "    font-weight: 800;") + "' >\n"
                 + "                                                        <center>\n"
-                + "                                                            <i class=\"fa fa-home fa-2x\"></i> \n"
+                + "                                                            <i class=\"fa fa-motorcycle fa-2x\"></i> \n"
                 + "                                                        </center>\n"
                 + "                                                        <div class=\"card-body\">\n"
                 + "                                                            <center>\n"
@@ -854,9 +854,9 @@ public class OrderMB implements Serializable {
     }
 
     public String cardStore(Boolean bol) {
-        return "<div class='card " + (bol == true ? "" : "box-selected") + "'  style='" + (bol == false ? "" : "border: 1px solid #e83b62 !important;\n"
+        return "<div class='card " + (bol == true ? "" : "box-selected") + "'  style='" + (bol == false ? "" : "border: 1px solid #95c70d !important;\n"
                 + "    background: white !important;\n"
-                + "    color: #e83b62 !important;\n"
+                + "    color: #95c70d !important;\n"
                 + "    font-weight: 800;") + "' >\n"
                 + "                                                        <center>\n"
                 + "                                                            <i class=\"fa fa-store-alt fa-2x\"></i> \n"
@@ -870,9 +870,9 @@ public class OrderMB implements Serializable {
     }
 
     public String cardDinheiro(Boolean bol) {
-        return "<div class=\"col-xs-4\" style='    width: 100%;padding: 0margin: 0;'><div class='card2 " + (bol == true ? "box-selected" : "") + "'  style='" + (bol == false ? "" : "border: 1px solid #e83b62 !important;\n"
+        return "<div class=\"col-xs-4\" style='    width: 100%;padding: 0margin: 0;'><div class='card2 " + (bol == true ? "box-selected" : "") + "'  style='" + (bol == false ? "" : "border: 1px solid #95c70d !important;\n"
                 + "    background: white !important;\n"
-                + "    color: #e83b62 !important;\n"
+                + "    color: #95c70d !important;\n"
                 + "    font-weight: 800;") + "' >\n"
                 + "                                                        <center>\n"
                 + "                                                            <i class=\"far fa-money-bill-alt fa-2x\" style='margin-top: 5px;'></i> \n"
@@ -886,9 +886,9 @@ public class OrderMB implements Serializable {
     }
 
     public String cardCartaoCredito(Boolean bol, String type) {
-        return " <div class=\"col-xs-4\" style='    width: 100%;padding: 0margin: 0;'><div class='card2 " + (bol == true ? "box-selected" : "") + "'  style='" + (bol == false ? "" : "border: 1px solid #e83b62 !important;\n"
+        return " <div class=\"col-xs-4\" style='    width: 100%;padding: 0margin: 0;'><div class='card2 " + (bol == true ? "box-selected" : "") + "'  style='" + (bol == false ? "" : "border: 1px solid #95c70d !important;\n"
                 + "    background: white !important;\n"
-                + "    color: #e83b62 !important;\n"
+                + "    color: #95c70d !important;\n"
                 + "    font-weight: 800;") + "' >\n"
                 + "                                                        <center>\n"
                 + "                                                            <i class=\"far fa-credit-card fa-2x\" style='margin-top: 5px;'></i> \n"

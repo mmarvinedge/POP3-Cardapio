@@ -18,7 +18,7 @@
             <h:form>
                 <p:panel id="pnl" style="border: none !important;" >
                     <p:blockUI block="pnl" widgetVar="ldg"  >
-                        <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
+                        <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
                     </p:blockUI>
                     <div  class="container-fluid testimonial-group">
                         <div id="contant" class="row rowfull"  style="    margin-top: 5px; padding-left: 15px;padding-right: 15px;" onscroll="scrolled(this)"  >
@@ -42,11 +42,11 @@
 
                         </div>
                     </div>
-                    <button id="slideLeft" type="button"   style="    position: absolute;top: 55px;z-index: 1000;border-radius: 50%;     height: 40px;width: 40px;border: transparent;color: white;background: #e83b62; display: none; margin-left: 3px;"
+                    <button id="slideLeft" type="button"   style="    position: absolute;top: 55px;z-index: 1000;border-radius: 50%;     height: 40px;width: 40px;border: transparent;color: white;background: #95c70d; display: none; margin-left: 3px;"
                             onclick="changeback()">
                         <i class="fa fa-arrow-left"></i>
                     </button>
-                    <button id="slideRight" type="button" onclick="changeNext()"  style="    position: absolute;top: 55px;z-index: 1000;border-radius: 50%;right: 0;    height: 40px;width: 40px;border: transparent;color: white;background: #e83b62;  margin-right: 5px;">
+                    <button id="slideRight" type="button" onclick="changeNext()"  style="    position: absolute;top: 55px;z-index: 1000;border-radius: 50%;right: 0;    height: 40px;width: 40px;border: transparent;color: white;background: #95c70d;  margin-right: 5px;">
                         <i class="fa fa-arrow-right"></i>
                     </button>
 
@@ -59,7 +59,7 @@
 
                                     <h4 style="margin-top: 75px;">Sem promoções no momento!</h4>
 
-                                    <i class="fa fa-sad-tear fa-3x" style="color: #e83b62"></i>
+                                    <i class="fa fa-sad-tear fa-3x" style="color: #95c70d"></i>
                                 </center>
                             </h:panelGroup>
                         </div>
@@ -94,7 +94,7 @@
                                                             <s style="font-size: 1.46rem;font-weight: 400;color: #929292;WIDTH: auto;margin: 0;
                                                                padding: 0;">#{orderMB.formatarMoeda(prod.priceOriginal)}</s>
                                                         </h:panelGroup>
-                                                        <span style="font-size: 16px;font-weight: 400;color: #e83b62;">#{prod.price == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
+                                                        <span style="font-size: 16px;font-weight: 400;color: #95c70d;">#{prod.price == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -109,7 +109,6 @@
             </h:form>
             <script>
                 $(document).ready(function () {
-                    console.log('alooooooooooo');
                     var buttonRight = document.getElementById('slideRight');
                     var buttonLeft = document.getElementById('slideLeft');
                     buttonLeft.style.display = 'none';

@@ -1,7 +1,7 @@
 {
   "name": "POP3",
   "short_name": "POP3",
-  "theme_color": "#e83b62",
+  "theme_color": "#95c70d",
   "background_color": "#c12a00",
   "display": "standalone",
   "start_url": "/",
