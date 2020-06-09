@@ -103,7 +103,7 @@
                     </div>
                     <p:remoteCommand name="complete" action="#{orderMB.change()}" />
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 text-left" style="padding-left: 25px;padding-right: 25px;">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-left" style="padding-left: 25px;padding-right: 25px;">
                             <b:touchSpin id="spin1"   min="1" max="50" step="1" value="#{orderMB.item.quantity}" style="text-align: center;     " 
                                          style-class="ipt-touch"   onchange="PF('ldga').show(); complete(); PF('ldga').hide();"    >
                             </b:touchSpin>
@@ -111,7 +111,7 @@
 
               
 
-                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
                             <p:messages id="msgs" closable="true" />
                             <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();"  style="padding: 15px;    border-radius: 25px !important; background: #2f8a39 !important;"
                                            update=":grpNumbers,:frmMySide, pnlend,frmModal:msgs" disabled="#{orderMB.fechado}">

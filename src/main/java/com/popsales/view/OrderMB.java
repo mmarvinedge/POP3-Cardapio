@@ -361,6 +361,9 @@ public class OrderMB implements Serializable {
             PrimeFaces.current().executeScript("alerta('Selecione o sabor de pizza!')");
             return;
         }
+        if (item.getQuantity().doubleValue() <= 0 || item.getQuantity() == null) {
+            item.setQuantity(BigDecimal.ZERO);
+        }
         if (item.getTotal().doubleValue() > 0) {
             if (order.getProducts() == null) {
                 order.setProducts(new ArrayList());
@@ -901,5 +904,4 @@ public class OrderMB implements Serializable {
                 + "                                                    </div></div>";
     }
 
-    
 }
