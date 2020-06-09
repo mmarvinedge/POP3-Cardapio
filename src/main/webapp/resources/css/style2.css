@@ -451,7 +451,7 @@ label{
 
 .ui-selectmanycheckbox label{
     font-size: 16px !important;
-    width: calc(100% - 60px) !important;
+    width: 80% !important;
     margin-left: 20px !important;
 }
 .ui-selectmanycheckbox tbody tr{
@@ -927,8 +927,4 @@ button, a{
 
 #customCheckbox {
     width: 100% !important;
-}
-
-.sizeGrid {
-    width: 100%;
 }

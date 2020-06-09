@@ -57,7 +57,7 @@
                                                         <s style="font-size: 1.46rem;font-weight: 400;color: #929292;WIDTH: auto;margin: 0;
                                                            padding: 0;">#{orderMB.formatarMoeda(prod.priceOriginal)}</s>
                                                     </h:panelGroup>
-                                                    <span style="font-size: 16px;font-weight: 400;color: #e83b62;">#{prod.price == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
+                                                    <span style="font-size: 16px;font-weight: 400;color: #e83b62;">#{prod.price.doubleValue() == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
                                                 </div>
                                             </div>
                                         </div>

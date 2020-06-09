@@ -98,7 +98,7 @@ public class FlavorPizza {
         if (i.getProduct().getPromo()) {
             return "<div class='text-right'><small><s>" + OUtils.formatarMoeda(getPrice().doubleValue()) + "</s></small> <span class='color-value'>" + OUtils.formatarMoeda(i.getProduct().getPrice().doubleValue()) + "</span></div></div>";
         } else {
-            return "<div class='col-xs-6 text-right'><span class='color-value'>" + OUtils.formatarMoeda(i.getProduct().getPrice().doubleValue()) + "</span></div>";
+            return "<div class='text-right'><span class='color-value'>" + OUtils.formatarMoeda(price.doubleValue()) + "</span></div>";
         }
     }
 

@@ -40,7 +40,7 @@
                                 <div>
                                     <div class="lbl-adicionais">Selecione até #{orderMB.item.product.maxPizza} sabor(es)</div>
                                     <div class="adicionais">
-                                        <p:selectManyCheckbox value="#{orderMB.item.flavors}" converter="Converter" class="sizeGrid" id="customCheckbox" layout="grid" columns="1"  >
+                                        <p:selectManyCheckbox value="#{orderMB.item.flavors}" converter="Converter" style="width: 100% !important" id="customCheckbox" layout="grid" columns="1"  >
                                             <f:selectItems value="#{orderMB.item.product.flavorsPizza}" var="flav"  itemLabelEscaped="false"
                                                            itemLabel="#{flav.htmlGetFlavor(orderMB.item)}" itemValue="#{flav}" 
                                                            itemDisabled="#{orderMB.item.flavors.size() == orderMB.item.product.maxPizza and orderMB.item.flavors.indexOf(flav) == -1}"
