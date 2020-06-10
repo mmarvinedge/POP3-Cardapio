@@ -7,9 +7,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <div id="mySidenav" class="sidenav" >
         <h:form id="frmMySide">
-            <div class="row" style="    position: absolute;   top: 0;width: 100%;margin-left: 0px;     border-bottom: 1px solid #e83b62;">
+            <div class="row" style="    position: absolute;   top: 0;width: 100%;margin-left: 0px;     border-bottom: 1px solid #95c70d;">
                 <div class="col-xs-7" style="padding-top: 15px;">
-                    <span style="    font-size: 20px;font-weight: bolder;color: #e83b62;margin-top: 20px;">Carrinho</span>
+                    <span style="    font-size: 20px;font-weight: bolder;color: #95c70d;margin-top: 20px;">Carrinho</span>
                 </div>
                 <div class="col-xs-5" style="margin: 0;padding: 0;">
                     <a href="javascript:void(0)"  onclick="closeNav()" style="font-size: 18px;    margin-left: 50px;">
@@ -39,8 +39,8 @@
                                                     </h:panelGroup>
                                                 </small>
                                             </div>
-                                            <div class="col-xs-6 pull-right text-right" style="color: #e83b62;     margin: 0px;">
-                                                <h3 style="font-weight: bolder; color: #e83b62; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
+                                            <div class="col-xs-6 pull-right text-right" style="color: #95c70d;     margin: 0px;">
+                                                <h3 style="font-weight: bolder; color: #95c70d; font-size: 18px;">  #{orderMB.formatarMoeda(prod.total)}</h3>
                                             </div>
                                         </b:row>
                                         <p:commandLink styleClass="btn btn-danger" action="#{orderMB.removeCart(prod)}" update="@form,grpNumbers,outPutTotal" style="padding: 0;width: 40px;color: white;position: absolute;top: 0;right: 0px;">
@@ -58,7 +58,7 @@
 
             <div class="botton-itens">
                 <p:blockUI block="order" widgetVar="ldg2"  >
-                    <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #e83b62;"></i>
+                    <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
                 </p:blockUI>
                 <p:commandLink id="btnLink" value="Fechar Pedido"  styleClass="btn btn-primary" disabled="#{orderMB.fechado}" action="#{actionMB.setAcaoFechar('fechar', orderMB.order.products.size())}" onstart="PF('ldg2').show()" oncomplete="closeNav(); PF('ldg2').hide()" style="width: 100%; height: 50px; color: white;border-radius: 0px;     display: inline-grid;"  />
             </div>
