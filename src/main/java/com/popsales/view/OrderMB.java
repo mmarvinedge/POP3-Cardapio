@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
@@ -296,6 +297,7 @@ public class OrderMB implements Serializable {
             if (idCompany == null) {
             }
             categories = categoriaService.getCategoryList(idCompany);
+            categories.sort(Comparator.comparing((Category c) -> c.getName()));
             productsPromo = categoriaService.getProductsPromo(idCompany);
         } catch (Exception ex) {
             System.out.println("NAO FOI POSSIVEL CARREGAR O ID COMPANY");
@@ -321,18 +323,21 @@ public class OrderMB implements Serializable {
     public void adicionarRemoverTaxa() {
         System.out.println("IS DELIVERY: " + order.getDelivery());
         if (order.getDelivery()) {
-            if (company.getDeliveryCost() != null) {
-                if (order.getAddress().getAuto() != null) {
-                    if (order != null && order.getDelivery()) {
-                        order.setDeliveryCost(company.getDeliveryCost());
-                    } else {
-                        order.setDeliveryCost(BigDecimal.ZERO);
-                    }
-                    System.out.println("ORDER: " + order.getDeliveryCost());
-                }
-            } else {
-
+            if (company.getUniqueDeliveryCost()) {
+                order.setDeliveryCost(company.getDeliveryCost());
             }
+//            if (company.getDeliveryCost() != null) {
+//                if (order.getAddress().getAuto() != null) {
+//                    if (order != null && order.getDelivery()) {
+//                        order.setDeliveryCost(company.getDeliveryCost());
+//                    } else {
+//                        order.setDeliveryCost(BigDecimal.ZERO);
+//                    }
+//                    System.out.println("ORDER: " + order.getDeliveryCost());
+//                }
+//            } else {
+//
+//            }
         } else {
             order.setDeliveryCost(BigDecimal.ZERO);
         }
@@ -461,15 +466,29 @@ public class OrderMB implements Serializable {
                 novo.setName(it.getName());
                 it.setProduct(novo);
             }
-            
-            if(order.getDelivery() == null) {
-                if(order.getAddress().getStreet() != null){
+
+            if (order.getDelivery() == null) {
+                if (order.getAddress().getStreet() != null) {
                     order.setDelivery(Boolean.TRUE);
                 } else {
                     order.setDelivery(Boolean.FALSE);
                 }
             }
-            
+
+            if (order.getDelivery()) {
+                validarTaxaServico();
+            } else {
+                order.setDeliveryCost(BigDecimal.ZERO);
+            }
+
+            if (order.getTroco() != null) {
+                if (order.getTroco()) {
+                    if (order.getTrocoPara() == null) {
+                        order.setTroco(Boolean.FALSE);
+                    }
+                }
+            }
+
             categoriaService.sendOrder(order, idCompany);
             order = new Order();
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
@@ -733,23 +752,24 @@ public class OrderMB implements Serializable {
     }
 
     public List<Bairro> listaBairros() {
-
-        if (company.getDeliveryCost() != null) {
-            if (company.getAddress().getCity() != null) {
-                try {
-                    List<String> bairros = categoriaService.getBairros(company.getAddress().getCity());
-                    for (String bairro : bairros) {
-                        this.bairros.add(new Bairro(bairro, company.getDeliveryCost()));
+        System.out.println(company.getUniqueDeliveryCost());
+        if (company.getAddress() != null) {
+            if (company.getUniqueDeliveryCost()) {
+                if (company.getAddress().getCity() != null) {
+                    try {
+                        List<String> bairros = categoriaService.getBairros(company.getAddress().getCity());
+                        for (String bairro : bairros) {
+                            this.bairros.add(new Bairro(bairro, company.getDeliveryCost()));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                }
+            } else {
+                for (Bairro bairrosParam : bairrosParams) {
+                    this.bairros.add(new Bairro(bairrosParam.getBairro(), bairrosParam.getTaxa()));
                 }
             }
-        } else {
-            for (Bairro bairrosParam : bairrosParams) {
-                this.bairros.add(new Bairro(bairrosParam.getBairro(), bairrosParam.getTaxa()));
-            }
-
         }
         return bairros;
     }
@@ -775,7 +795,10 @@ public class OrderMB implements Serializable {
     }
 
     public void validarTaxaServico() {
-        if (company.getDeliveryCost() == null) {
+        if (company.getUniqueDeliveryCost()) {
+            order.setDeliveryCost(company.getDeliveryCost());
+            calcularTotal();
+        } else {
             if (order.getAddress().getAuto() != null) {
                 Optional<Bairro> find = bairrosParams.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
                 if (find.isPresent()) {
@@ -821,7 +844,11 @@ public class OrderMB implements Serializable {
         PrimeFaces.current().ajax().update("frmFechar:endereco");
 
         adicionarRemoverTaxa();
-        validarTaxaServico();
+        if (company.getUniqueDeliveryCost()) {
+            order.setDeliveryCost(company.getDeliveryCost());
+        } else {
+            validarTaxaServico();
+        }
         PrimeFaces.current().executeScript("$('.numberHome').focus()");
     }
 

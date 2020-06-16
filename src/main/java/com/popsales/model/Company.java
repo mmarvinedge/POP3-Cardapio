@@ -28,6 +28,7 @@ public class Company {
     private List<Bairro> bairros;
     private String nameUrl;
     private String aproxTime;
+    private Boolean uniqueDeliveryCost;
 
     public String getId() {
         return id;
@@ -154,6 +155,17 @@ public class Company {
 
     public void setAproxTime(String aproxTime) {
         this.aproxTime = aproxTime;
+    }
+
+    public Boolean getUniqueDeliveryCost() {
+        if (uniqueDeliveryCost == null) {
+            uniqueDeliveryCost = true;
+        }
+        return uniqueDeliveryCost;
+    }
+
+    public void setUniqueDeliveryCost(Boolean uniqueDeliveryCost) {
+        this.uniqueDeliveryCost = uniqueDeliveryCost;
     }
 
 }
