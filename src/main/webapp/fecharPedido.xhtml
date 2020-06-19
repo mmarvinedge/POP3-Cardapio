@@ -121,11 +121,13 @@
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <p:outputLabel for="bair" value="Bairro" />
-                                                    <p:selectOneMenu id="bair"  label="Bairro #{params['validate']}" value="#{orderMB.order.address.auto}" required="true" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     ">
+                                                    <p:selectOneMenu id="bair"  label="Bairro #{params['validate']}" value="#{orderMB.order.address.auto}"  required="true" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     " >
                                                         <f:selectItem itemLabel="..." itemValue="" />
                                                         <f:selectItems value="#{orderMB.bairros}" var="b"
-                                                                       itemLabel="#{b.bairro}" itemValue="#{b.bairro}" />
+                                                                       itemLabel="#{orderMB.formatarMoedaTaxa(b)}" itemLabelEscaped="false" itemValue="#{b.bairro}" />
                                                         <p:ajax event="itemSelect" listener="#{orderMB.validarTaxaServico()}" update="@this" />
+
+
                                                     </p:selectOneMenu>
                                                     <b:message for="@previous" />
                                                 </div>

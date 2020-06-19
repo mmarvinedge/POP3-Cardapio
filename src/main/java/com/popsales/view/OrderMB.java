@@ -57,7 +57,6 @@ public class OrderMB implements Serializable {
 
     private String bairroManual;
     private List<Bairro> bairros = new ArrayList();
-    private List<Bairro> bairrosParams = new ArrayList();
 
     private List<EnderecoDTO> enderecos = new ArrayList();
     private EnderecoDTO enderecoFiltro;
@@ -125,9 +124,9 @@ public class OrderMB implements Serializable {
                     }
                     order.getClientInfo().setPhone(OUtils.formataNinePhone(phone));
                 }
-                if (company.getBairros() != null) {
-                    bairrosParams = company.getBairros();
-                }
+//                if (company.getBairros() != null) {
+//                    bairrosParams = company.getBairros();
+//                }
             } catch (Exception e) {
             }
         }
@@ -287,7 +286,7 @@ public class OrderMB implements Serializable {
 
     @PostConstruct
     public void init() {
-
+        System.out.println("POST CONSTRUC");
         loadCategorias();
         listaBairros();
     }
@@ -469,6 +468,7 @@ public class OrderMB implements Serializable {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
             order.setDelivery(true);
+            order.setTroco(false);
             order.setDeliveryCost(company.getDeliveryCost());
             PrimeFaces.current().executeScript("finalizarPedido();");
             PrimeFaces.current().executeScript("PF('ldg').hide()");
@@ -726,8 +726,8 @@ public class OrderMB implements Serializable {
     }
 
     public List<Bairro> listaBairros() {
-
-        if (company.getDeliveryCost() != null) {
+        System.out.println("TAXA UNICA? " + company.getUniqueTax());
+        if (company.getUniqueTax()) {
             if (company.getAddress().getCity() != null) {
                 try {
                     List<String> bairros = categoriaService.getBairros(company.getAddress().getCity());
@@ -739,11 +739,12 @@ public class OrderMB implements Serializable {
                 }
             }
         } else {
-            for (Bairro bairrosParam : bairrosParams) {
+            for (Bairro bairrosParam : company.getBairros()) {
                 this.bairros.add(new Bairro(bairrosParam.getBairro(), bairrosParam.getTaxa()));
             }
 
         }
+        System.out.println("TEM " + bairros.size());
         return bairros;
     }
 
@@ -768,13 +769,12 @@ public class OrderMB implements Serializable {
     }
 
     public void validarTaxaServico() {
-        if (company.getDeliveryCost() == null) {
-            if (order.getAddress().getAuto() != null) {
-                Optional<Bairro> find = bairrosParams.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
-                if (find.isPresent()) {
-                    order.setDeliveryCost(find.get().getTaxa());
-                    calcularTotal();
-                }
+
+        if (order.getAddress().getAuto() != null) {
+            Optional<Bairro> find = bairros.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
+            if (find.isPresent()) {
+                order.setDeliveryCost(find.get().getTaxa());
+                calcularTotal();
             }
         }
     }
@@ -904,4 +904,19 @@ public class OrderMB implements Serializable {
                 + "                                                    </div></div>";
     }
 
+    public String formatarMoedaTaxa(Bairro bairro) {
+        StringBuilder content = new StringBuilder();
+        content.append("<div class='row'>");
+        content.append("<div class='col-xs-12'><strong>" + bairro.getBairro() + "</strong> </div><br/>");
+        System.out.println("BAIRRO: "+bairro.getBairro()+" / "+bairro.getTaxa().doubleValue());
+        if (bairro.getTaxa().doubleValue() == 0.00 || bairro.getTaxa() == null) {
+            content.append("<div class='col-xs-12'><small style='font-weight: bolder;color: #95c70d;'>Entrega Grátis</small> </div>");
+        } else {
+            content.append("<div class='col-xs-12'><small style='font-weight: bolder;color: #31353d;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
+        }
+        content.append("<div class='col-xs-12'><hr style='margin-top: 0;margin-bottom: 0;border-color: #95c70d;' /></div>");
+        content.append("</div>");
+        System.out.println(content.toString());
+        return content.toString();
+    }
 }
