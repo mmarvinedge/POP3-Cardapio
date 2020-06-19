@@ -45,7 +45,7 @@ public class FlavorPizza {
                             + "</div> "
                             + "<div class='row'>"
                             + descricao(i)
-                            + "</div>");
+                            + "</div><hr/>");
                     return sb.toString();
                 } else {
                     StringBuilder sb = new StringBuilder();
@@ -58,7 +58,7 @@ public class FlavorPizza {
                     sb.append("</div> ");
                     sb.append("<div class='row'>");
                     sb.append(descricao(i));
-                    sb.append("</div>");
+                    sb.append("</div><hr/>");
                     return sb.toString();
                     //return "<span style='display: inline-table !important;' class='description-pizza'><strong>" + flavor + "</strong></div> <div class='description-value' style='display: inline-block !important;'><span class='color-value'>" + OUtils.formatarMoeda(getPrice().doubleValue()) + "</span></span>";
                 }
@@ -98,7 +98,7 @@ public class FlavorPizza {
         if (i.getProduct().getPromo()) {
             return "<div class='text-right'><small><s>" + OUtils.formatarMoeda(getPrice().doubleValue()) + "</s></small> <span class='color-value'>" + OUtils.formatarMoeda(i.getProduct().getPrice().doubleValue()) + "</span></div></div>";
         } else {
-            return "<div class='col-xs-6 text-right'><span class='color-value'>" + OUtils.formatarMoeda(i.getProduct().getPrice().doubleValue()) + "</span></div>";
+            return "<div class='text-right'><span class='color-value'>" + OUtils.formatarMoeda(price.doubleValue()) + "</span></div>";
         }
     }
 

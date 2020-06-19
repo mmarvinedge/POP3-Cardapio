@@ -17,7 +17,7 @@ public class Bairro {
 
     private String bairro;
     private BigDecimal taxa;
-    
+
     private String html;
 
     public Bairro() {
@@ -48,8 +48,9 @@ public class Bairro {
         this.taxa = taxa;
     }
 
-   
-    
-    
+    @Override
+    public String toString() {
+        return "Bairro{" + "bairro=" + bairro + ", taxa=" + taxa + '}';
+    }
 
 }

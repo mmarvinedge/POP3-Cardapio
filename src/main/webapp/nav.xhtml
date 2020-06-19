@@ -13,7 +13,7 @@
 
         </div>
         <div class="cart">
-            <p:commandLink  onclick="openNav()">
+            <p:commandLink  onclick="openNav()" rendered="#{!orderMB.company.onlyMenu}">
                 <i class="fa fa-cart-plus fa-2x " style="color: white;     margin-top: 15px;"></i>
                 <h:panelGroup id="grpNumbers">
                     <span class="badge-custom">#{orderMB.order.products.size()}</span>

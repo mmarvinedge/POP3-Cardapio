@@ -73,7 +73,7 @@ body{
 
 .badge-custom{
     text-decoration: none;
-    background: #95c70d !important;
+    background: rgb(232,59,98) !important;
     padding: 5px;
     border-radius: 10px;
     color: white;
@@ -109,7 +109,7 @@ body{
 }
 
 .sidenav a:hover {
-    color: #95c70d;
+    color: rgb(232,59,98);
 }
 
 .sidenav .closebtn {
@@ -208,14 +208,14 @@ body{
 
 .btn-primary {
     color: #fff;
-    background-color: #95c70d !important;
-    border-color: #95c70d !important;
+    background-color: rgb(232,59,98) !important;
+    border-color: rgb(232,59,98) !important;
 }
 
 .btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus{
     color: #fff !important;
-    background-color: #2f8a39 !important;
-    border-color: #2f8a39 !important;
+    background-color: #ca173f !important;
+    border-color: #ca173f !important;
 }
 .item-img:hover{
 
@@ -256,11 +256,11 @@ input[type=checkbox] {
 }
 
 input[type=checkbox]:checked {
-    background: #95c70d;
+    background: rgb(232,59,98);
     box-shadow: none;
     color: #fff;
     text-shadow: none;
-    border: 1px solid #95c70d;
+    border: 1px solid rgb(232,59,98);
 }
 
 input[type=checkbox]:before {
@@ -359,7 +359,7 @@ input[type=checkbox]:checked:before {
 }
 
 .ui-toggleswitch-checked .ui-toggleswitch-slider{
-    background: #95c70d;
+    background: rgb(232,59,98);
 }
 .ui-toggleswitch-checked  .ui-toggleswitch-slider:before{
     background: white;
@@ -421,7 +421,7 @@ label{
     z-index: 99; /* Make sure it does not overlap */
     border: none; /* Remove borders */
     outline: none; /* Remove outline */
-    background-color: #95c70d !important; /* Set a background color */
+    background-color: rgb(232,59,98) !important; /* Set a background color */
     color: white; /* Text color */
     cursor: pointer; /* Add a mouse pointer on hover */
     padding: 15px; /* Some padding */
@@ -430,7 +430,7 @@ label{
 }
 
 #myBtn:hover {
-    background-color: #95c70d !important; /* Add a dark-grey background on hover */
+    background-color: rgb(232,59,98) !important; /* Add a dark-grey background on hover */
 }
 
 .ui-chkbox .ui-chkbox-box {
@@ -439,7 +439,7 @@ label{
     -webkit-border-radius: 2px;
     border-radius: 2px;
     background:  white;
-    border-color: #95c70d  !important;
+    border-color: rgb(232,59,98)  !important;
 }
 .ui-selectmanycheckbox .ui-chkbox .ui-chkbox-box{
     width: auto !important;
@@ -452,18 +452,21 @@ label{
 .ui-selectmanycheckbox label{
     font-size: 16px !important;
     width: 80% !important;
+    margin-left: 20px !important;
+}
+.ui-selectmanycheckbox tbody tr{
+    border-bottom: 1px solid #ccc !important;
 }
 .ui-selectmanycheckbox.ui-widget td, .ui-selectoneradio.ui-widget td{
     font-size: 24px !important;
 }
-
 
 footer {
     position: fixed;
     height: 50px;
     bottom: 0;
     width: 100%;
-    background: #95c70d;
+    background: rgb(232,59,98);
 }
 .fixed-bottom span{
     color: white;
@@ -543,8 +546,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,span{
     width: auto !important;
     font-size: 15px !important;
     padding: 5px !important;
-    border-color: #95c70d !important;
-    background: #95c70d !important;
+    border-color: rgb(232,59,98) !important;
+    background: rgb(232,59,98) !important;
     color: white !important; 
     text-shadow: none !important;
     box-shadow: none !important;
@@ -552,7 +555,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,span{
 
 
 .color-value{
-    font-size: 1.6rem;font-weight: 400;color: #95c70d;
+    font-size: 1.6rem;font-weight: 400;color: #e83b62;
 }
 
 .description-pizza{
@@ -627,7 +630,7 @@ abel-float{
 }
 
 .lbl-adicionais{
-    margin-top: 5px;padding: 8px;width: auto !important;background: #95c70d;color: white;display: inline-block;border-radius: 5px;margin-bottom: 0px;width: 100% !important;
+    margin-top: 5px;padding: 8px;width: auto !important;background: rgb(232,59,98);color: white;display: inline-block;border-radius: 5px;margin-bottom: 0px;width: 100% !important;
     text-align: center;
     margin-bottom: 5px;
 }
@@ -653,13 +656,13 @@ abel-float{
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background:  #95c70d;
+    background:  rgb(232,59,98);
     border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #95c70d; 
+    background: rgb(232,59,98); 
 }
 
 
@@ -667,8 +670,8 @@ abel-float{
     margin: 0px !important;
 }
 .ui-wizard-nav-next, .ui-wizard-nav-back{
-    background: #95c70d !important;
-    border: 1px solid #95c70d !important;
+    background: #e83b62 !important;
+    border: 1px solid #e83b62 !important;
     box-shadow: none !important;
     text-shadow: none !important;
     color: white !important;
@@ -687,7 +690,7 @@ abel-float{
 }
 
 .customwizard .ui-wizard-step-title .ui-state-highlight{
-    background: #95c70d !important;
+    background: #e83b62 !important;
     border: none !important;
     text-shadow: none !important;
     box-shadow: none !important; 
@@ -735,12 +738,8 @@ abel-float{
 }
 
 .ui-wizard-step-titles .ui-state-highlight{
-    background: #95c70d !important;
+    background: #e83b62 !important;
     color: white !important;
-}
-
-.ui-selectonemenu-list-item .ui-state-highlight{
-    background: red !important;
 }
 
 .ui-wizard-step-title {
@@ -748,9 +747,9 @@ abel-float{
     margin: 0 3px 0 0;
     padding: .4em;
     float: left;
-    border: 1px solid #95c70d !important;
+    border: 1px solid #e83b62 !important;
     background: white !important;
-    color: #95c70d !important;
+    color: #e83b62 !important;
 }
 .ui-wizard-navbar {
     padding-top: 5px !important;
@@ -758,9 +757,9 @@ abel-float{
 }
 
 .form-control:focus{
-    border-color: #95c70d !important;
-    -webkit-box-shadow: 0px 0px 10px 6px #EAEAEA !important; 
-    box-shadow: 0px 0px 10px 6px #EAEAEA !important;
+    border-color: #e83b62 !important;
+    -webkit-box-shadow: 0px 0px 18px 0px rgba(232,59,98,0.45), 0px 0px 18px 0px rgba(232,59,98,0.45) !important; 
+    box-shadow: 0px 0px 18px 0px rgba(232,59,98,0.45), 0px 0px 18px 0px rgba(232,59,98,0.45) !important;
 }
 
 
@@ -824,8 +823,8 @@ abel-float{
 
 }
 tr.ui-autocomplete-item.ui-autocomplete-row.ui-widget-content.ui-corner-all.ui-state-highlight{
-    background: #95c70d !important;
-    border: 1px solid #95c70d !important;
+    background: #e83b62 !important;
+    border: 1px solid #e83b62 !important;
     box-shadow: none !important;
     text-shadow: none !important;
     color: white !important;
@@ -853,14 +852,14 @@ tr.ui-autocomplete-item.ui-autocomplete-row.ui-widget-content.ui-corner-all.ui-s
 }
 .ui-wizard-nav-back{
     background: white!important;
-    border: 1px solid #95c70d !important;
-    color: #95c70d !important;
+    border: 1px solid #e83b62 !important;
+    color: #e83b62 !important;
 }
 
 .card{
     padding-top: 15px;
     padding-bottom: 15px;
-    background: #95c70d !important;
+    background: #e83b62 !important;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: white;
@@ -874,7 +873,7 @@ tr.ui-autocomplete-item.ui-autocomplete-row.ui-widget-content.ui-corner-all.ui-s
 .card2{
     padding-top: 10px;
     padding-bottom: 5px;
-    background: #95c70d !important;
+    background: #e83b62 !important;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: white;
@@ -894,8 +893,8 @@ tr.ui-autocomplete-item.ui-autocomplete-row.ui-widget-content.ui-corner-all.ui-s
 }
 
 .box-selected{
-    -webkit-box-shadow: 0px 0px 10px 6px #666666; 
-    box-shadow: 0px 0px 10px 6px #666666;
+    -webkit-box-shadow: 0px 0px 18px 0px rgba(232,59,98,0.45), 0px 0px 18px 0px rgba(232,59,98,0.45) !important; 
+    box-shadow: 0px 0px 18px 0px rgba(232,59,98,0.45), 0px 0px 18px 0px rgba(232,59,98,0.45) !important;
     opacity: 1;
     -webkit-transition: opacity 1s ease-in-out;
     -moz-transition: opacity 1s ease-in-out;
@@ -922,4 +921,10 @@ button, a{
 
 }
 
-.ui-selectonemenu-item:hover{background:#cccccc !important;border:none !important;color:white !important;border-radius:0px !important;}5
+.no-padding{
+    padding: 0 !important;
+}
+
+#customCheckbox {
+    width: 100% !important;
+}

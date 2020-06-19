@@ -54,6 +54,7 @@ public class OrderMB implements Serializable {
     public String horario = "";
     private String ord;
     private String dia = "";
+    String menuOnly = "0";
 
     private String bairroManual;
     private List<Bairro> bairros = new ArrayList();
@@ -95,6 +96,7 @@ public class OrderMB implements Serializable {
         } else {
             idCompany = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
         }
+
         if (idCompany == null) {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String url = request.getRequestURL().toString().replace("index.jsf", "") + "notfound/";
@@ -102,6 +104,12 @@ public class OrderMB implements Serializable {
         } else {
             try {
                 company = categoriaService.loadCompany(idCompany);
+
+                menuOnly = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("menu");
+                if (menuOnly != null && menuOnly == "1") {
+                    company.setOnlyMeny(true);
+                }
+
                 tratarEstabelecimentoAberto();
                 order.setDeliveryCost(company.getDeliveryCost());
                 order.getAddress().setCity((company.getAddress() != null && company.getAddress().getCity() != null) ? company.getAddress().getCity() : "");
@@ -124,9 +132,6 @@ public class OrderMB implements Serializable {
                     }
                     order.getClientInfo().setPhone(OUtils.formataNinePhone(phone));
                 }
-//                if (company.getBairros() != null) {
-//                    bairrosParams = company.getBairros();
-//                }
             } catch (Exception e) {
             }
         }
@@ -324,7 +329,7 @@ public class OrderMB implements Serializable {
             if (company.getDeliveryCost() != null) {
                 if (order.getAddress().getAuto() != null) {
                     if (order != null && order.getDelivery()) {
-                        order.setDeliveryCost(company.getDeliveryCost());
+                        validarTaxaServico();
                     } else {
                         order.setDeliveryCost(BigDecimal.ZERO);
                     }
@@ -726,8 +731,10 @@ public class OrderMB implements Serializable {
     }
 
     public List<Bairro> listaBairros() {
-        System.out.println("TAXA UNICA? " + company.getUniqueTax());
-        if (company.getUniqueTax()) {
+        if (company == null || company.getId() == null) {
+            return new ArrayList();
+        }
+        if (company.getUniqueDeliveryCost()) {
             if (company.getAddress().getCity() != null) {
                 try {
                     List<String> bairros = categoriaService.getBairros(company.getAddress().getCity());
@@ -773,7 +780,9 @@ public class OrderMB implements Serializable {
         if (order.getAddress().getAuto() != null) {
             Optional<Bairro> find = bairros.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
             if (find.isPresent()) {
-                order.setDeliveryCost(find.get().getTaxa());
+                Bairro found = find.get();
+                System.out.println("Bairro: " + found);
+                order.setDeliveryCost(found.getTaxa());
                 calcularTotal();
             }
         }
@@ -907,16 +916,14 @@ public class OrderMB implements Serializable {
     public String formatarMoedaTaxa(Bairro bairro) {
         StringBuilder content = new StringBuilder();
         content.append("<div class='row'>");
-        content.append("<div class='col-xs-12'><strong>" + bairro.getBairro() + "</strong> </div><br/>");
-        System.out.println("BAIRRO: "+bairro.getBairro()+" / "+bairro.getTaxa().doubleValue());
+        content.append("<div class='col-xs-12'><strong>" + bairro.getBairro() + "</strong> </div>");
         if (bairro.getTaxa().doubleValue() == 0.00 || bairro.getTaxa() == null) {
-            content.append("<div class='col-xs-12'><small style='font-weight: bolder;color: #95c70d;'>Entrega Grátis</small> </div>");
+            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;color: #95c70d;'>Entrega Grátis</small> </div>");
         } else {
-            content.append("<div class='col-xs-12'><small style='font-weight: bolder;color: #31353d;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
+            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
         }
         content.append("<div class='col-xs-12'><hr style='margin-top: 0;margin-bottom: 0;border-color: #95c70d;' /></div>");
         content.append("</div>");
-        System.out.println(content.toString());
         return content.toString();
     }
 }

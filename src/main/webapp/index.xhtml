@@ -49,7 +49,7 @@
                     <div class="container-fluid" style="padding: 30px;">
                         <div class="row">
                             <div class="col-xs-12" style="    text-align: center;">
-                                <img src="#{orderMB.company.logo}" style="    border-radius: 50%;     max-width: 215px;" class="img-reponsive"/>
+                                <img src="#{orderMB.company.logo}" style="border-radius: 10%; max-width: 215px;" class="img-reponsive"/>
                             </div>
                         </div>
 
@@ -121,7 +121,7 @@
                                                          border-color: #2f8a39;
                                                          height: 45px !important;
                                                          box-shadow: none;
-                                                         margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
+                                                         margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" rendered="#{!orderMB.company.onlyMenu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
                                     </div>
                                 </div>
                             </footer>

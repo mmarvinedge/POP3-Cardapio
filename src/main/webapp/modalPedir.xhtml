@@ -21,7 +21,7 @@
                 </div>
                 <div class="image" style="margin-top: 10px;">
                     <center>
-                        <img  role="presentation" src="#{orderMB.product.imageBase64}"  style="max-width:  98px; max-height: 98px; border-radius: 50%; margin-bottom: 10px;"/><br/>
+                        <img  role="presentation" src="#{orderMB.product.imageBase64}"  style="max-width:  98px; max-height: 98px; border-radius: 15%; margin-bottom: 10px;"/><br/>
                         <small style="color: white; text-justify: auto; margin-top: 5px; text-transform: lowercase; font-weight: 300;">
                             #{orderMB.product.description}
                         </small>
@@ -40,7 +40,7 @@
                                 <div>
                                     <div class="lbl-adicionais">Selecione até #{orderMB.item.product.maxPizza} sabor(es)</div>
                                     <div class="adicionais">
-                                        <p:selectManyCheckbox value="#{orderMB.item.flavors}" converter="Converter" class="sizeGrid" id="customCheckbox" layout="grid" columns="1"  >
+                                        <p:selectManyCheckbox value="#{orderMB.item.flavors}" converter="Converter" style="width: 100% !important" id="customCheckbox" layout="grid" columns="1"  >
                                             <f:selectItems value="#{orderMB.item.product.flavorsPizza}" var="flav"  itemLabelEscaped="false"
                                                            itemLabel="#{flav.htmlGetFlavor(orderMB.item)}" itemValue="#{flav}" 
                                                            itemDisabled="#{orderMB.item.flavors.size() == orderMB.item.product.maxPizza and orderMB.item.flavors.indexOf(flav) == -1}"
@@ -98,14 +98,14 @@
 
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
-                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this"  placeholder="Recado Ex: Sem Cebola, mal passado" style="margin-bottom: 0px;"/>
+                            <b:inputTextarea rows="2" value="#{orderMB.item.obs}" update="@this"  placeholder="Digite aqui seu recado. Ex: Sem cebola, mal passado" style="margin-bottom: 0px;" rendered="#{!orderMB.company.onlyMenu}"/>
                         </div>
                     </div>
                     <p:remoteCommand name="complete" action="#{orderMB.change()}" />
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-left" style="padding-left: 25px;padding-right: 25px;">
-                            <b:touchSpin id="spin1"   min="1" max="50" step="1" value="#{orderMB.item.quantity}" style="text-align: center;     " 
-                                         style-class="ipt-touch"   onchange="PF('ldga').show(); complete(); PF('ldga').hide();"    >
+                            <b:touchSpin id="spin1" min="1" max="50" step="1" value="#{orderMB.item.quantity}" style="text-align: center;"  rendered="#{!orderMB.company.onlyMenu}"
+                                         style-class="ipt-touch" onkeydown="return false"  onchange="PF('ldga').show(); complete(); PF('ldga').hide();"    >
                             </b:touchSpin>
                         </div>
 
@@ -113,7 +113,7 @@
 
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
                             <p:messages id="msgs" closable="true" />
-                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();"  style="padding: 15px;    border-radius: 25px !important; background: #2f8a39 !important;"
+                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{orderMB.addCart()}"  rendered="#{!orderMB.company.onlyMenu}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();"  style="padding: 15px;    border-radius: 25px !important; background: #2f8a39 !important;"
                                            update=":grpNumbers,:frmMySide, pnlend,frmModal:msgs" disabled="#{orderMB.fechado}">
                                 <div class="row">
                                     <div class="col-xs-5 text-left bold">
