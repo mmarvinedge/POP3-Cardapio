@@ -32,7 +32,7 @@ public class OrderService {
         }
         Order order = new Order();
         Request request = new Request.Builder()
-                .url(Constantes.URL + "/order/lastByPhone/" + phone)
+                .url(Constantes.URL + "/order/lastByPhoneInCompany/" + phone)
                 .header("company_id", idCompany)
                 .get()
                 .build();

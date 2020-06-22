@@ -77,4 +77,15 @@ public class OUtils {
             return "R$ " + val;
         }
     }
+
+    public static Date getDataByTexto(String data, String formato) {
+        try {
+            Date date = null;
+            DateFormat formatter = new SimpleDateFormat(formato);
+            date = (java.util.Date) formatter.parse(data);
+            return date;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

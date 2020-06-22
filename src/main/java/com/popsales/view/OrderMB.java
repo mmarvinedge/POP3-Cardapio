@@ -10,14 +10,17 @@ import com.popsales.model.AttributeValue;
 import com.popsales.model.Bairro;
 import com.popsales.model.Category;
 import com.popsales.model.Company;
+import com.popsales.model.CouponCode;
 import com.popsales.model.Item;
 import com.popsales.model.Merchant;
 import com.popsales.model.Order;
 import com.popsales.model.Product;
 import com.popsales.model.dto.EnderecoDTO;
 import com.popsales.services.CategoryServices;
+import com.popsales.services.CompanyService;
 import com.popsales.services.OrderService;
 import com.popsales.util.OUtils;
+import com.popsales.util.PrimefacesUtil;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -34,6 +37,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -64,19 +68,25 @@ public class OrderMB implements Serializable {
 
     CategoryServices categoriaService = new CategoryServices();
     OrderService orderService = new OrderService();
+    CompanyService companyService = new CompanyService();
 
     private String idCompany = null;
     private Company company = new Company();
     private List<Category> categories = new ArrayList();
     private List<Product> products = new ArrayList();
     private List<Product> productsPromo = new ArrayList();
+    private List<CouponCode> coupons = new ArrayList();
     private Product product = new Product();
     private Category categorySelected = new Category();
     private Item item = new Item();
     private Order order = new Order();
+    private CouponMB couponMB = new CouponMB();
     private List<AttributeValue>[] adicionais;
     private List<List<AttributeValue>> adicionaisArray = new ArrayList();
     private BigDecimal totalAdicionais = BigDecimal.ZERO;
+    private String couponCode = "";
+    private Boolean couponValid = false;
+    private Order lastOrder = new Order();
 
     public OrderMB() {
         receber = true;
@@ -88,6 +98,7 @@ public class OrderMB implements Serializable {
                 Company cop = categoriaService.loadCompanyName(name);
                 if (cop != null) {
                     company = cop;
+                    coupons = company.getCoupons();
                     idCompany = company.getId();
                 }
             } catch (Exception ex) {
@@ -110,15 +121,15 @@ public class OrderMB implements Serializable {
                     String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
                     try {
                         System.out.println("telefoneeeeeeeeeeeeee " + OUtils.formataNinePhone(phone));
-                        Order o = new Order();
-                        o = orderService.lastOrderByPhone(idCompany, phone);
-                        if (o != null) {
-                            if (o.getAddress().getCity().equalsIgnoreCase(company.getAddress().getCity())) {
-                                order.setAddress(o.getAddress());
+                        lastOrder = orderService.lastOrderByPhone(idCompany, phone);
+                        System.out.println("date do ultimo pedido " + lastOrder.getDtRegister().substring(0, 10));
+                        if (lastOrder != null) {
+                            if (lastOrder.getAddress().getCity().equalsIgnoreCase(company.getAddress().getCity())) {
+                                order.setAddress(lastOrder.getAddress());
                             } else {
                                 order.getAddress().setCity(company.getAddress().getCity());
                             }
-                            order.getClientInfo().setName(o.getClientInfo().getName());
+                            order.getClientInfo().setName(lastOrder.getClientInfo().getName());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -281,6 +292,7 @@ public class OrderMB implements Serializable {
         } else if (dia.equals("Sab") || dia.equals("Sat")) {
             return p.getProductDay().getNaoVenderSab() == true;
         } else {
+            System.out.println("else");
             return false;
         }
     }
@@ -418,6 +430,13 @@ public class OrderMB implements Serializable {
         order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()));
     }
 
+    private void calcularDescontoCupom(BigDecimal desconto) {
+        BigDecimal discount = order.getTotal().multiply(desconto).divide(BigDecimal.valueOf(100));
+        System.out.println("desconto no valor de " + discount);
+        order.setDiscountValue(discount);
+        order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(discount));
+    }
+
     public void removeCart(Item i) {
         order.getProducts().remove(i);
         order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
@@ -488,7 +507,14 @@ public class OrderMB implements Serializable {
                     }
                 }
             }
-
+            if (couponValid) {
+                for (CouponCode c : company.getCoupons()) {
+                    if (c.getSlug().equalsIgnoreCase(couponCode)) {
+                        c.setCount(c.getCount() + 1);
+                        companyService.saveCompany(company);
+                    }
+                }
+            }
             categoriaService.sendOrder(order, idCompany);
             order = new Order();
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
@@ -681,7 +707,12 @@ public class OrderMB implements Serializable {
         } else {
             item.setPrice(BigDecimal.ZERO);
         }
-        item.setTotal(item.getPrice().multiply(item.getQuantity()));
+        System.out.println(item.getTotalAds());
+        if (item.getTotalAds() != null) {
+            item.setTotal(item.getPrice().multiply(item.getQuantity()).add(item.getTotalAds()));
+        } else {
+            item.setTotal(item.getPrice().multiply(item.getQuantity()));
+        }
 
     }
 
@@ -936,6 +967,73 @@ public class OrderMB implements Serializable {
                 + "                                                            </center>\n"
                 + "                                                        </div>\n"
                 + "                                                    </div></div>";
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
+    }
+
+    public Boolean getCouponValid() {
+        return couponValid;
+    }
+
+    public void setCouponValid(Boolean couponValid) {
+        this.couponValid = couponValid;
+    }
+
+    public void applyCoupon() throws Exception {
+        if (lastOrder != null) {
+            if (couponMB.couponValid(coupons, couponCode, lastOrder).equals("true")) {
+                for (CouponCode c : company.getCoupons()) {
+                    if (c.getSlug().equalsIgnoreCase(couponCode)) {
+                        System.out.println(company.getCoupons().toString());
+                        order.setCoupon(couponCode);
+                        calcularDescontoCupom(c.getDiscount());
+                        couponValid = true;
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
+                        PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                        System.out.println("apliquei o cupom");
+                    }
+                }
+            } else if (couponMB.couponValid(coupons, couponCode, lastOrder).equals("onetime")) {
+                couponValid = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom já foi utilizado hoje!", "Cupom já foi utilizado hoje!"));
+                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                couponCode = "";
+            } else if (couponMB.couponValid(coupons, couponCode, lastOrder).equals("expired")) {
+                couponValid = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom atingiu o limite máximo de utilizações!", "Cupom atingiu o limite máximo de utilizações!"));
+                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                couponCode = "";
+            } else {
+                couponValid = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom inválido!", "Cupom inválido!"));
+                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                couponCode = "";
+            }
+        } else {
+            if (couponMB.checkCouponNoOrder(coupons, couponCode).equalsIgnoreCase("true")) {
+                for (CouponCode c : company.getCoupons()) {
+                    if (c.getSlug().equalsIgnoreCase(couponCode)) {
+                        System.out.println(company.getCoupons().toString());
+                        order.setCoupon(couponCode);
+                        calcularDescontoCupom(c.getDiscount());
+                        couponValid = true;
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
+                        PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                    }
+                }
+            } else {
+                couponValid = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom inválido!", "Cupom inválido!"));
+                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                couponCode = "";
+            }
+        }
     }
 
 }
