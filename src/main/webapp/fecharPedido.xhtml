@@ -182,13 +182,14 @@
                                         <div class="col-xs-12">
                                             <center>
                                                 <p:outputLabel value="Escolha a forma de Pagamento"  style=" margin-bottom: 5px !important;"/>
+                                                <p:selectOneRadio value="#{orderMB.order.forma}" styleClass="customone">
+                                                    <f:selectItem itemLabel="#{orderMB.cardDinheiro(orderMB.order.forma == 'Dinheiro')}" itemEscaped="false" itemValue="Dinheiro"  />
+                                                    <f:selectItem itemLabel="#{orderMB.cardCartaoCredito(orderMB.order.forma == 'Cartão de Crédito','Crédito')}" itemEscaped="false" itemValue="Cartão de Crédito" />
+                                                    <f:selectItem itemLabel="#{orderMB.cardCartaoCredito(orderMB.order.forma == 'Cartão de Débito','Débito')}" itemEscaped="false" itemValue="Cartão de Débito" />
+                                                    <p:ajax event="change" update="grpTroco, @this" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                                                </p:selectOneRadio>
                                             </center>
-                                            <p:selectOneRadio value="#{orderMB.order.forma}" styleClass="customone">
-                                                <f:selectItem itemLabel="#{orderMB.cardDinheiro(orderMB.order.forma == 'Dinheiro')}" itemEscaped="false" itemValue="Dinheiro"  />
-                                                <f:selectItem itemLabel="#{orderMB.cardCartaoCredito(orderMB.order.forma == 'Cartão de Crédito','Crédito')}" itemEscaped="false" itemValue="Cartão de Crédito" />
-                                                <f:selectItem itemLabel="#{orderMB.cardCartaoCredito(orderMB.order.forma == 'Cartão de Débito','Débito')}" itemEscaped="false" itemValue="Cartão de Débito" />
-                                                <p:ajax event="change" update="grpTroco, @this" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
-                                            </p:selectOneRadio>
+
                                             <hr/>
                                         </div>
                                         <h:panelGroup id="grpTroco" style="margin-top: 5px;">
@@ -201,12 +202,34 @@
                                                 </div>
                                                 <div class="col-xs-9">
                                                     <h:panelGroup id="gpTroco" >
-                                                        <b:inputText type="number" id="iptTroco" label="Para quanto?"  value="#{orderMB.order.trocoPara}"  rendered="#{orderMB.order.troco}"/>
+                                                        <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{orderMB.order.trocoPara}" required="true" 
+                                                                     requiredMessage="Troco para quanto?"  rendered="#{orderMB.order.troco}"/>
                                                     </h:panelGroup>
                                                 </div>
                                             </h:panelGroup>
                                         </h:panelGroup>
-
+                                        <div class="col-xs-12">
+                                            <hr/>
+                                        </div>
+                                        <h:panelGroup id="grpCoupon" rendered="#{orderMB.company.worksCoupon}">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="col-sm-4 col-xs-7" style="padding-right: 0px !important">
+                                                        <b:inputText id="couponCode" disabled="#{orderMB.couponValid}" value="#{orderMB.couponCode}" style="width: 100% !important" placeholder="Cupom de desconto">
+                                                            <p:ajax event="blur" update="@this"/>
+                                                        </b:inputText>
+                                                    </div>
+                                                    <div class="col-sm-2 col-xs-5" style="padding-left: 5px !important">
+                                                        <p:commandLink value="APLICAR" styleClass="btn btn-primary" style="height: 34px !important; color: white;  display: grid;" action="#{orderMB.applyCoupon()}"
+                                                                       update="wizard" immediate="true" disabled="#{orderMB.couponValid}"  />
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <p:messages id="msgsCoupon" closable="true"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </h:panelGroup>
+                                        <hr/>
                                         <div class="col-xs-6" >
                                             <strong>Subtotal</strong>
                                         </div>
@@ -222,6 +245,16 @@
                                                 </div>
                                                 <div class="col-xs-6" >
                                                     <b:inputText value="#{orderMB.order.deliveryCost}" readonly="true" styleClass="text-right" >
+                                                        <f:convertNumber type="currency" />
+                                                    </b:inputText>
+                                                </div>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{orderMB.couponValid}">
+                                                <div class="col-xs-6" >
+                                                    <strong>Cupom de desconto</strong>
+                                                </div>
+                                                <div class="col-xs-6" >
+                                                    <b:inputText value="#{orderMB.order.discountValue}" readonly="true" styleClass="text-right" >
                                                         <f:convertNumber type="currency" />
                                                     </b:inputText>
                                                 </div>

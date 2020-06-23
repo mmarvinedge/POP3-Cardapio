@@ -31,6 +31,8 @@ public class Company {
     private String aproxTime;
     private Boolean uniqueDeliveryCost;
     private Boolean onlyMenu;
+    private Boolean worksCoupon;
+    private List<CouponCode> coupons;
 
     public String getId() {
         return id;
@@ -186,5 +188,23 @@ public class Company {
     }
     
     
+    public Boolean getWorksCoupon() {
+        if(worksCoupon == null) {
+            worksCoupon = false;
+        }
+        return worksCoupon;
+    }
+
+    public void setWorksCoupon(Boolean worksCoupon) {
+        this.worksCoupon = worksCoupon;
+    }
+
+    public List<CouponCode> getCoupons() {
+        return coupons;
+    }
+
+    public void setCoupons(List<CouponCode> coupons) {
+        this.coupons = coupons;
+    }
 
 }
