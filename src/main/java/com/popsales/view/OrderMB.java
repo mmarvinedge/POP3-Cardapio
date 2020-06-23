@@ -18,6 +18,7 @@ import com.popsales.model.Product;
 import com.popsales.model.dto.EnderecoDTO;
 import com.popsales.services.CategoryServices;
 import com.popsales.services.CompanyService;
+import com.popsales.services.CouponService;
 import com.popsales.services.OrderService;
 import com.popsales.util.OUtils;
 import com.popsales.util.PrimefacesUtil;
@@ -27,7 +28,6 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +43,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FlowEvent;
+import static org.primefaces.shaded.commons.io.IOUtils.skip;
 
 /**
  *
@@ -58,10 +59,10 @@ public class OrderMB implements Serializable {
     public String horario = "";
     private String ord;
     private String dia = "";
+    String menuOnly = "0";
 
     private String bairroManual;
     private List<Bairro> bairros = new ArrayList();
-    private List<Bairro> bairrosParams = new ArrayList();
 
     private List<EnderecoDTO> enderecos = new ArrayList();
     private EnderecoDTO enderecoFiltro;
@@ -69,6 +70,7 @@ public class OrderMB implements Serializable {
     CategoryServices categoriaService = new CategoryServices();
     OrderService orderService = new OrderService();
     CompanyService companyService = new CompanyService();
+    CouponService couponService = new CouponService();
 
     private String idCompany = null;
     private Company company = new Company();
@@ -107,6 +109,7 @@ public class OrderMB implements Serializable {
         } else {
             idCompany = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
         }
+
         if (idCompany == null) {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String url = request.getRequestURL().toString().replace("index.jsf", "") + "notfound/";
@@ -114,6 +117,12 @@ public class OrderMB implements Serializable {
         } else {
             try {
                 company = categoriaService.loadCompany(idCompany);
+
+                menuOnly = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("menu");
+                if (menuOnly != null && menuOnly == "1") {
+                    company.setOnlyMeny(true);
+                }
+
                 tratarEstabelecimentoAberto();
                 order.setDeliveryCost(company.getDeliveryCost());
                 order.getAddress().setCity((company.getAddress() != null && company.getAddress().getCity() != null) ? company.getAddress().getCity() : "");
@@ -135,9 +144,6 @@ public class OrderMB implements Serializable {
                         e.printStackTrace();
                     }
                     order.getClientInfo().setPhone(OUtils.formataNinePhone(phone));
-                }
-                if (company.getBairros() != null) {
-                    bairrosParams = company.getBairros();
                 }
             } catch (Exception e) {
             }
@@ -299,7 +305,7 @@ public class OrderMB implements Serializable {
 
     @PostConstruct
     public void init() {
-
+        System.out.println("POST CONSTRUC");
         loadCategorias();
         listaBairros();
     }
@@ -309,7 +315,6 @@ public class OrderMB implements Serializable {
             if (idCompany == null) {
             }
             categories = categoriaService.getCategoryList(idCompany);
-            categories.sort(Comparator.comparing((Category c) -> c.getName()));
             productsPromo = categoriaService.getProductsPromo(idCompany);
         } catch (Exception ex) {
             System.out.println("NAO FOI POSSIVEL CARREGAR O ID COMPANY");
@@ -335,21 +340,18 @@ public class OrderMB implements Serializable {
     public void adicionarRemoverTaxa() {
         System.out.println("IS DELIVERY: " + order.getDelivery());
         if (order.getDelivery()) {
-            if (company.getUniqueDeliveryCost()) {
-                order.setDeliveryCost(company.getDeliveryCost());
+            if (company.getDeliveryCost() != null) {
+                if (order.getAddress().getAuto() != null) {
+                    if (order != null && order.getDelivery()) {
+                        validarTaxaServico();
+                    } else {
+                        order.setDeliveryCost(BigDecimal.ZERO);
+                    }
+                    System.out.println("ORDER: " + order.getDeliveryCost());
+                }
+            } else {
+
             }
-//            if (company.getDeliveryCost() != null) {
-//                if (order.getAddress().getAuto() != null) {
-//                    if (order != null && order.getDelivery()) {
-//                        order.setDeliveryCost(company.getDeliveryCost());
-//                    } else {
-//                        order.setDeliveryCost(BigDecimal.ZERO);
-//                    }
-//                    System.out.println("ORDER: " + order.getDeliveryCost());
-//                }
-//            } else {
-//
-//            }
         } else {
             order.setDeliveryCost(BigDecimal.ZERO);
         }
@@ -521,6 +523,7 @@ public class OrderMB implements Serializable {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
             order.setDelivery(true);
+            order.setTroco(false);
             order.setDeliveryCost(company.getDeliveryCost());
             PrimeFaces.current().executeScript("finalizarPedido();");
             PrimeFaces.current().executeScript("PF('ldg').hide()");
@@ -783,25 +786,27 @@ public class OrderMB implements Serializable {
     }
 
     public List<Bairro> listaBairros() {
-        System.out.println(company.getUniqueDeliveryCost());
-        if (company.getAddress() != null) {
-            if (company.getUniqueDeliveryCost()) {
-                if (company.getAddress().getCity() != null) {
-                    try {
-                        List<String> bairros = categoriaService.getBairros(company.getAddress().getCity());
-                        for (String bairro : bairros) {
-                            this.bairros.add(new Bairro(bairro, company.getDeliveryCost()));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+        if (company == null || company.getId() == null) {
+            return new ArrayList();
+        }
+        if (company.getUniqueDeliveryCost()) {
+            if (company.getAddress().getCity() != null) {
+                try {
+                    List<String> bairros = categoriaService.getBairros(company.getAddress().getCity());
+                    for (String bairro : bairros) {
+                        this.bairros.add(new Bairro(bairro, company.getDeliveryCost()));
                     }
-                }
-            } else {
-                for (Bairro bairrosParam : bairrosParams) {
-                    this.bairros.add(new Bairro(bairrosParam.getBairro(), bairrosParam.getTaxa()));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+        } else {
+            for (Bairro bairrosParam : company.getBairros()) {
+                this.bairros.add(new Bairro(bairrosParam.getBairro(), bairrosParam.getTaxa()));
+            }
+
         }
+        System.out.println("TEM " + bairros.size());
         return bairros;
     }
 
@@ -826,16 +831,14 @@ public class OrderMB implements Serializable {
     }
 
     public void validarTaxaServico() {
-        if (company.getUniqueDeliveryCost()) {
-            order.setDeliveryCost(company.getDeliveryCost());
-            calcularTotal();
-        } else {
-            if (order.getAddress().getAuto() != null) {
-                Optional<Bairro> find = bairrosParams.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
-                if (find.isPresent()) {
-                    order.setDeliveryCost(find.get().getTaxa());
-                    calcularTotal();
-                }
+
+        if (order.getAddress().getAuto() != null) {
+            Optional<Bairro> find = bairros.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
+            if (find.isPresent()) {
+                Bairro found = find.get();
+                System.out.println("Bairro: " + found);
+                order.setDeliveryCost(found.getTaxa());
+                calcularTotal();
             }
         }
     }
@@ -875,11 +878,7 @@ public class OrderMB implements Serializable {
         PrimeFaces.current().ajax().update("frmFechar:endereco");
 
         adicionarRemoverTaxa();
-        if (company.getUniqueDeliveryCost()) {
-            order.setDeliveryCost(company.getDeliveryCost());
-        } else {
-            validarTaxaServico();
-        }
+        validarTaxaServico();
         PrimeFaces.current().executeScript("$('.numberHome').focus()");
     }
 
@@ -969,6 +968,20 @@ public class OrderMB implements Serializable {
                 + "                                                    </div></div>";
     }
 
+    public String formatarMoedaTaxa(Bairro bairro) {
+        StringBuilder content = new StringBuilder();
+        content.append("<div class='row'>");
+        content.append("<div class='col-xs-12'><strong>" + bairro.getBairro() + "</strong> </div>");
+        if (bairro.getTaxa().doubleValue() == 0.00 || bairro.getTaxa() == null) {
+            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;color: #95c70d;'>Entrega Grátis</small> </div>");
+        } else {
+            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
+        }
+        content.append("<div class='col-xs-12'><hr style='margin-top: 0;margin-bottom: 0;border-color: #95c70d;' /></div>");
+        content.append("</div>");
+        return content.toString();
+    }
+    
     public String getCouponCode() {
         return couponCode;
     }
@@ -986,8 +999,10 @@ public class OrderMB implements Serializable {
     }
 
     public void applyCoupon() throws Exception {
+        List<CouponCode> couponsCompany = new ArrayList();
+        couponsCompany = couponService.couponsByCompany(company.getId());
         if (lastOrder != null) {
-            if (couponMB.couponValid(coupons, couponCode, lastOrder).equals("true")) {
+            if (couponMB.couponValid(couponsCompany, couponCode, lastOrder).equals("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
                         System.out.println(company.getCoupons().toString());
@@ -999,12 +1014,12 @@ public class OrderMB implements Serializable {
                         System.out.println("apliquei o cupom");
                     }
                 }
-            } else if (couponMB.couponValid(coupons, couponCode, lastOrder).equals("onetime")) {
+            } else if (couponMB.couponValid(couponsCompany, couponCode, lastOrder).equals("onetime")) {
                 couponValid = false;
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom já foi utilizado hoje!", "Cupom já foi utilizado hoje!"));
                 PrimefacesUtil.Update(":frmFechar:msgsCoupon");
                 couponCode = "";
-            } else if (couponMB.couponValid(coupons, couponCode, lastOrder).equals("expired")) {
+            } else if (couponMB.couponValid(couponsCompany, couponCode, lastOrder).equals("expired")) {
                 couponValid = false;
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom atingiu o limite máximo de utilizações!", "Cupom atingiu o limite máximo de utilizações!"));
                 PrimefacesUtil.Update(":frmFechar:msgsCoupon");
@@ -1016,7 +1031,7 @@ public class OrderMB implements Serializable {
                 couponCode = "";
             }
         } else {
-            if (couponMB.checkCouponNoOrder(coupons, couponCode).equalsIgnoreCase("true")) {
+            if (couponMB.checkCouponNoOrder(couponsCompany, couponCode).equalsIgnoreCase("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
                         System.out.println(company.getCoupons().toString());

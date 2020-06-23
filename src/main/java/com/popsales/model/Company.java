@@ -25,10 +25,12 @@ public class Company {
     private TimeOpen time;
     private String funcionamento;
     private String messageWelcome;
+
     private List<Bairro> bairros;
     private String nameUrl;
     private String aproxTime;
     private Boolean uniqueDeliveryCost;
+    private Boolean onlyMenu;
     private Boolean worksCoupon;
     private List<CouponCode> coupons;
 
@@ -161,7 +163,11 @@ public class Company {
 
     public Boolean getUniqueDeliveryCost() {
         if (uniqueDeliveryCost == null) {
-            uniqueDeliveryCost = true;
+            if (bairros != null && bairros.size() > 0) {
+                uniqueDeliveryCost = false;
+            } else {
+                uniqueDeliveryCost = true;
+            }
         }
         return uniqueDeliveryCost;
     }
@@ -170,6 +176,18 @@ public class Company {
         this.uniqueDeliveryCost = uniqueDeliveryCost;
     }
 
+    public Boolean getOnlyMenu() {
+        if(onlyMenu == null){
+            onlyMenu = false;
+        }
+        return onlyMenu;
+    }
+
+    public void setOnlyMeny(Boolean onlyMenu) {
+        this.onlyMenu = onlyMenu;
+    }
+    
+    
     public Boolean getWorksCoupon() {
         return worksCoupon;
     }

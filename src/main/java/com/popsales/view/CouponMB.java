@@ -41,6 +41,8 @@ public class CouponMB {
                                     // este cliente usou esse cupom porém não foi hoje
                                     return "true";
                                 }
+                            } else if (!lastOrder.getCoupon().equalsIgnoreCase(couponCode)) {
+                                return "true";
                             }
                         } else {
                             // esse número não utilizou um cupom no seu último pedido
