@@ -189,6 +189,9 @@ public class Company {
     
     
     public Boolean getWorksCoupon() {
+        if(worksCoupon == null) {
+            worksCoupon = false;
+        }
         return worksCoupon;
     }
 
