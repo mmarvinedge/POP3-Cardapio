@@ -33,6 +33,7 @@ public class Company {
     private Boolean onlyMenu;
     private Boolean worksCoupon;
     private List<CouponCode> coupons;
+    private Boolean freeVersion;
 
     public String getId() {
         return id;
@@ -177,7 +178,7 @@ public class Company {
     }
 
     public Boolean getOnlyMenu() {
-        if(onlyMenu == null){
+        if (onlyMenu == null) {
             onlyMenu = false;
         }
         return onlyMenu;
@@ -186,10 +187,9 @@ public class Company {
     public void setOnlyMeny(Boolean onlyMenu) {
         this.onlyMenu = onlyMenu;
     }
-    
-    
+
     public Boolean getWorksCoupon() {
-        if(worksCoupon == null) {
+        if (worksCoupon == null) {
             worksCoupon = false;
         }
         return worksCoupon;
@@ -205,6 +205,17 @@ public class Company {
 
     public void setCoupons(List<CouponCode> coupons) {
         this.coupons = coupons;
+    }
+
+    public Boolean getFreeVersion() {
+        if(freeVersion == null){
+            freeVersion = false;
+        }
+        return freeVersion;
+    }
+
+    public void setFreeVersion(Boolean freeVersion) {
+        this.freeVersion = freeVersion;
     }
 
 }
