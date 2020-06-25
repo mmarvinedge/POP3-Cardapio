@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>POP3 Consulta</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css' />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="256x256" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="128x128" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="64x64" />
+
+
+        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
+
+        <style>
+            body{
+                /*                line-height:1.3em;
+                                min-width:920px;*/
+                font-family: "Roboto",sans-serif;
+            }
+            .history-tl-container{
+                font-family: "Roboto",sans-serif;
+                width:100%;
+                margin:auto;
+                display:block;
+                position:relative;
+                text-align: center;
+            }
+            .history-tl-container ul.tl{
+                margin:20px 0;
+                padding:0;
+                display:inline-block;
+
+            }
+            .history-tl-container ul.tl li{
+                list-style: none;
+                margin:auto;
+                margin-left:130px;
+                min-height:50px;
+                /*background: rgba(255,255,0,0.1);*/
+                border-left:1px dashed #86D6FF;
+                padding:0 0 50px 30px;
+                position:relative;
+            }
+            .history-tl-container ul.tl li:last-child{ border-left:0;}
+            .history-tl-container ul.tl li::before{
+                position: absolute;
+                left: -18px;
+                top: -5px;
+                content: " ";
+                border: 8px solid rgba(255, 255, 255, 0.74);
+                border-radius: 500%;
+                background: #189f31;
+                height: 20px;
+                width: 20px;
+                transition: all 500ms ease-in-out;
+
+            }
+            .history-tl-container ul.tl li:hover::before{
+                border-color:  #258CC7;
+                transition: all 1000ms ease-in-out;
+            }
+            ul.tl li .item-title{
+            }
+            ul.tl li .item-detail{
+                color:rgba(0,0,0,0.5);
+                font-size:12px;
+            }
+            ul.tl li .timestamp{
+                color: #8D8D8D;
+                position: absolute;
+                width:100px;
+                left: -75%;
+                text-align: right;
+                font-size: 12px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <f:view locale="pt-BR">
+            <link href='//fonts.googleapis.com/css?family=Roboto:200,400,600' rel='stylesheet' type='text/css' />
+
+            <center>
+                Olá <strong>#{consultaMB.order.clientInfo.name}</strong>,<br/> acompanhe seu pedido abaixo!
+                <br/><br/>
+            </center>
+            <div class="history-tl-container">
+
+                <ul class="tl">
+                    <li class="tl-item" ng-repeat="item in retailer_history" style="display: #{consultaMB.dtRegistro == null ? 'none':''}">
+                        <div class="timestamp">
+                            <h:outputText value="#{consultaMB.formatarData(consultaMB.dtRegistro, 'Data')}" />
+                            <br/> 
+                            <h:outputText value="#{consultaMB.formatarData(consultaMB.dtRegistro, 'Hora')}" />
+                        </div>
+                        <div class="item-title">Registro do Pedido</div>
+                        <div class="item-detail"><i class="fa fa-clock-o"></i> Aguarde até ser aceito</div>
+                    </li>
+                    <li class="tl-item" ng-repeat="item in retailer_history" style="display: #{consultaMB.order.dtAcept == null ? 'none':''}">
+                        <div class="timestamp">
+                            <h:outputText value="#{consultaMB.formatarData(consultaMB.order.dtAcept, 'Data')}" />
+                            <br/>  
+                            <h:outputText value="#{consultaMB.formatarData(consultaMB.order.dtAcept, 'Hora')}" />
+                        </div>
+                        <div class="item-title">Aceite do pedido</div>
+                        <div class="item-detail"><i class="fa fa-check"></i> Seu pedido será feito</div>
+                    </li>
+                    <li class="tl-item" ng-repeat="item in retailer_history" style="display: #{consultaMB.order.dtDelivery == null ? 'none':''}">
+                        <div class="timestamp">
+                            <h:outputText value="#{consultaMB.formatarData(consultaMB.order.dtDelivery, 'Data')}" />
+                            <br/>
+                            <h:outputText value="#{consultaMB.formatarData(consultaMB.order.dtDelivery, 'Hora')}" />
+                        </div>
+                        <div class="item-title">Saiu para entrega</div>
+                        <div class="item-detail"><i class="fa fa-motorcycle"></i> Pedido já está chegando</div>
+                    </li>
+
+                    <li class="tl-item" ng-repeat="item in retailer_history" style="display: #{consultaMB.order.dtFinish == null ? 'none':''}">
+                        <div class="timestamp">
+                            <h:outputText value="#{consultaMB.formatarData(consultaMB.order.dtFinish, 'Data')}" />
+                            <br/> 
+                            <h:outputText value="#{consultaMB.formatarData(consultaMB.order.dtFinish, 'Hora')}" />
+                        </div>
+                        <div class="item-title">Pedido entregue</div>
+                        <div class="item-detail"><i class="fa fa-grin-wink"></i> Agradecemos a preferência =)</div>
+                    </li>
+                </ul>
+            </div>
+        </f:view>
+    </h:body>
+
+</html>
+

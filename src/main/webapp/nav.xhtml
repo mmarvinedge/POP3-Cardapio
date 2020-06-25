@@ -5,11 +5,14 @@
       xmlns:p="http://primefaces.org/ui">
     <div class="nav" id="myHeader">
         <div class="logo">
-            <img src="#{orderMB.company.logo}" style="    border-radius: 50%; margin-top: 5px;"/>
-            <div style="display: inline-grid; position: absolute;top: 10px;margin-left: 10px;">
-                <span style="color: white;font-weight: bolder;font-size: 15px;">#{orderMB.company.name}</span>
-                <small style="color: white;">#{orderMB.company.phone}</small>
-            </div>
+            <p:commandLink action="#{actionMB.setAcao('grupo')}"  onclick="PF('ldg').show()" oncomplete="PF('ldg').hide();" immediate="true"   style="color: #95c70d;">
+                <img src="#{orderMB.company.logo}" style="    border-radius: 50%; margin-top: 5px;"/>
+                <div style="display: inline-grid; position: absolute;top: 10px;margin-left: 10px;">
+                    <span style="color: white;font-weight: bolder;font-size: 15px;">#{orderMB.company.name}</span>
+                    <small style="color: white;">#{orderMB.company.phone}</small>
+                </div>
+            </p:commandLink>
+
 
         </div>
         <div class="cart">

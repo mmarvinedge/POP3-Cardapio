@@ -10,7 +10,7 @@
         <h:form id="frmModal" >
 
             <div class="hea" style="background: #31353d;padding: 15px; border-bottom-left-radius: 30px;border-bottom-right-radius: 30px; padding-top: 10px;">
-                
+
                 <div class="row">
                     <div class="col-xs-2">
                         <a type="button"  data-dismiss="modal" > <i class="fa fa-arrow-left fa-2x" style="color: white;"></i> </a>
@@ -104,12 +104,18 @@
                     <p:remoteCommand name="complete" action="#{orderMB.change()}" />
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-left" style="padding-left: 25px;padding-right: 25px;">
-                            <b:touchSpin id="spin1" min="1" max="50" step="1" value="#{orderMB.item.quantity}" style="text-align: center;"  rendered="#{!orderMB.company.onlyMenu}"
-                                         style-class="ipt-touch" onkeydown="return false"  onchange="PF('ldga').show(); complete(); PF('ldga').hide();"    >
-                            </b:touchSpin>
+                            <h:panelGroup rendered="#{orderMB.company.decimalQuantity}">
+                                <p:inputNumber  id="iptNum" value="#{orderMB.item.quantity}" style="text-align: center !important; margin-bottom: 5px !important;"  onblur="PF('ldga').show(); complete(); PF('ldga').hide();" minValue="0.100" required="true" requiredMessage="Informe a quantidade!"  />
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{!orderMB.company.decimalQuantity}">
+                                <b:touchSpin id="spin1" min="1" max="50" step="1" readonly="false"  value="#{orderMB.item.quantity}" style="text-align: center;"  
+                                             style-class="ipt-touch" onkeydown="return false"  onchange="PF('ldga').show(); complete(); PF('ldga').hide();"    >
+                                </b:touchSpin>
+                            </h:panelGroup>
+
                         </div>
 
-              
+
 
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 25px;padding-right: 25px; padding-bottom: 15px;">
                             <p:messages id="msgs" closable="true" />

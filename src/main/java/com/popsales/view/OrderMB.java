@@ -50,7 +50,7 @@ import static org.primefaces.shaded.commons.io.IOUtils.skip;
  * @author Renato
  */
 @ManagedBean
-@javax.faces.bean.ViewScoped
+@javax.faces.bean.SessionScoped
 public class OrderMB implements Serializable {
 
     public Boolean home = true;
@@ -91,9 +91,14 @@ public class OrderMB implements Serializable {
     private Order lastOrder = new Order();
 
     public OrderMB() {
+        constructor();
+    }
+
+    public void constructor() {
+        System.out.println("CONSTRUTOR");
         receber = true;
         enderecoFiltro = new EnderecoDTO();
-
+        order = new Order();
         String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
         if (name != null) {
             try {
@@ -117,7 +122,8 @@ public class OrderMB implements Serializable {
         } else {
             try {
                 company = categoriaService.loadCompany(idCompany);
-
+                coupons = company.getCoupons();
+                idCompany = company.getId();
                 menuOnly = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("menu");
                 if (menuOnly != null && menuOnly == "1") {
                     company.setOnlyMeny(true);
@@ -298,7 +304,6 @@ public class OrderMB implements Serializable {
         } else if (dia.equals("Sab") || dia.equals("Sat")) {
             return p.getProductDay().getNaoVenderSab() == true;
         } else {
-            System.out.println("else");
             return false;
         }
     }
@@ -310,6 +315,28 @@ public class OrderMB implements Serializable {
         listaBairros();
     }
 
+    public void preReload() {
+        System.out.println("PRE RELOAD");
+        String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
+        String reloadID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+
+        System.out.println("NAME: " + name);
+        System.out.println("ID: " + reloadID);
+
+        if ((name != null && company != null && company.getName() != null && !name.equals(company.getNameUrl())) || (name != null  && (company == null || company.getName() == null))) {
+            System.out.println("RECARREGAR");
+            constructor();
+            init();
+        } else {
+
+            if (reloadID != null && company != null && company.getId() != null && !reloadID.equals(company.getId())) {
+                constructor();
+                init();
+                System.out.println("RECARREGAR");
+            }
+        }
+    }
+
     private void loadCategorias() {
         try {
             if (idCompany == null) {
@@ -317,6 +344,7 @@ public class OrderMB implements Serializable {
             categories = categoriaService.getCategoryList(idCompany);
             productsPromo = categoriaService.getProductsPromo(idCompany);
         } catch (Exception ex) {
+            ex.printStackTrace();
             System.out.println("NAO FOI POSSIVEL CARREGAR O ID COMPANY");
         }
 
@@ -786,6 +814,7 @@ public class OrderMB implements Serializable {
     }
 
     public List<Bairro> listaBairros() {
+        this.bairros = new ArrayList();
         if (company == null || company.getId() == null) {
             return new ArrayList();
         }
@@ -981,7 +1010,7 @@ public class OrderMB implements Serializable {
         content.append("</div>");
         return content.toString();
     }
-    
+
     public String getCouponCode() {
         return couponCode;
     }
@@ -1049,6 +1078,17 @@ public class OrderMB implements Serializable {
                 couponCode = "";
             }
         }
+    }
+
+    public List<CouponCode> getCoupons() {
+        if (coupons == null) {
+            coupons = new ArrayList();
+        }
+        return coupons;
+    }
+
+    public void setCoupons(List<CouponCode> coupons) {
+        this.coupons = coupons;
     }
 
 }

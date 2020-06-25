@@ -43,10 +43,9 @@
                                         </div>
                                         <div class="col-xs-12" >
                                             <center><hr/>
-
                                                 <p:selectOneRadio value="#{orderMB.order.delivery}" >
-                                                    <f:selectItem itemEscaped="false" itemValue="true" itemLabel="#{orderMB.cardHome(orderMB.order.delivery)}" />
-                                                    <f:selectItem itemEscaped="false" itemValue="false" itemLabel="#{orderMB.cardStore(orderMB.order.delivery)}" />
+                                                    <f:selectItem itemEscaped="false" itemValue="true" itemLabel="#{orderMB.cardHome(orderMB.order.delivery)}" itemDisabled="#{!orderMB.company.deliveryOnly}"  />
+                                                    <f:selectItem itemEscaped="false" itemValue="false" itemLabel="#{orderMB.cardStore(orderMB.order.delivery)}" itemDisabled="#{!orderMB.company.withdrawalOnly}" />
                                                     <p:ajax event="change" update="wizard"   onstart="PF('ldg').show()" oncomplete="PF('ldg').hide();" listener="#{orderMB.adicionarRemoverTaxa()}"/>
                                                 </p:selectOneRadio>
 
@@ -194,13 +193,13 @@
                                         </div>
                                         <h:panelGroup id="grpTroco" style="margin-top: 5px;">
                                             <h:panelGroup rendered="#{orderMB.order.forma == 'Dinheiro'}">
-                                                <div class="col-xs-12" >
+                                                <div class="col-xs-4" >
                                                     <p:outputLabel value="Levar Troco?" /><br/>
                                                     <p:toggleSwitch label="Troco?" value="#{orderMB.order.troco}"  >
                                                         <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
                                                     </p:toggleSwitch>
                                                 </div>
-                                                <div class="col-xs-9">
+                                                <div class="col-xs-8">
                                                     <h:panelGroup id="gpTroco" >
                                                         <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{orderMB.order.trocoPara}" required="true" 
                                                                      requiredMessage="Troco para quanto?"  rendered="#{orderMB.order.troco}"/>
@@ -211,15 +210,15 @@
                                         <div class="col-xs-12">
                                             <hr/>
                                         </div>
-                                        <h:panelGroup id="grpCoupon" rendered="#{orderMB.company.worksCoupon}">
+                                        <h:panelGroup id="grpCoupon" rendered="#{orderMB.company.worksCoupon or orderMB.coupons.size() > 0}">
                                             <div class="row">
                                                 <div class="col-xs-12">
-                                                    <div class="col-sm-4 col-xs-7" style="padding-right: 0px !important">
+                                                    <div class="col-sm-4 col-xs-8" style="padding-right: 0px !important">
                                                         <b:inputText id="couponCode" disabled="#{orderMB.couponValid}" value="#{orderMB.couponCode}" style="width: 100% !important" placeholder="Cupom de desconto">
                                                             <p:ajax event="blur" update="@this"/>
                                                         </b:inputText>
                                                     </div>
-                                                    <div class="col-sm-2 col-xs-5" style="padding-left: 5px !important">
+                                                    <div class="col-sm-2 col-xs-4" style="padding-left: 5px !important">
                                                         <p:commandLink value="APLICAR" styleClass="btn btn-primary" style="height: 34px !important; color: white;  display: grid;" action="#{orderMB.applyCoupon()}"
                                                                        update="wizard" immediate="true" disabled="#{orderMB.couponValid}"  />
                                                     </div>
@@ -279,7 +278,7 @@
                                             </h:panelGroup>
                                             <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{orderMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid;" 
                                                            update="@form" 
-                                                           action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete=""/>
+                                                           action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
                                         </div>
                                     </div>
                                 </p:tab>

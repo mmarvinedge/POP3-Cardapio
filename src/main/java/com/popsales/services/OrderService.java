@@ -6,6 +6,7 @@
 package com.popsales.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.popsales.model.Order;
 import com.popsales.util.Constantes;
 import java.io.IOException;
@@ -21,6 +22,9 @@ import okhttp3.Response;
  */
 @Stateless
 public class OrderService {
+
+    Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd hh:mm:ss").create();
 
     private final OkHttpClient httpClient = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
@@ -44,13 +48,33 @@ public class OrderService {
             String json = response.body().string();
             System.out.println(json);
             System.out.println(response);
-            order = new Gson().fromJson(json, Order.class);
+            order = gson.fromJson(json, Order.class);
 
         } catch (Exception e) {
             e.printStackTrace();
             throw new IOException("Erro Carai");
         }
         return order;
+    }
 
+    public Order orderByID(String id) throws IOException, Exception {
+
+        Order order = new Order();
+        Request request = new Request.Builder()
+                .url(Constantes.URL + "/order/" + id)
+                .get()
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            // Get response body
+            String json = response.body().string();
+            order = gson.fromJson(json, Order.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("Erro Carai");
+        }
+        return order;
     }
 }

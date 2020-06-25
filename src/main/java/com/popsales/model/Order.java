@@ -50,6 +50,10 @@ public class Order {
     private Integer deliveryLimit;
     private String discount;
     private String dtRegister;
+    private Date dtAcept;
+    private Date dtRefuse;
+    private Date dtDelivery;
+    private Date dtFinish;
     // private Date data;
 
     public Order() {
@@ -326,6 +330,38 @@ public class Order {
 
     public void setNum_order(String num_order) {
         this.num_order = num_order;
+    }
+
+    public Date getDtAcept() {
+        return dtAcept;
+    }
+
+    public void setDtAcept(Date dtAcept) {
+        this.dtAcept = dtAcept;
+    }
+
+    public Date getDtRefuse() {
+        return dtRefuse;
+    }
+
+    public void setDtRefuse(Date dtRefuse) {
+        this.dtRefuse = dtRefuse;
+    }
+
+    public Date getDtDelivery() {
+        return dtDelivery;
+    }
+
+    public void setDtDelivery(Date dtDelivery) {
+        this.dtDelivery = dtDelivery;
+    }
+
+    public Date getDtFinish() {
+        return dtFinish;
+    }
+
+    public void setDtFinish(Date dtFinish) {
+        this.dtFinish = dtFinish;
     }
 
 }

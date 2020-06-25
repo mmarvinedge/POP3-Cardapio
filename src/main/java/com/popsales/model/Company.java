@@ -34,6 +34,7 @@ public class Company {
     private Boolean worksCoupon;
     private List<CouponCode> coupons;
     private Boolean freeVersion;
+    private Boolean deliveryOnly, withdrawalOnly, decimalQuantity;
 
     public String getId() {
         return id;
@@ -208,7 +209,7 @@ public class Company {
     }
 
     public Boolean getFreeVersion() {
-        if(freeVersion == null){
+        if (freeVersion == null) {
             freeVersion = false;
         }
         return freeVersion;
@@ -216,6 +217,39 @@ public class Company {
 
     public void setFreeVersion(Boolean freeVersion) {
         this.freeVersion = freeVersion;
+    }
+
+    public Boolean getDeliveryOnly() {
+        if (deliveryOnly == null) {
+            deliveryOnly = true;
+        }
+        return deliveryOnly;
+    }
+
+    public void setDeliveryOnly(Boolean deliveryOnly) {
+        this.deliveryOnly = deliveryOnly;
+    }
+
+    public Boolean getWithdrawalOnly() {
+        if (withdrawalOnly == null) {
+            withdrawalOnly = true;
+        }
+        return withdrawalOnly;
+    }
+
+    public void setWithdrawalOnly(Boolean withdrawalOnly) {
+        this.withdrawalOnly = withdrawalOnly;
+    }
+
+    public Boolean getDecimalQuantity() {
+        if (decimalQuantity == null) {
+            decimalQuantity = false;
+        }
+        return decimalQuantity;
+    }
+
+    public void setDecimalQuantity(Boolean decimalQuantity) {
+        this.decimalQuantity = decimalQuantity;
     }
 
 }

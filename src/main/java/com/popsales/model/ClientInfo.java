@@ -64,4 +64,11 @@ public class ClientInfo {
         this.clientID = clientID;
     }
 
+    @Override
+    public String toString() {
+        return "ClientInfo{" + "name=" + name + '}';
+    }
+    
+    
+
 }
