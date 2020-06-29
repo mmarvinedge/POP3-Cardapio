@@ -35,6 +35,7 @@ public class Company {
     private List<CouponCode> coupons;
     private Boolean freeVersion;
     private Boolean deliveryOnly, withdrawalOnly, decimalQuantity;
+    private Shift shift;
 
     public String getId() {
         return id;
@@ -252,4 +253,12 @@ public class Company {
         this.decimalQuantity = decimalQuantity;
     }
 
+    public Shift getShift() {
+        return shift;
+    }
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
+    }
+    
 }

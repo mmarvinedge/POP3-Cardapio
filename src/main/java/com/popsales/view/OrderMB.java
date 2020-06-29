@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -107,6 +108,16 @@ public class OrderMB implements Serializable {
                     company = cop;
                     coupons = company.getCoupons();
                     idCompany = company.getId();
+                    if(!company.getDeliveryOnly()) {
+                        order.setDelivery(false);
+                        order.setDeliveryCost(BigDecimal.ZERO);
+                    }
+                    if(!company.getWithdrawalOnly()) {
+                        order.setDelivery(true);
+                        if(company.getUniqueDeliveryCost()) {
+                            order.setDeliveryCost(company.getDeliveryCost());
+                        }
+                    }
                 }
             } catch (Exception ex) {
                 Logger.getLogger(OrderMB.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,7 +141,7 @@ public class OrderMB implements Serializable {
                 }
 
                 tratarEstabelecimentoAberto();
-                order.setDeliveryCost(company.getDeliveryCost());
+                
                 order.getAddress().setCity((company.getAddress() != null && company.getAddress().getCity() != null) ? company.getAddress().getCity() : "");
                 if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel") != null) {
                     String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
@@ -323,7 +334,7 @@ public class OrderMB implements Serializable {
         System.out.println("NAME: " + name);
         System.out.println("ID: " + reloadID);
 
-        if ((name != null && company != null && company.getName() != null && !name.equals(company.getNameUrl())) || (name != null  && (company == null || company.getName() == null))) {
+        if ((name != null && company != null && company.getName() != null && !name.equals(company.getNameUrl())) || (name != null && (company == null || company.getName() == null))) {
             System.out.println("RECARREGAR");
             constructor();
             init();
@@ -550,9 +561,6 @@ public class OrderMB implements Serializable {
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
-            order.setDelivery(true);
-            order.setTroco(false);
-            order.setDeliveryCost(company.getDeliveryCost());
             PrimeFaces.current().executeScript("finalizarPedido();");
             PrimeFaces.current().executeScript("PF('ldg').hide()");
             PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");

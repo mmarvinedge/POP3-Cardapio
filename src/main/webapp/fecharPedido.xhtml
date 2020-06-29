@@ -48,8 +48,19 @@
                                                     <f:selectItem itemEscaped="false" itemValue="false" itemLabel="#{orderMB.cardStore(orderMB.order.delivery)}" itemDisabled="#{!orderMB.company.withdrawalOnly}" />
                                                     <p:ajax event="change" update="wizard"   onstart="PF('ldg').show()" oncomplete="PF('ldg').hide();" listener="#{orderMB.adicionarRemoverTaxa()}"/>
                                                 </p:selectOneRadio>
-
-
+                                                
+                                                <h:panelGroup rendered="#{!orderMB.company.withdrawalOnly}">
+                                                    <br/>
+                                                    <div style="border: 1px; background-color: #b6d465; padding: 1%; border-radius: 17px; display: inline-block;">
+                                                        <strong><small>No momento estamos trabalhando somente com entrega.</small></strong> 
+                                                    </div>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!orderMB.company.deliveryOnly}">
+                                                    <br/>
+                                                    <div style="border: 1px; background-color: #b6d465; padding: 1%; border-radius: 17px; display: inline-block;">
+                                                        <strong><small>No momento não estamos fazendo entrega.</small></strong> 
+                                                    </div>
+                                                </h:panelGroup>
                                             </center>
                                         </div>
                                     </div>
