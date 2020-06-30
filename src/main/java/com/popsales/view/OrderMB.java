@@ -1134,13 +1134,13 @@ public class OrderMB implements Serializable {
     public static String imprimirOrderControle(Order or) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("====================DETALHE==================== linebr linebr");
+        sb.append("========DETALHE======== linebr linebr");
         sb.append("PEDIDO : ").append(or.getNum_order()).append("linebr");
         sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("linebr");
         sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("linebr");
-        sb.append("DATA HORA: ").append(or.getDtRegister()).append("linebr");
+        sb.append("HORA: ").append(OUtils.formataData(OUtils.getDataByTexto(or.getDtRegister(), "yyyy-MM-dd HH:mm:ss"), "dd/MM/yyyy HH:mm")).append("linebr linebr");
 
-        sb.append("====================ITENS==================== linebr");
+        sb.append("========ITENS======== linebr");
         or.getProducts().forEach(pp -> {
             sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
             if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
@@ -1161,14 +1161,15 @@ public class OrderMB implements Serializable {
 
             }
         });
-        sb.append("====================TOTAIS==================== linebr");
+        sb.append("linebr");
+        sb.append("========TOTAIS======== linebr");
         sb.append("PRODUTOS: ").append(OUtils.formatarMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue())).append("linebr");
         sb.append("TAXA ENTREGA: ").append(OUtils.formatarMoeda(or.getDeliveryCost().doubleValue())).append("linebr");
         sb.append("TOTAL: ").append(OUtils.formatarMoeda(or.getTotal().doubleValue())).append("linebr");
         sb.append("FORMA: ").append(or.getForma()).append("linebr");
 
         if (or.getDelivery()) {
-            sb.append("====================ENDERECO================== linebr").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append("linebr");
+            sb.append("========ENDERECO======== linebr").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append("linebr");
             if (!or.getAddress().getSuburb().isEmpty()) {
                 sb.append(or.getAddress().getSuburb()).append("linebr");
             }
