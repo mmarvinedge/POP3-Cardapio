@@ -109,13 +109,13 @@ public class OrderMB implements Serializable {
                     company = cop;
                     coupons = company.getCoupons();
                     idCompany = company.getId();
-                    if(!company.getDeliveryOnly()) {
+                    if (!company.getDeliveryOnly()) {
                         order.setDelivery(false);
                         order.setDeliveryCost(BigDecimal.ZERO);
                     }
-                    if(!company.getWithdrawalOnly()) {
+                    if (!company.getWithdrawalOnly()) {
                         order.setDelivery(true);
-                        if(company.getUniqueDeliveryCost()) {
+                        if (company.getUniqueDeliveryCost()) {
                             order.setDeliveryCost(company.getDeliveryCost());
                         }
                     }
@@ -142,7 +142,7 @@ public class OrderMB implements Serializable {
                 }
 
                 tratarEstabelecimentoAberto();
-                
+
                 order.getAddress().setCity((company.getAddress() != null && company.getAddress().getCity() != null) ? company.getAddress().getCity() : "");
                 if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel") != null) {
                     String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
@@ -1116,13 +1116,7 @@ public class OrderMB implements Serializable {
 
     public void montarMensagemFinalizar() {
         StringBuilder sb = new StringBuilder();
-        if (company != null && company.getFreeVersion()) {
-            //"My title"+"\r\n\r\n"+"My description and link"
-//            sb.append("My title  linebr My description and link");
-            sb.append(imprimirOrderControle(order));
-        } else {
-            sb.append("Teste<br>teste");
-        }
+        sb.append(imprimirOrderControle(order));
         msg = sb.toString();
         System.out.println("MSG MONTADA:: " + msg);
     }
@@ -1171,6 +1165,7 @@ public class OrderMB implements Serializable {
         sb.append("PRODUTOS: ").append(OUtils.formatarMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue())).append("linebr");
         sb.append("TAXA ENTREGA: ").append(OUtils.formatarMoeda(or.getDeliveryCost().doubleValue())).append("linebr");
         sb.append("TOTAL: ").append(OUtils.formatarMoeda(or.getTotal().doubleValue())).append("linebr");
+        sb.append("FORMA: ").append(or.getForma()).append("linebr");
 
         if (or.getDelivery()) {
             sb.append("====================ENDERECO================== linebr").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append("linebr");
