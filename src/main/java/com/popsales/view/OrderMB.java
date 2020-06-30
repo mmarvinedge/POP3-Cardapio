@@ -42,9 +42,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FlowEvent;
-import static org.primefaces.shaded.commons.io.IOUtils.skip;
 
 /**
  *
@@ -346,6 +347,8 @@ public class OrderMB implements Serializable {
                 System.out.println("RECARREGAR");
             }
         }
+        loadCategorias();
+        listaBairros();
     }
 
     private void loadCategorias() {
@@ -556,7 +559,17 @@ public class OrderMB implements Serializable {
                     }
                 }
             }
-            categoriaService.sendOrder(order, idCompany);
+            if (!company.getFreeVersion()) {
+                categoriaService.sendOrder(order, idCompany);
+            }
+            montarMensagemFinalizar();
+            PrimefacesUtil.Update("grpScrips");
+            System.out.println("CHEGOU AQUI");
+            PrimeFaces.current().executeScript("finalizarPedido();");
+            System.out.println("FINALIZOU");
+            PrimeFaces.current().executeScript("PF('ldg').hide()");
+            PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
+
             order = new Order();
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
                 order.getAddress().setCity(company.getAddress().getCity());
@@ -1097,6 +1110,87 @@ public class OrderMB implements Serializable {
 
     public void setCoupons(List<CouponCode> coupons) {
         this.coupons = coupons;
+    }
+
+    private String msg = "";
+
+    public void montarMensagemFinalizar() {
+        StringBuilder sb = new StringBuilder();
+        if (company != null && company.getFreeVersion()) {
+            //"My title"+"\r\n\r\n"+"My description and link"
+//            sb.append("My title  linebr My description and link");
+            sb.append(imprimirOrderControle(order));
+        } else {
+            sb.append("Teste<br>teste");
+        }
+        msg = sb.toString();
+        System.out.println("MSG MONTADA:: " + msg);
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public static final String LS = "------------------------------------------ linebr";
+    public static final String LSW = "------------------------------------------";
+    public static final String LD = "========================================== linebr";
+    public static final String formatQntity = "%1$-3s %2$-24s linebr";
+    public static final String format = "%1$-10s %2$-24s linebr";
+
+    public static String imprimirOrderControle(Order or) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("====================DETALHE==================== linebr linebr");
+        sb.append("PEDIDO : ").append(or.getNum_order()).append("linebr");
+        sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("linebr");
+        sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("linebr");
+        sb.append("DATA HORA: ").append(or.getDtRegister()).append("linebr");
+
+        sb.append("====================ITENS==================== linebr");
+        or.getProducts().forEach(pp -> {
+            sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
+            if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
+                sb.append(pp.getFlavors().stream().map(m -> "   1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("linebr"))).append("linebr");
+            }
+
+            if (pp.getAttributes() != null) {
+                for (Attribute at : pp.getAttributes()) {
+                    sb.append("   ").append(at.getDescription());
+                    for (AttributeValue va : at.getValues()) {
+                        sb.append(" linebr      ").append(va.getQuantity()).append(" x ").append(va.getName());
+                    }
+                    sb.append("linebr");
+                }
+            }
+            if (pp.getObs().length() > 0) {
+                sb.append("\t").append(pp.getObs()).append("linebr");
+
+            }
+        });
+        sb.append("====================TOTAIS==================== linebr");
+        sb.append("PRODUTOS: ").append(OUtils.formatarMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue())).append("linebr");
+        sb.append("TAXA ENTREGA: ").append(OUtils.formatarMoeda(or.getDeliveryCost().doubleValue())).append("linebr");
+        sb.append("TOTAL: ").append(OUtils.formatarMoeda(or.getTotal().doubleValue())).append("linebr");
+
+        if (or.getDelivery()) {
+            sb.append("====================ENDERECO================== linebr").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append("linebr");
+            if (!or.getAddress().getSuburb().isEmpty()) {
+                sb.append(or.getAddress().getSuburb()).append("linebr");
+            }
+            sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity()).append("linebr");
+        } else {
+            sb.append("RETIRADA EM BALCAO").append(" linebr linebr linebr");
+        }
+        if (or.getForma().equalsIgnoreCase("Dinheiro")) {
+            if (or.getTroco()) {
+                sb.append(" linebrLEVAR TROCO PARA ").append(OUtils.formatarMoeda(or.getTrocoPara())).append(" linebr linebr");
+            }
+        } else {
+            sb.append("FORMA DE PAGTO: " + or.getForma());
+            sb.append(" linebr LEVAR MARQUINA DE CARTAO!").append(" linebr linebr");
+        }
+        return sb.toString();
+
     }
 
 }
