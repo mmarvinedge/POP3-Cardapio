@@ -41,6 +41,7 @@ public class Product implements Serializable {
     private List<FlavorPizza> flavorsPizza;
     private String rulePricePizza;
     private ProductDay productDay;
+    private Shift shift;
 
     public String getId() {
         return id;
@@ -241,6 +242,17 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "Product{" + " sku=" + sku + ", name=" + name + ", order=" + order + ", enable=" + enabled + ", description=" + description + ", availability=" + availability + ", imageType=" + imageType + ", imageBase64=" + imageBase64 + ", price=" + price + ", companyId=" + companyId + ", attributes=" + attributes + '}';
+    }
+
+    public Shift getShift() {
+        if (shift == null) {
+            shift = new Shift();
+        }
+        return shift;
+    }
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
     }
 
 }

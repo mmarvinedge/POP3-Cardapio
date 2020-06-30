@@ -109,6 +109,16 @@ public class OrderMB implements Serializable {
                     company = cop;
                     coupons = company.getCoupons();
                     idCompany = company.getId();
+                    if(!company.getDeliveryOnly()) {
+                        order.setDelivery(false);
+                        order.setDeliveryCost(BigDecimal.ZERO);
+                    }
+                    if(!company.getWithdrawalOnly()) {
+                        order.setDelivery(true);
+                        if(company.getUniqueDeliveryCost()) {
+                            order.setDeliveryCost(company.getDeliveryCost());
+                        }
+                    }
                 }
             } catch (Exception ex) {
                 Logger.getLogger(OrderMB.class.getName()).log(Level.SEVERE, null, ex);
@@ -132,7 +142,7 @@ public class OrderMB implements Serializable {
                 }
 
                 tratarEstabelecimentoAberto();
-                order.setDeliveryCost(company.getDeliveryCost());
+                
                 order.getAddress().setCity((company.getAddress() != null && company.getAddress().getCity() != null) ? company.getAddress().getCity() : "");
                 if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel") != null) {
                     String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
@@ -567,6 +577,9 @@ public class OrderMB implements Serializable {
             order.setDelivery(true);
             order.setTroco(false);
             order.setDeliveryCost(company.getDeliveryCost());
+            PrimeFaces.current().executeScript("finalizarPedido();");
+            PrimeFaces.current().executeScript("PF('ldg').hide()");
+            PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
         } catch (Exception e) {
             e.printStackTrace();
         }
