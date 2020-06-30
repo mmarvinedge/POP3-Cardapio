@@ -45,7 +45,7 @@ public class FlavorPizza {
                             + "</div> "
                             + "<div class='row'>"
                             + descricao(i)
-                            + "</div><hr/>");
+                            + "</div>");
                     return sb.toString();
                 } else {
                     StringBuilder sb = new StringBuilder();
@@ -58,7 +58,7 @@ public class FlavorPizza {
                     sb.append("</div> ");
                     sb.append("<div class='row'>");
                     sb.append(descricao(i));
-                    sb.append("</div><hr/>");
+                    sb.append("</div>");
                     return sb.toString();
                     //return "<span style='display: inline-table !important;' class='description-pizza'><strong>" + flavor + "</strong></div> <div class='description-value' style='display: inline-block !important;'><span class='color-value'>" + OUtils.formatarMoeda(getPrice().doubleValue()) + "</span></span>";
                 }
