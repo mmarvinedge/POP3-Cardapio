@@ -574,9 +574,6 @@ public class OrderMB implements Serializable {
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
-            order.setDelivery(true);
-            order.setTroco(false);
-            order.setDeliveryCost(company.getDeliveryCost());
             PrimeFaces.current().executeScript("finalizarPedido();");
             PrimeFaces.current().executeScript("PF('ldg').hide()");
             PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
