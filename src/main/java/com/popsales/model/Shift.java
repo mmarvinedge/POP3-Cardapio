@@ -22,7 +22,7 @@ public class Shift {
 
     public Boolean getMorning() {
         if (morning == null) {
-            return Boolean.FALSE;
+            return Boolean.TRUE;
         } else {
             return morning;
         }
@@ -34,7 +34,7 @@ public class Shift {
 
     public Boolean getAfternoon() {
         if (afternoon == null) {
-            return Boolean.FALSE;
+            return Boolean.TRUE;
         } else {
             return afternoon;
         }
@@ -46,7 +46,7 @@ public class Shift {
 
     public Boolean getNight() {
         if (night == null) {
-            return Boolean.FALSE;
+            return Boolean.TRUE;
         } else {
             return night;
         }
