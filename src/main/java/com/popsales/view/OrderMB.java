@@ -339,6 +339,8 @@ public class OrderMB implements Serializable {
             System.out.println("RECARREGAR");
             constructor();
             init();
+            couponValid = false;
+            couponCode = ""; 
         } else {
 
             if (reloadID != null && company != null && company.getId() != null && !reloadID.equals(company.getId())) {
@@ -571,6 +573,8 @@ public class OrderMB implements Serializable {
             PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
 
             order = new Order();
+            couponValid = false;
+            couponCode = "";
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
@@ -926,6 +930,8 @@ public class OrderMB implements Serializable {
         //PrimeFaces.current().executeScript("document.getElementById('input_frmFechar:numeroEnd').focus();");
         enderecoFiltro.getBairro();
         PrimeFaces.current().ajax().update("frmFechar:endereco");
+//        PrimeFaces.current().ajax().update("frmFechar:bair");
+        PrimeFaces.current().executeScript("$('.numberHome').focus();");
 
         adicionarRemoverTaxa();
         validarTaxaServico();
@@ -1017,15 +1023,17 @@ public class OrderMB implements Serializable {
                 + "                                                        </div>\n"
                 + "                                                    </div></div>";
     }
+    
+
 
     public String formatarMoedaTaxa(Bairro bairro) {
         StringBuilder content = new StringBuilder();
         content.append("<div class='row'>");
-        content.append("<div class='col-xs-12'><strong>" + bairro.getBairro() + "</strong> </div>");
+        content.append("<div class='col-xs-12' style='    line-height: 1.1;'><strong>" + bairro.getBairro() + "</strong> </div>");
         if (bairro.getTaxa().doubleValue() == 0.00 || bairro.getTaxa() == null) {
-            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;color: #95c70d;'>Entrega Grátis</small> </div>");
+            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;color: #95c70d;     line-height: 1.1;'>Entrega Grátis</small> </div>");
         } else {
-            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
+            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;     line-height: 1.1;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
         }
         content.append("<div class='col-xs-12'><hr style='margin-top: 0;margin-bottom: 0;border-color: #95c70d;' /></div>");
         content.append("</div>");

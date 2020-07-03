@@ -48,7 +48,7 @@
                                                     <f:selectItem itemEscaped="false" itemValue="false" itemLabel="#{orderMB.cardStore(orderMB.order.delivery)}" itemDisabled="#{!orderMB.company.withdrawalOnly}" />
                                                     <p:ajax event="change" update="wizard"   onstart="PF('ldg').show()" oncomplete="PF('ldg').hide();" listener="#{orderMB.adicionarRemoverTaxa()}"/>
                                                 </p:selectOneRadio>
-                                                
+
                                                 <h:panelGroup rendered="#{!orderMB.company.withdrawalOnly}">
                                                     <br/>
                                                     <div style="border: 1px; background-color: #b6d465; padding: 1%; border-radius: 17px; display: inline-block;">
@@ -79,7 +79,7 @@
 
                                         <div class="row" style="margin-top: 10px;">
                                             <h:panelGroup rendered="#{orderMB.order.delivery}">
-                                                <div class="col-xs-12">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                                                     <div class="ui-inputgroup" style="margin-bottom: 15px;">
                                                         <span class="ui-inputgroup-addon"><i class="fa fa-search"></i> Rua, Av.</span>
@@ -95,11 +95,11 @@
                                                                 <br/>
                                                                 #{band.bairro} - #{band.cidade}
                                                             </p:column>
-                                                            <p:ajax event="itemSelect"  listener="#{orderMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); $('#input_frmFechar:numeroEnd').focus()"  />
+                                                            <p:ajax event="itemSelect"  listener="#{orderMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); "  />
                                                         </p:autoComplete>
                                                     </div>
                                                 </div>
-                                                <div class="col-xs-12"  >
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  >
                                                     <div style="width: 100%; 
                                                          text-align: center; 
                                                          border-bottom: 1px solid #999999; 
@@ -107,29 +107,11 @@
                                                          margin: 10px 0 20px; ">
 
                                                         <strong style="background:#fff; padding:0 10px; ">
-                                                            Endereço da Entrega
+                                                            Entrega em #{orderMB.order.address.city}
                                                         </strong>
                                                     </div>
                                                 </div>
-                                                <div class="col-xs-8"  >
-                                                    <b:inputText label="Endereço" placeholder="Rua Central" value="#{orderMB.order.address.street}"   required="true" requiredMessage="Obrigatorio!">
-                                                        <p:ajax event="blur" update="@this" />
-                                                    </b:inputText>
-                                                    <b:message for="@previous" />
-                                                </div>
-                                                <div class="col-xs-4" style="padding-left: 0 !important;;">
-                                                    <b:inputText id="numeroEnd" styleClass="numberHome" label="Nº" placeholder="" value="#{orderMB.order.address.streetNumber}"  required="true" required-message="Obrigatorio!"  >
-                                                        <p:ajax event="blur" update="@this" />
-                                                    </b:inputText>
-                                                    <b:message for="@previous" />
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <b:inputText label="Complemento" placeholder="Casa Apartamento"   value="#{orderMB.order.address.suburb}">
-                                                        <p:ajax event="blur" update="@this" />
-                                                    </b:inputText>
-
-                                                </div>
-                                                <div class="col-xs-6">
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                     <p:outputLabel for="bair" value="Bairro" />
                                                     <p:selectOneMenu id="bair"  label="Bairro #{params['validate']}" value="#{orderMB.order.address.auto}"  required="true" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     " >
                                                         <f:selectItem itemLabel="..." itemValue="" />
@@ -141,9 +123,27 @@
                                                     </p:selectOneMenu>
                                                     <b:message for="@previous" />
                                                 </div>
-                                                <div class="col-xs-6">
-                                                    <b:inputText label="Cidade" readonly="true" value="#{orderMB.order.address.city}" />
+                                                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"  >
+                                                    <b:inputText label="Endereço" id="end" placeholder="Rua Central" value="#{orderMB.order.address.street}"   required="true" requiredMessage="Obrigatorio!">
+                                                        <p:ajax event="blur" update="@this" />
+                                                    </b:inputText>
+                                                    <b:message for="@previous" />
                                                 </div>
+
+                                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" >
+                                                    <b:inputText id="numeroEnd" styleClass="numberHome" label="Nº" placeholder="" value="#{orderMB.order.address.streetNumber}"  required="true" required-message="Obrigatorio!"  
+                                                                 >
+                                                        <p:ajax event="blur" update="@this" />
+                                                    </b:inputText>
+                                                    <b:message for="@previous" />
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <b:inputText label="Complemento" placeholder="Casa Apartamento"   value="#{orderMB.order.address.suburb}">
+                                                        <p:ajax event="blur" update="@this" />
+                                                    </b:inputText>
+
+                                                </div>
+
                                             </h:panelGroup>
 
 
@@ -189,9 +189,18 @@
                                 </p:tab>
                                 <p:tab id="finalizado" title="Finalizar">
                                     <div class="row">
+                                        <div style="width: 100%; 
+                                             text-align: center; 
+                                             border-bottom: 1px solid #999999; 
+                                             line-height: 0.1em;
+                                             margin: 10px 0 20px; ">
+
+                                            <strong style="background:#fff; padding:0 10px; ">
+                                                Forma de Pagamento
+                                            </strong>
+                                        </div>
                                         <div class="col-xs-12">
                                             <center>
-                                                <p:outputLabel value="Escolha a forma de Pagamento"  style=" margin-bottom: 5px !important;"/>
                                                 <p:selectOneRadio value="#{orderMB.order.forma}" styleClass="customone">
                                                     <f:selectItem itemLabel="#{orderMB.cardDinheiro(orderMB.order.forma == 'Dinheiro')}" itemEscaped="false" itemValue="Dinheiro"  />
                                                     <f:selectItem itemLabel="#{orderMB.cardCartaoCredito(orderMB.order.forma == 'Cartão de Crédito','Crédito')}" itemEscaped="false" itemValue="Cartão de Crédito" />
@@ -218,76 +227,86 @@
                                                 </div>
                                             </h:panelGroup>
                                         </h:panelGroup>
-                                        <div class="col-xs-12">
-                                            <hr/>
-                                        </div>
-                                        <h:panelGroup id="grpCoupon" rendered="#{orderMB.company.worksCoupon or orderMB.coupons.size() > 0}">
+                                        <h:panelGroup id="grpCoupon" rendered="#{orderMB.company.worksCoupon and orderMB.coupons.size() > 0}" >
                                             <div class="row">
                                                 <div class="col-xs-12">
-                                                    <div class="col-sm-4 col-xs-8" style="padding-right: 0px !important">
+                                                    <div style="width: 100%; 
+                                                         text-align: center; 
+                                                         border-bottom: 1px solid #999999; 
+                                                         line-height: 0.1em;
+                                                         margin: 10px 0 20px; ">
+
+                                                        <strong style="background:#fff; padding:0 10px; ">
+                                                            <i class="fa fa-tag"></i> CUPOM DE DESCONTO
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12" style="margin-bottom: 5px;">
+                                                    <div class="input-group">
                                                         <b:inputText id="couponCode" disabled="#{orderMB.couponValid}" value="#{orderMB.couponCode}" style="width: 100% !important" placeholder="Cupom de desconto">
                                                             <p:ajax event="blur" update="@this"/>
+                                                            <f:facet name="append">
+                                                                <p:commandLink value="APLICAR" styleClass="btn btn-primary" style="height: 34px !important; color: white;  display: grid;     border-top-left-radius: 0px;border-bottom-left-radius: 0px;" action="#{orderMB.applyCoupon()}"
+                                                                               update="wizard" immediate="true" disabled="#{orderMB.couponValid}"  />
+                                                            </f:facet>
                                                         </b:inputText>
                                                     </div>
-                                                    <div class="col-sm-2 col-xs-4" style="padding-left: 5px !important">
-                                                        <p:commandLink value="APLICAR" styleClass="btn btn-primary" style="height: 34px !important; color: white;  display: grid;" action="#{orderMB.applyCoupon()}"
-                                                                       update="wizard" immediate="true" disabled="#{orderMB.couponValid}"  />
-                                                    </div>
-                                                    <div class="col-xs-12">
-                                                        <p:messages id="msgsCoupon" closable="true"/>
-                                                    </div>
+                                                    <p:messages id="msgsCoupon" closable="true"/>
                                                 </div>
                                             </div>
                                         </h:panelGroup>
-                                        <hr/>
-                                        <div class="col-xs-6" >
+                                        <div style="width: 100%; 
+                                             text-align: center; 
+                                             border-bottom: 1px solid #999999; 
+                                             line-height: 0.1em;
+                                             margin: 10px 0 20px; ">
+
+                                            <strong style="background:#fff; padding:0 10px; ">
+                                                TOTAIS
+                                            </strong>
+                                        </div>
+                                        <div class="col-xs-6" style="border-bottom: 1px solid #ccc;" >
                                             <strong>Subtotal</strong>
                                         </div>
-                                        <div class="col-xs-6" >
-                                            <b:inputText  value="#{orderMB.order.subtotal}" readonly="true" styleClass="text-right">
+                                        <div class="col-xs-6"  style="text-align: right; border-bottom: 1px solid #ccc;">
+                                            <h:outputText  value="#{orderMB.order.subtotal}" readonly="true" styleClass="text-right">
                                                 <f:convertNumber type="currency" />
-                                            </b:inputText>
+                                            </h:outputText>
                                         </div>
                                         <h:panelGroup id="grpValorEntrega">
                                             <h:panelGroup  rendered="#{orderMB.order.delivery}">
-                                                <div class="col-xs-6" >
+                                                <div class="col-xs-6" style="border-bottom: 1px solid #ccc;" >
                                                     <strong>Taxa de Entrega</strong>
                                                 </div>
-                                                <div class="col-xs-6" >
-                                                    <b:inputText value="#{orderMB.order.deliveryCost}" readonly="true" styleClass="text-right" >
+                                                <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;" >
+                                                    <h:outputText value="#{orderMB.order.deliveryCost}" readonly="true" styleClass="text-right" >
                                                         <f:convertNumber type="currency" />
-                                                    </b:inputText>
+                                                    </h:outputText>
                                                 </div>
                                             </h:panelGroup>
                                             <h:panelGroup rendered="#{orderMB.couponValid}">
-                                                <div class="col-xs-6" >
+                                                <div class="col-xs-6"  style="border-bottom: 1px solid #ccc;">
                                                     <strong>Cupom de desconto</strong>
                                                 </div>
-                                                <div class="col-xs-6" >
-                                                    <b:inputText value="#{orderMB.order.discountValue}" readonly="true" styleClass="text-right" >
+                                                <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;"  >
+                                                    <h:outputText value="#{orderMB.order.discountValue}" readonly="true" styleClass="text-right" >
                                                         <f:convertNumber type="currency" />
-                                                    </b:inputText>
+                                                    </h:outputText>
                                                 </div>
                                             </h:panelGroup>
                                         </h:panelGroup>
-                                        <div class="col-xs-6" >
+                                        <div class="col-xs-6"  style="border-bottom: 1px solid #ccc;">
                                             <strong>TOTAL</strong>
                                         </div>
-                                        <div class="col-xs-6" >
-                                            <b:inputText value="#{orderMB.order.total}"  readonly="true"  styleClass="text-right" style="font-weight: bolder;" >
-                                                <f:convertNumber type="currency" />
-                                            </b:inputText>
+                                        <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;" >
+                                            <strong>
+                                                <h:outputText value="#{orderMB.order.total}"  readonly="true"  styleClass="text-right" style="font-weight: bolder;" >
+                                                    <f:convertNumber type="currency" />
+                                                </h:outputText>
+                                            </strong>
                                         </div>
                                         <div class="col-xs-12" style="margin-bottom: 20px;" >
-                                            <hr/>
-                                            <h:panelGroup rendered="#{orderMB.company.aproxTime != null}">
-                                                <div  style="width: 100%; text-align: center; border-bottom: 1px solid #000; line-height: 0.1em;margin: 10px 0 20px; ">
-                                                    <span style=" background:#fff; padding:0 10px; " >
-                                                        Tempo Médio <strong>#{orderMB.company.aproxTime}</strong>
-                                                    </span>
-                                                </div>
-                                            </h:panelGroup>
-                                            <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{orderMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid;" 
+                                            <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{orderMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid; margin-top: 15px !important;" 
                                                            update="@form" 
                                                            action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
                                         </div>
@@ -307,7 +326,9 @@
 
                     <script>
                         $(document).ready(function () {
-                            startPhone()
+                            startPhone();
+
+
                         });
 
                         var SPMaskBehavior = function (val) {
@@ -335,6 +356,16 @@
 
                 .ui-radiobutton{
                     display: none !important;
+                }
+                .input-group{
+                    width: 100% !important;
+                    margin-left: 7px !important;
+                    padding-right: 15px !important;
+                }
+                .input-group-addon{
+                    padding: 0px !important;
+                    border: none !important;
+                    background: none !important;
                 }
             </style>
             <script>
