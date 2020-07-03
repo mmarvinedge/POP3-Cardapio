@@ -125,7 +125,7 @@
                                                          border-color: #2f8a39;
                                                          height: 45px !important;
                                                          box-shadow: none;
-                                                         margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" rendered="#{!orderMB.company.onlyMenu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
+                                                         margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" actionListener="#{orderMB.checkDeliveryCost()}" rendered="#{!orderMB.company.onlyMenu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
                                     </div>
                                 </div>
                             </footer>

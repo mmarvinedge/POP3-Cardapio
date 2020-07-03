@@ -236,5 +236,30 @@ public class CategoryServices {
         saida.add("Não Possui na lista!");
         return saida;
     }
+    
+    public List<Product> getProductsByCompany(String idCompany) throws IOException {
+        List<Product> saida = new ArrayList();
+        Request request = new Request.Builder()
+                .url(Constantes.URL + "/product/")
+                .header("company_id", idCompany)
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (response.code() == 202) {
+            throw new IOException("Nenhum dado retornado!");
+        } else {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+        }
+
+        // Get response body
+        String json = response.body().string();
+
+        saida = new Gson().fromJson(json, new TypeToken<List<Product>>() {
+        }.getType());
+
+        return saida;
+    }
 
 }

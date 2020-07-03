@@ -28,6 +28,8 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
@@ -301,20 +303,19 @@ public class OrderMB implements Serializable {
             return false;
         }
         if (dia.equals("Dom") || dia.equals("Sun")) {
-            return p.getProductDay().getNaoVenderDom() == true;
+            return p.getProductDay().getNaoVenderDom();
         } else if (dia.equals("Seg") || dia.equals("Mon")) {
-            return p.getProductDay().getNaoVenderSeg() == true;
-
+            return p.getProductDay().getNaoVenderSeg();
         } else if (dia.equals("Ter") || dia.equals("Tue")) {
-            return p.getProductDay().getNaoVenderTer() == true;
+            return p.getProductDay().getNaoVenderTer();
         } else if (dia.equals("Qua") || dia.equals("Wed")) {
-            return p.getProductDay().getNaoVenderQua() == true;
+            return p.getProductDay().getNaoVenderQua();
         } else if (dia.equals("Qui") || dia.equals("Thu")) {
-            return p.getProductDay().getNaoVenderQui() == true;
+            return p.getProductDay().getNaoVenderQui();
         } else if (dia.equals("Sex") || dia.equals("Fri")) {
-            return p.getProductDay().getNaoVenderSex() == true;
+            return p.getProductDay().getNaoVenderSex();
         } else if (dia.equals("Sab") || dia.equals("Sat")) {
-            return p.getProductDay().getNaoVenderSab() == true;
+            return p.getProductDay().getNaoVenderSab();
         } else {
             return false;
         }
@@ -355,8 +356,20 @@ public class OrderMB implements Serializable {
         try {
             if (idCompany == null) {
             }
+            List<Product> prods = new ArrayList();
+            categories = new ArrayList();
+            productsPromo = new ArrayList();
+
             categories = categoriaService.getCategoryList(idCompany);
-            productsPromo = categoriaService.getProductsPromo(idCompany);
+            
+            prods = categoriaService.getProductsPromo(idCompany);
+            dia = new SimpleDateFormat("EE").format(new Date());
+            for (Product p : prods) {
+                if (!productoIsNotVendidoDia(p)) {
+                    productsPromo.add(p);
+                }
+            }
+            categories = removeCategoriaSemProduto(categories);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("NAO FOI POSSIVEL CARREGAR O ID COMPANY");
@@ -409,7 +422,15 @@ public class OrderMB implements Serializable {
                 return;
             }
             categorySelected = category;
-            products = categoriaService.getProducts(idCompany, id);
+            List<Product> prods = new ArrayList();
+            prods = categoriaService.getProducts(idCompany, id);
+            products = new ArrayList();
+            dia = new SimpleDateFormat("EE").format(new Date());
+            for (Product p : prods) {
+                if (!productoIsNotVendidoDia(p)) {
+                    products.add(p);
+                }
+            }
         } catch (IOException ex) {
             PrimeFaces.current().executeScript("connectionErrorMsg('" + ex.getMessage() + "')");
             Logger.getLogger(OrderMB.class.getName()).log(Level.SEVERE, null, ex);
@@ -471,7 +492,11 @@ public class OrderMB implements Serializable {
     }
 
     private void calcularTotal() {
-        order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()));
+        if (order.getDiscountValue() != null) {
+            order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(order.getDiscountValue()));
+        } else {
+            order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()));
+        }
     }
 
     private void calcularDescontoCupom(BigDecimal desconto) {
@@ -1052,6 +1077,7 @@ public class OrderMB implements Serializable {
         List<CouponCode> couponsCompany = new ArrayList();
         couponsCompany = couponService.couponsByCompany(company.getId());
         if (lastOrder != null) {
+            System.out.println(couponMB.couponValid(couponsCompany, couponCode, lastOrder));
             if (couponMB.couponValid(couponsCompany, couponCode, lastOrder).equals("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
@@ -1081,6 +1107,7 @@ public class OrderMB implements Serializable {
                 couponCode = "";
             }
         } else {
+            System.out.println(couponMB.checkCouponNoOrder(couponsCompany, couponCode));
             if (couponMB.checkCouponNoOrder(couponsCompany, couponCode).equalsIgnoreCase("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
@@ -1187,6 +1214,47 @@ public class OrderMB implements Serializable {
         }
         return sb.toString();
 
+    }
+
+    public void checkDeliveryCost() {
+        if (order.getDelivery()) {
+            if (company.getUniqueDeliveryCost()) {
+                order.setDeliveryCost(company.getDeliveryCost());
+                calcularTotal();
+            } else {
+                if (order.getAddress().getAuto() != null) {
+                    Optional<Bairro> find = bairros.stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
+                    if (find.isPresent()) {
+                        Bairro found = find.get();
+                        System.out.println("Bairro: " + found);
+                        order.setDeliveryCost(found.getTaxa());
+                        calcularTotal();
+                    }
+                }
+            }
+        } else {
+            order.setDeliveryCost(BigDecimal.ZERO);
+            calcularTotal();
+        }
+    }
+
+    public List<Category> removeCategoriaSemProduto(List<Category> cats) throws IOException {
+        List<Category> out = new ArrayList();
+        List<Product> products = new ArrayList();
+        System.out.println(cats.size());
+        products = categoriaService.getProductsByCompany(idCompany);
+        for (Category cat : cats) {
+            for (Product p : products) {
+                if (!productoIsNotVendidoDia(p)) {
+                    out.add(p.getCategoryMain());
+                }
+            }
+        }
+        List<Category> catss = new ArrayList();
+        catss = out.stream().distinct().sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
+        catss.sort(Comparator.comparing(c -> c.getType()));
+        System.out.println(catss.size());
+        return catss;
     }
 
 }

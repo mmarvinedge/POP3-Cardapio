@@ -23,6 +23,7 @@ public class Category implements Serializable {
     private String companyId;
     private Boolean main;
     private String img;
+    private String type;
 
     public String getId() {
         return id;
@@ -78,6 +79,17 @@ public class Category implements Serializable {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getType() {
+        if(type == null) {
+            type = "AFood";
+        }
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

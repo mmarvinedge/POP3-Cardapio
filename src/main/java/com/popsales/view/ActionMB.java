@@ -42,7 +42,7 @@ public class ActionMB {
 
     public void setAcaoFechar(String acao, int size) {
         if (acao != null && acao.equalsIgnoreCase("fechar") && size == 0) {
-            PrimeFaces.current().executeScript("alerta('Informe 1 item!')");
+            PrimeFaces.current().executeScript("alerta('Seu carrinho está vazio!')");
             return;
         }
         this.acao = acao;
