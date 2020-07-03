@@ -942,3 +942,12 @@ button, a{
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
 }
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    background-color: white;
+    z-index: 3000;
+    transition-duration: 300ms;
+}

@@ -42,8 +42,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FlowEvent;
 
@@ -340,7 +338,7 @@ public class OrderMB implements Serializable {
             constructor();
             init();
             couponValid = false;
-            couponCode = ""; 
+            couponCode = "";
         } else {
 
             if (reloadID != null && company != null && company.getId() != null && !reloadID.equals(company.getId())) {
@@ -1023,8 +1021,6 @@ public class OrderMB implements Serializable {
                 + "                                                        </div>\n"
                 + "                                                    </div></div>";
     }
-    
-
 
     public String formatarMoedaTaxa(Bairro bairro) {
         StringBuilder content = new StringBuilder();
