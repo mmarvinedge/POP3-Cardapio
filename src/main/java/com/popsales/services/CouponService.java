@@ -45,8 +45,6 @@ public class CouponService {
             }
             // Get response body
             String json = response.body().string();
-            System.out.println(json);
-            System.out.println(response);
             coupons = new Gson().fromJson(json, new TypeToken<List<CouponCode>>() {
             }.getType());
 

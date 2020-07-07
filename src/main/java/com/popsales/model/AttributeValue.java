@@ -64,7 +64,7 @@ public class AttributeValue implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return name.toUpperCase();
     }
 
     public void setName(String name) {

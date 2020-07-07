@@ -361,7 +361,7 @@ public class OrderMB implements Serializable {
             productsPromo = new ArrayList();
 
             categories = categoriaService.getCategoryList(idCompany);
-            
+
             prods = categoriaService.getProductsPromo(idCompany);
             dia = new SimpleDateFormat("EE").format(new Date());
             for (Product p : prods) {
@@ -499,11 +499,16 @@ public class OrderMB implements Serializable {
         }
     }
 
-    private void calcularDescontoCupom(BigDecimal desconto) {
+    private void calcularDescontoCupom(BigDecimal desconto, Boolean deliveryCost) {
         BigDecimal discount = order.getTotal().multiply(desconto).divide(BigDecimal.valueOf(100));
         System.out.println("desconto no valor de " + discount);
-        order.setDiscountValue(discount);
-        order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(discount));
+        if (deliveryCost) {
+            order.setDiscountValue(discount);
+            order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(discount));
+        } else {
+            order.setDiscountValue(desconto);
+            order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).subtract(desconto).add(order.getDeliveryCost()));
+        }
     }
 
     public void removeCart(Item i) {
@@ -781,6 +786,7 @@ public class OrderMB implements Serializable {
             if (item.getProduct().getRulePricePizza().equals("Média")) {
                 item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(new BigDecimal(item.getFlavors().size())));
             } else {
+                System.out.println(item.getFlavors().get(0).getSku());
                 item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).max((BigDecimal o1, BigDecimal o2) -> o1.compareTo(o2)).get());
             }
         } else {
@@ -1080,28 +1086,35 @@ public class OrderMB implements Serializable {
     public void applyCoupon() throws Exception {
         List<CouponCode> couponsCompany = new ArrayList();
         couponsCompany = couponService.couponsByCompany(company.getId());
+        BigDecimal totalSemTaxa = order.getTotal().subtract(order.getDeliveryCost());
         if (lastOrder != null) {
-            System.out.println(couponMB.couponValid(couponsCompany, couponCode, lastOrder));
-            if (couponMB.couponValid(couponsCompany, couponCode, lastOrder).equals("true")) {
+            String checkCoupon = couponMB.couponValid(couponsCompany, couponCode, lastOrder, order.getTotal(), totalSemTaxa);
+            System.out.println(checkCoupon);
+            if (checkCoupon.equals("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
                         System.out.println(company.getCoupons().toString());
                         order.setCoupon(couponCode);
-                        calcularDescontoCupom(c.getDiscount());
+                        calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost());
                         couponValid = true;
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
                         PrimefacesUtil.Update(":frmFechar:msgsCoupon");
                         System.out.println("apliquei o cupom");
                     }
                 }
-            } else if (couponMB.couponValid(couponsCompany, couponCode, lastOrder).equals("onetime")) {
+            } else if (checkCoupon.equals("onetime")) {
                 couponValid = false;
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom já foi utilizado hoje!", "Cupom já foi utilizado hoje!"));
                 PrimefacesUtil.Update(":frmFechar:msgsCoupon");
                 couponCode = "";
-            } else if (couponMB.couponValid(couponsCompany, couponCode, lastOrder).equals("expired")) {
+            } else if (checkCoupon.equals("expired")) {
                 couponValid = false;
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom atingiu o limite máximo de utilizações!", "Cupom atingiu o limite máximo de utilizações!"));
+                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                couponCode = "";
+            } else if (checkCoupon.equals("minimal")) {
+                couponValid = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O valor minimo para utilizar esse cupom não foi atingido!", "O valor minimo para utilizar esse cupom não foi atingido!"));
                 PrimefacesUtil.Update(":frmFechar:msgsCoupon");
                 couponCode = "";
             } else {
@@ -1111,13 +1124,13 @@ public class OrderMB implements Serializable {
                 couponCode = "";
             }
         } else {
-            System.out.println(couponMB.checkCouponNoOrder(couponsCompany, couponCode));
-            if (couponMB.checkCouponNoOrder(couponsCompany, couponCode).equalsIgnoreCase("true")) {
+            String checkCoupon = couponMB.checkCouponNoOrder(couponsCompany, couponCode, order.getTotal(), totalSemTaxa);
+            if (checkCoupon.equalsIgnoreCase("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
                         System.out.println(company.getCoupons().toString());
                         order.setCoupon(couponCode);
-                        calcularDescontoCupom(c.getDiscount());
+                        calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost());
                         couponValid = true;
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
                         PrimefacesUtil.Update(":frmFechar:msgsCoupon");
@@ -1247,11 +1260,9 @@ public class OrderMB implements Serializable {
         List<Product> products = new ArrayList();
         System.out.println(cats.size());
         products = categoriaService.getProductsByCompany(idCompany);
-        for (Category cat : cats) {
-            for (Product p : products) {
-                if (!productoIsNotVendidoDia(p)) {
-                    out.add(p.getCategoryMain());
-                }
+        for (Product p : products) {
+            if (!productoIsNotVendidoDia(p)) {
+                out.add(p.getCategoryMain());
             }
         }
         List<Category> catss = new ArrayList();

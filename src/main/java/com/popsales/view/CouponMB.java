@@ -9,6 +9,7 @@ import com.popsales.model.Company;
 import com.popsales.model.CouponCode;
 import com.popsales.model.Order;
 import com.popsales.util.OUtils;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -23,13 +24,12 @@ public class CouponMB {
 
     Boolean couponValid;
 
-    public String couponValid(List<CouponCode> coupons, String couponCode, Order lastOrder) {
+    public String couponValid(List<CouponCode> coupons, String couponCode, Order lastOrder, BigDecimal total, BigDecimal totalSemTaxa) {
         if (coupons != null && coupons.size() > 0) {
             for (CouponCode c : coupons) {
                 System.out.println(c.getCount() + " limite: " + c.getQuantity());
                 if (c.getSlug().equalsIgnoreCase(couponCode.toUpperCase()) && c.getCount() <= c.getQuantity()) {
                     if (c.getEnable()) {
-                        System.out.println("entrei aqui");
                         if (lastOrder.getCoupon() != null) {
                             if (lastOrder.getCoupon().equalsIgnoreCase(couponCode)) {
                                 String today = OUtils.formataData(new Date(), "yyyy-MM-dd");
@@ -38,17 +38,32 @@ public class CouponMB {
                                 if (today.equalsIgnoreCase(dateOrder)) {
                                     return "onetime";
                                 } else {
-                                    // este cliente usou esse cupom porém não foi hoje
+                                    System.out.println(c.getMinimalValue().doubleValue() + " " + total.doubleValue());
+                                    if (c.getDeliveryCost()) {
+                                        if (totalSemTaxa.doubleValue() < c.getMinimalValue().doubleValue()) {
+                                            return "minimal";
+                                        }
+                                    } else {
+                                        if (total.doubleValue() < c.getMinimalValue().doubleValue()) {
+                                            return "minimal";
+                                        }
+                                    }
                                     return "true";
                                 }
                             } else if (!lastOrder.getCoupon().equalsIgnoreCase(couponCode)) {
+                                if (!c.getPercentual() && total.doubleValue() < c.getMinimalValue().doubleValue()) {
+                                    return "minimal";
+                                }
                                 return "true";
                             }
                         } else {
                             // esse número não utilizou um cupom no seu último pedido
+                            if (!c.getPercentual() && total.doubleValue() < c.getMinimalValue().doubleValue()) {
+                                return "minimal";
+                            }
                             return "true";
                         }
-                    } else if (!c.getEnable()) {
+                    } else {
                         return "false";
                     }
                 } else if (c.getSlug().equalsIgnoreCase(couponCode.toUpperCase()) && c.getCount() >= c.getQuantity()) {
@@ -62,20 +77,29 @@ public class CouponMB {
         return "false";
     }
 
-    public String checkCouponNoOrder(List<CouponCode> coupons, String couponCode) {
+    public String checkCouponNoOrder(List<CouponCode> coupons, String couponCode, BigDecimal total, BigDecimal totalSemTaxa) {
         if (coupons != null && coupons.size() > 0) {
             for (CouponCode c : coupons) {
                 if (c.getSlug().equalsIgnoreCase(couponCode.toUpperCase()) && c.getCount() >= c.getQuantity()) {
-                    return "false";
+                    return "expired";
                 } else {
+                    if (c.getDeliveryCost()) {
+                        if (totalSemTaxa.doubleValue() < c.getMinimalValue().doubleValue()) {
+                            return "minimal";
+                        }
+                    } else {
+                        if (total.doubleValue() < c.getMinimalValue().doubleValue()) {
+                            return "minimal";
+                        }
+                    }
                     return "true";
                 }
             }
             // esse número não utilizou este cupom
-            return "true";
+            return "false";
         } else {
             // esse número não utilizou um cupom no seu último pedido
-            return "true";
+            return "false";
         }
     }
 
