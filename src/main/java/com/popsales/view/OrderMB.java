@@ -359,9 +359,7 @@ public class OrderMB implements Serializable {
             List<Product> prods = new ArrayList();
             categories = new ArrayList();
             productsPromo = new ArrayList();
-
             categories = categoriaService.getCategoryList(idCompany);
-
             prods = categoriaService.getProductsPromo(idCompany);
             dia = new SimpleDateFormat("EE").format(new Date());
             for (Product p : prods) {
@@ -1258,17 +1256,16 @@ public class OrderMB implements Serializable {
     public List<Category> removeCategoriaSemProduto(List<Category> cats) throws IOException {
         List<Category> out = new ArrayList();
         List<Product> products = new ArrayList();
-        System.out.println(cats.size());
-        products = categoriaService.getProductsByCompany(idCompany);
+        products = categoriaService.getProductsByTurn(idCompany);
+        System.out.println(products.size());
         for (Product p : products) {
             if (!productoIsNotVendidoDia(p)) {
                 out.add(p.getCategoryMain());
             }
         }
         List<Category> catss = new ArrayList();
-        catss = out.stream().distinct().sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
-        catss.sort(Comparator.comparing(c -> c.getType()));
-        System.out.println(catss.size());
+        out.sort(Comparator.comparing(c -> c.getName()));
+        catss = out.stream().sorted(Comparator.comparing(c -> c.getType())).collect(Collectors.toList());
         return catss;
     }
 
