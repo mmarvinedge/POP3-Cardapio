@@ -726,22 +726,27 @@ public class OrderMB implements Serializable {
         if (company == null || company.getId() == null || company.getBairros() == null) {
             return new ArrayList();
         }
-        if (company.getUniqueDeliveryCost()) {
-            if (company.getAddress().getCity() != null) {
-                try {
-                    List<String> bairros = categoriaService.getBairros(company.getAddress().getCity());
-                    for (String bairro : bairros) {
-                        this.bairros.add(new Bairro(bairro, company.getDeliveryCost()));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        try {
+            if (company.getUniqueDeliveryCost()) {
+                for (Bairro bairrosParam : company.getBairros()) {
+                    this.bairros.add(new Bairro(bairrosParam.getBairro(), company.getDeliveryCost()));
+                }
+            } else {
+                for (Bairro bairrosParam : company.getBairros()) {
+                    this.bairros.add(new Bairro(bairrosParam.getBairro(), bairrosParam.getTaxa()));
                 }
             }
-        } else {
-            for (Bairro bairrosParam : company.getBairros()) {
-                this.bairros.add(new Bairro(bairrosParam.getBairro(), bairrosParam.getTaxa()));
+        } catch (Exception e) {
+            List<String> bs;
+            try {
+                bs = categoriaService.getBairros(company.getAddress().getCity());
+                for (String bairro : bs) {
+                    this.bairros.add(new Bairro(bairro, company.getDeliveryCost()));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(OrderMB.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
-
         }
         System.out.println("TEM " + bairros.size());
         return bairros;
