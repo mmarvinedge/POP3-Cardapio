@@ -90,6 +90,7 @@ public class OrderMB implements Serializable {
     private BigDecimal totalAdicionais = BigDecimal.ZERO;
     private String couponCode = "";
     private Boolean couponValid = false;
+    private Boolean menuContext = false;
     private Order lastOrder = new Order();
 
     public OrderMB() {
@@ -106,6 +107,7 @@ public class OrderMB implements Serializable {
             try {
                 Company cop = categoriaService.loadCompanyName(name);
                 if (cop != null) {
+                    System.out.println("company existe");
                     company = cop;
                     coupons = company.getCoupons();
                     idCompany = company.getId();
@@ -132,24 +134,24 @@ public class OrderMB implements Serializable {
             String url = request.getRequestURL().toString().replace("index.jsf", "") + "notfound/";
             PrimeFaces.current().executeScript("window.location = '" + url + "';");
         } else {
+            System.out.println("entrei aqui no else do id");
             try {
-                company = categoriaService.loadCompany(idCompany);
                 coupons = company.getCoupons();
-                idCompany = company.getId();
                 menuOnly = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("menu");
-                if (menuOnly != null && menuOnly == "1") {
-                    company.setOnlyMeny(true);
+                System.out.println(menuOnly);
+                if (menuOnly != null && menuOnly.equals("1")) {
+                    System.out.println("entrei no ifffffffffffff");
+                    System.out.println(menuContext);
+                    menuContext = true;
                 }
 
-                tratarEstabelecimentoAberto();
+                fechado = !company.getOpen();
 
                 order.getAddress().setCity((company.getAddress() != null && company.getAddress().getCity() != null) ? company.getAddress().getCity() : "");
                 if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel") != null) {
                     String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
                     try {
-                        System.out.println("telefoneeeeeeeeeeeeee " + OUtils.formataNinePhone(phone));
                         lastOrder = orderService.lastOrderByPhone(idCompany, phone);
-                        System.out.println("date do ultimo pedido " + lastOrder.getDtRegister().substring(0, 10));
                         if (lastOrder != null) {
                             if (lastOrder.getAddress().getCity().equalsIgnoreCase(company.getAddress().getCity())) {
                                 order.setAddress(lastOrder.getAddress());
@@ -170,160 +172,14 @@ public class OrderMB implements Serializable {
         if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("order") != null) {
             ord = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("order");
         }
-    }
-
-    public void tratarEstabelecimentoAberto() {
-        try {
-            String dia = new SimpleDateFormat("EE").format(new Date());
-
-            String horaAgora = new SimpleDateFormat("HH:mm").format(new Date());
-
-            Integer horaAbertura = 0;
-            Integer horaFechamento = 0;
-
-            if (company.getTime() == null) {
-                fechado = false;
-                return;
-            }
-
-            if (dia.equals("Dom") || dia.equals("Sun")) {
-                if (!company.getTime().getDom()) {
-                    fechado = true;
-                    return;
-                }
-                if (company.getTime().getOpenDom() == null && company.getTime().getCloseDom() == null) {
-                    fechado = false;
-                    return;
-                }
-                horaAbertura = Integer.parseInt(company.getTime().getOpenDom().replace(":", "").trim());
-                horaFechamento = Integer.parseInt(company.getTime().getCloseDom().replace(":", "").trim());
-                horario = company.getTime().getOpenDom() + " às " + company.getTime().getCloseDom();
-            } else if (dia.equals("Seg") || dia.equals("Mon")) {
-                if (!company.getTime().getSeg()) {
-                    fechado = true;
-                    return;
-                }
-                if (company.getTime().getOpenSeg() == null && company.getTime().getCloseSeg() == null) {
-                    fechado = false;
-                    return;
-                }
-                horaAbertura = Integer.parseInt(company.getTime().getOpenSeg().replace(":", "").trim());
-                horaFechamento = Integer.parseInt(company.getTime().getCloseSeg().replace(":", "").trim());
-                horario = company.getTime().getOpenSeg() + " às " + company.getTime().getCloseSeg();
-            } else if (dia.equals("Ter") || dia.equals("Tue")) {
-                if (!company.getTime().getTer()) {
-                    fechado = true;
-                    return;
-                }
-                if (company.getTime().getOpenTer() == null && company.getTime().getCloseTer() == null) {
-                    fechado = false;
-                    return;
-                }
-                horaAbertura = Integer.parseInt(company.getTime().getOpenTer().replace(":", "").trim());
-                horaFechamento = Integer.parseInt(company.getTime().getCloseTer().replace(":", "").trim());
-                horario = company.getTime().getOpenTer() + " às " + company.getTime().getCloseTer();
-            } else if (dia.equals("Qua") || dia.equals("Wed")) {
-                if (!company.getTime().getQua()) {
-                    fechado = true;
-                    return;
-                }
-                if (company.getTime().getOpenQua() == null && company.getTime().getCloseQua() == null) {
-                    fechado = false;
-                    return;
-                }
-                horaAbertura = Integer.parseInt(company.getTime().getOpenQua().replace(":", "").trim());
-                horaFechamento = Integer.parseInt(company.getTime().getCloseQua().replace(":", "").trim());
-                horario = company.getTime().getOpenQua() + " às " + company.getTime().getCloseQua();
-            } else if (dia.equals("Qui") || dia.equals("Thu")) {
-                if (!company.getTime().getQui()) {
-                    fechado = true;
-                    return;
-                }
-                if (company.getTime().getOpenQui() == null && company.getTime().getCloseQui() == null) {
-                    fechado = false;
-                    return;
-                }
-                horaAbertura = Integer.parseInt(company.getTime().getOpenQui().replace(":", "").trim());
-                horaFechamento = Integer.parseInt(company.getTime().getCloseQui().replace(":", "").trim());
-                horario = company.getTime().getOpenQui() + " às " + company.getTime().getCloseQui();
-            } else if (dia.equals("Sex") || dia.equals("Fri")) {
-                if (!company.getTime().getSex()) {
-                    fechado = true;
-                    return;
-                }
-                if (company.getTime().getOpenSex() == null && company.getTime().getCloseSex() == null) {
-                    fechado = false;
-                    return;
-                }
-                horaAbertura = Integer.parseInt(company.getTime().getOpenSex().replace(":", "").trim());
-                horaFechamento = Integer.parseInt(company.getTime().getCloseSex().replace(":", "").trim());
-                horario = company.getTime().getOpenSex() + " às " + company.getTime().getCloseSex();
-            } else if (dia.equals("Sab") || dia.equals("Sat") || dia.equals("Sáb")) {
-                if (!company.getTime().getSab()) {
-                    fechado = true;
-                    return;
-                }
-                if (company.getTime().getOpenSab() == null && company.getTime().getCloseSab() == null) {
-                    fechado = false;
-                    return;
-                }
-                horaAbertura = Integer.parseInt(company.getTime().getOpenSab().replace(":", "").trim());
-                horaFechamento = Integer.parseInt(company.getTime().getCloseSab().replace(":", "").trim());
-                horario = company.getTime().getOpenSab() + " às " + company.getTime().getCloseSab();
-            }
-            this.dia = dia;
-
-            Integer horaA = Integer.parseInt(horaAgora.replace(":", "").trim());
-
-            if (horaA >= horaAbertura && horaFechamento < horaAbertura) {
-                fechado = false;
-                return;
-            } else {
-                if (horaA >= horaAbertura && horaA <= horaFechamento) {
-                    fechado = false;
-                } else {
-                    fechado = true;
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            fechado = false;
-        }
-
-    }
-
-    public Boolean productoIsNotVendidoDia(Product p) {
-        if (!p.getEnabled()) {
-            return true;
-        }
-        if (p.getProductDay() == null) {
-            return false;
-        }
-        if (dia.equals("Dom") || dia.equals("Sun")) {
-            return p.getProductDay().getNaoVenderDom();
-        } else if (dia.equals("Seg") || dia.equals("Mon")) {
-            return p.getProductDay().getNaoVenderSeg();
-        } else if (dia.equals("Ter") || dia.equals("Tue")) {
-            return p.getProductDay().getNaoVenderTer();
-        } else if (dia.equals("Qua") || dia.equals("Wed")) {
-            return p.getProductDay().getNaoVenderQua();
-        } else if (dia.equals("Qui") || dia.equals("Thu")) {
-            return p.getProductDay().getNaoVenderQui();
-        } else if (dia.equals("Sex") || dia.equals("Fri")) {
-            return p.getProductDay().getNaoVenderSex();
-        } else if (dia.equals("Sab") || dia.equals("Sat")) {
-            return p.getProductDay().getNaoVenderSab();
-        } else {
-            return false;
-        }
+        loadCategorias();
+        listaBairros();
     }
 
     @PostConstruct
     public void init() {
         System.out.println("POST CONSTRUC");
-        loadCategorias();
-        listaBairros();
+
     }
 
     public void preReload() {
@@ -333,18 +189,20 @@ public class OrderMB implements Serializable {
 
         System.out.println("NAME: " + name);
         System.out.println("ID: " + reloadID);
-
+        menuContext = false;
         if ((name != null && company != null && company.getName() != null && !name.equals(company.getNameUrl())) || (name != null && (company == null || company.getName() == null))) {
             System.out.println("RECARREGAR");
             constructor();
             init();
             couponValid = false;
             couponCode = "";
+            menuContext = false;
         } else {
 
             if (reloadID != null && company != null && company.getId() != null && !reloadID.equals(company.getId())) {
                 constructor();
                 init();
+                menuContext = false;
                 System.out.println("RECARREGAR");
             }
         }
@@ -356,18 +214,10 @@ public class OrderMB implements Serializable {
         try {
             if (idCompany == null) {
             }
-            List<Product> prods = new ArrayList();
             categories = new ArrayList();
             productsPromo = new ArrayList();
             categories = categoriaService.getCategoryList(idCompany);
-            prods = categoriaService.getProductsPromo(idCompany);
-            dia = new SimpleDateFormat("EE").format(new Date());
-            for (Product p : prods) {
-                if (!productoIsNotVendidoDia(p)) {
-                    productsPromo.add(p);
-                }
-            }
-            categories = removeCategoriaSemProduto(categories);
+            productsPromo = categoriaService.getProductsPromo(idCompany);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("NAO FOI POSSIVEL CARREGAR O ID COMPANY");
@@ -420,15 +270,8 @@ public class OrderMB implements Serializable {
                 return;
             }
             categorySelected = category;
-            List<Product> prods = new ArrayList();
-            prods = categoriaService.getProducts(idCompany, id);
             products = new ArrayList();
-            dia = new SimpleDateFormat("EE").format(new Date());
-            for (Product p : prods) {
-                if (!productoIsNotVendidoDia(p)) {
-                    products.add(p);
-                }
-            }
+            products = categoriaService.getProducts(idCompany, id);
         } catch (IOException ex) {
             PrimeFaces.current().executeScript("connectionErrorMsg('" + ex.getMessage() + "')");
             Logger.getLogger(OrderMB.class.getName()).log(Level.SEVERE, null, ex);
@@ -456,6 +299,8 @@ public class OrderMB implements Serializable {
                     for (AttributeValue value : atr.getValues()) {
                         if (value.getQuantity() != null && value.getQuantity().doubleValue() > 0) {
                             novos.add(value);
+                            value.setQuantity(value.getQuantity().multiply(item.getQuantity()));
+                            value.setTotal(value.getPrice().multiply(item.getQuantity()));
                             if (value.getTotal() != null) {
                                 totalAdicionais = totalAdicionais.add(value.getTotal());
                             }
@@ -497,15 +342,26 @@ public class OrderMB implements Serializable {
         }
     }
 
-    private void calcularDescontoCupom(BigDecimal desconto, Boolean deliveryCost) {
-        BigDecimal discount = order.getTotal().multiply(desconto).divide(BigDecimal.valueOf(100));
-        System.out.println("desconto no valor de " + discount);
-        if (deliveryCost) {
-            order.setDiscountValue(discount);
-            order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(discount));
+    private void calcularDescontoCupom(BigDecimal desconto, Boolean deliveryCost, Boolean percentual) {
+        System.out.println(percentual);
+        if (percentual) {
+            BigDecimal discount = order.getTotal().multiply(desconto).divide(BigDecimal.valueOf(100));
+            System.out.println("desconto no valor de " + discount);
+            if (deliveryCost) {
+                order.setDiscountValue(discount);
+                order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(discount));
+            } else {
+                order.setDiscountValue(discount);
+                order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).subtract(discount).add(order.getDeliveryCost()));
+            }
         } else {
-            order.setDiscountValue(desconto);
-            order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).subtract(desconto).add(order.getDeliveryCost()));
+            if (deliveryCost) {
+                order.setDiscountValue(desconto);
+                order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(desconto));
+            } else {
+                order.setDiscountValue(desconto);
+                order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).subtract(desconto).add(order.getDeliveryCost()));
+            }
         }
     }
 
@@ -867,7 +723,7 @@ public class OrderMB implements Serializable {
 
     public List<Bairro> listaBairros() {
         this.bairros = new ArrayList();
-        if (company == null || company.getId() == null) {
+        if (company == null || company.getId() == null || company.getBairros() == null) {
             return new ArrayList();
         }
         if (company.getUniqueDeliveryCost()) {
@@ -1091,9 +947,8 @@ public class OrderMB implements Serializable {
             if (checkCoupon.equals("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
-                        System.out.println(company.getCoupons().toString());
                         order.setCoupon(couponCode);
-                        calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost());
+                        calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
                         couponValid = true;
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
                         PrimefacesUtil.Update(":frmFechar:msgsCoupon");
@@ -1128,7 +983,7 @@ public class OrderMB implements Serializable {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
                         System.out.println(company.getCoupons().toString());
                         order.setCoupon(couponCode);
-                        calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost());
+                        calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
                         couponValid = true;
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
                         PrimefacesUtil.Update(":frmFechar:msgsCoupon");
@@ -1152,6 +1007,14 @@ public class OrderMB implements Serializable {
 
     public void setCoupons(List<CouponCode> coupons) {
         this.coupons = coupons;
+    }
+
+    public Boolean getMenuContext() {
+        return menuContext;
+    }
+
+    public void setMenuContext(Boolean menuContext) {
+        this.menuContext = menuContext;
     }
 
     private String msg = "";
@@ -1255,18 +1118,14 @@ public class OrderMB implements Serializable {
 
     public List<Category> removeCategoriaSemProduto(List<Category> cats) throws IOException {
         List<Category> out = new ArrayList();
+        List<Category> categories = new ArrayList();
         List<Product> products = new ArrayList();
         products = categoriaService.getProductsByTurn(idCompany);
-        System.out.println(products.size());
-        for (Product p : products) {
-            if (!productoIsNotVendidoDia(p)) {
-                out.add(p.getCategoryMain());
-            }
-        }
+
         List<Category> catss = new ArrayList();
-        out.sort(Comparator.comparing(c -> c.getName()));
-        catss = out.stream().sorted(Comparator.comparing(c -> c.getType())).collect(Collectors.toList());
-        return catss;
+        catss = out.stream().distinct().sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
+        categories = catss.stream().sorted(Comparator.comparing(c -> c.getType())).collect(Collectors.toList());
+        return categories;
     }
 
 }

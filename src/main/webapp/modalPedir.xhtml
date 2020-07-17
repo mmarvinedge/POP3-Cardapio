@@ -34,7 +34,7 @@
                     <p:blockUI block="grp" widgetVar="ldga"  >
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
                     </p:blockUI>
-                    <h:panelGroup rendered="#{orderMB.item.product.categoryMain.name == 'Pizzas' or orderMB.item.product.categoryMain.name == 'Pizzas Doces' and orderMB.item.product.maxPizza > 0}" >
+                    <h:panelGroup rendered="#{(orderMB.item.product.categoryMain.name == 'Pizzas' or orderMB.item.product.categoryMain.name == 'Pizzas Doces' or orderMB.item.product.categoryMain.name == 'Italian Pizza Express') and orderMB.item.product.maxPizza > 0}" >
                         <div class="row" style="padding: 10px;">
                             <div class="col-xs-12">
                                 <div>

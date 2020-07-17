@@ -27,7 +27,7 @@
                     <div class="row equal-cols row-flex" style="padding: 5px;     margin-left: 0px; margin-right: 0px; ">
                         <ui:repeat value="#{orderMB.products}" var="prod">
 
-                            <h:panelGroup layout="block" styleClass="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5" rendered="#{!orderMB.productoIsNotVendidoDia(prod)}" style="padding-left: 0;">
+                            <h:panelGroup layout="block" styleClass="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5" style="padding-left: 0;">
                                 <p:commandLink action="#{orderMB.setProduct(prod)}" style="width: 100%;     border-bottom: 1px solid #ccc;" 
                                                update=":mdlPedir" onstart="PF('ldg2').show()" oncomplete="PF('ldg2').hide(); openModal('mdlPedir'); ">
                                     <div class="row">

@@ -213,17 +213,19 @@
                                         </div>
                                         <h:panelGroup id="grpTroco" style="margin-top: 5px;">
                                             <h:panelGroup rendered="#{orderMB.order.forma == 'Dinheiro'}">
-                                                <div class="col-xs-4" >
-                                                    <p:outputLabel value="Levar Troco?" /><br/>
-                                                    <p:toggleSwitch label="Troco?" value="#{orderMB.order.troco}"  >
-                                                        <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
-                                                    </p:toggleSwitch>
-                                                </div>
-                                                <div class="col-xs-8">
-                                                    <h:panelGroup id="gpTroco" >
-                                                        <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{orderMB.order.trocoPara}" required="true" 
-                                                                     requiredMessage="Troco para quanto?"  rendered="#{orderMB.order.troco}"/>
-                                                    </h:panelGroup>
+                                                <div class="col-xs-12">
+                                                    <div class="col-xs-4" >
+                                                        <p:outputLabel value="Levar Troco?" /><br/>
+                                                        <p:toggleSwitch label="Troco?" value="#{orderMB.order.troco}"  >
+                                                            <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                                                        </p:toggleSwitch>
+                                                    </div>
+                                                    <div class="col-xs-8">
+                                                        <h:panelGroup id="gpTroco" >
+                                                            <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{orderMB.order.trocoPara}" required="true" 
+                                                                         requiredMessage="Troco para quanto?"  rendered="#{orderMB.order.troco}"/>
+                                                        </h:panelGroup>
+                                                    </div>
                                                 </div>
                                             </h:panelGroup>
                                         </h:panelGroup>
@@ -269,7 +271,7 @@
                                             <strong>Subtotal</strong>
                                         </div>
                                         <div class="col-xs-6"  style="text-align: right; border-bottom: 1px solid #ccc;">
-                                            <h:outputText  value="#{orderMB.order.subtotal}" readonly="true" styleClass="text-right">
+                                            <h:outputText  value="#{orderMB.order.subtotal}" styleClass="text-right">
                                                 <f:convertNumber type="currency" />
                                             </h:outputText>
                                         </div>
@@ -279,7 +281,7 @@
                                                     <strong>Taxa de Entrega</strong>
                                                 </div>
                                                 <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;" >
-                                                    <h:outputText value="#{orderMB.order.deliveryCost}" readonly="true" styleClass="text-right" >
+                                                    <h:outputText value="#{orderMB.order.deliveryCost}" styleClass="text-right" >
                                                         <f:convertNumber type="currency" />
                                                     </h:outputText>
                                                 </div>
@@ -289,7 +291,7 @@
                                                     <strong>Cupom de desconto</strong>
                                                 </div>
                                                 <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;"  >
-                                                    <h:outputText value="#{orderMB.order.discountValue}" readonly="true" styleClass="text-right" >
+                                                    <h:outputText value="#{orderMB.order.discountValue}" styleClass="text-right" >
                                                         <f:convertNumber type="currency" />
                                                     </h:outputText>
                                                 </div>
@@ -300,7 +302,7 @@
                                         </div>
                                         <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;" >
                                             <strong>
-                                                <h:outputText value="#{orderMB.order.total}"  readonly="true"  styleClass="text-right" style="font-weight: bolder;" >
+                                                <h:outputText value="#{orderMB.order.total}" styleClass="text-right" style="font-weight: bolder;" >
                                                     <f:convertNumber type="currency" />
                                                 </h:outputText>
                                             </strong>
@@ -309,6 +311,7 @@
                                             <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{orderMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid; margin-top: 15px !important;" 
                                                            update="@form" 
                                                            action="#{orderMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
+
                                         </div>
                                     </div>
                                 </p:tab>

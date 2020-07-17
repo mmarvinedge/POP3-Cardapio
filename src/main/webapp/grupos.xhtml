@@ -64,44 +64,41 @@
                             </h:panelGroup>
                         </div>
                         <ui:repeat value="#{orderMB.productsPromo}" var="prod">
-                            <h:panelGroup rendered="#{!orderMB.productoIsNotVendidoDia(prod)}">
-
-                                <h:panelGroup layout="block" styleClass="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5" >
-                                    <div class="">
-                                        <div style="border-bottom: 1px solid #ccc;">
-                                            <p:commandLink action="#{orderMB.setProduct(prod)}" style="width: 100%;     " 
-                                                           update=":mdlPedir" oncomplete="PF('ldg').hide(); openModal('mdlPedir')" onclick="PF('ldg').show()"   >
-                                                <div class="row">
-                                                    <div class="col-xs-4" style="padding: 0;">
-                                                        <div class="itm-img ima-#{prod.id}">
-                                                            <center style="display: inline-grid;">
-                                                                <span class="label-yellow">
-                                                                    <i class="fa fa-star"></i> Promoção
-                                                                </span>
-                                                                <img  role="presentation" src="#{prod.imageBase64}"  style="max-width: 116px;  min-height: 64px; margin-top: 3px; max-height: 96px;"/>
-                                                            </center>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-8" style=" ">
-                                                        <div class="col-xs-12" style="    padding-left: 0;">
-                                                            <span style="color: #3e3e3e;font-weight: 400;font-size: 16px;margin-bottom: 3px; text-transform: uppercase;"> #{prod.name}</span>
-                                                        </div>
-                                                        <div class="col-xs-12" style=" padding-left: 0;">
-                                                            <div style="font-size: 12px;color: #717171;word-break: break-word; text-transform: lowercase;">#{prod.description}</div>
-                                                        </div>
-                                                        <div class="col-xs-12 text-right" style="padding-right: 20px;">
-                                                            <h:panelGroup rendered="#{prod.promo}">
-                                                                <s style="font-size: 1.46rem;font-weight: 400;color: #929292;WIDTH: auto;margin: 0;
-                                                                   padding: 0;">#{orderMB.formatarMoeda(prod.priceOriginal)}</s>
-                                                            </h:panelGroup>
-                                                            <span style="font-size: 16px;font-weight: 400;color: #e83b62;">#{prod.price.doubleValue() == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
-                                                        </div>
+                            <h:panelGroup layout="block" styleClass="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5" >
+                                <div class="">
+                                    <div style="border-bottom: 1px solid #ccc;">
+                                        <p:commandLink action="#{orderMB.setProduct(prod)}" style="width: 100%;     " 
+                                                       update=":mdlPedir" oncomplete="PF('ldg').hide(); openModal('mdlPedir')" onclick="PF('ldg').show()"   >
+                                            <div class="row">
+                                                <div class="col-xs-4" style="padding: 0;">
+                                                    <div class="itm-img ima-#{prod.id}">
+                                                        <center style="display: inline-grid;">
+                                                            <span class="label-yellow">
+                                                                <i class="fa fa-star"></i> Promoção
+                                                            </span>
+                                                            <img  role="presentation" src="#{prod.imageBase64}"  style="max-width: 116px;  min-height: 64px; margin-top: 3px; max-height: 96px;"/>
+                                                        </center>
                                                     </div>
                                                 </div>
-                                            </p:commandLink>
-                                        </div>
+                                                <div class="col-xs-8" style=" ">
+                                                    <div class="col-xs-12" style="    padding-left: 0;">
+                                                        <span style="color: #3e3e3e;font-weight: 400;font-size: 16px;margin-bottom: 3px; text-transform: uppercase;"> #{prod.name}</span>
+                                                    </div>
+                                                    <div class="col-xs-12" style=" padding-left: 0;">
+                                                        <div style="font-size: 12px;color: #717171;word-break: break-word; text-transform: lowercase;">#{prod.description}</div>
+                                                    </div>
+                                                    <div class="col-xs-12 text-right" style="padding-right: 20px;">
+                                                        <h:panelGroup rendered="#{prod.promo}">
+                                                            <s style="font-size: 1.46rem;font-weight: 400;color: #929292;WIDTH: auto;margin: 0;
+                                                               padding: 0;">#{orderMB.formatarMoeda(prod.priceOriginal)}</s>
+                                                        </h:panelGroup>
+                                                        <span style="font-size: 16px;font-weight: 400;color: #e83b62;">#{prod.price.doubleValue() == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </p:commandLink>
                                     </div>
-                                </h:panelGroup>
+                                </div>
                             </h:panelGroup>
                         </ui:repeat>
                     </div>

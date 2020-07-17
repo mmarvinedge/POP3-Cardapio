@@ -7,6 +7,7 @@ package com.popsales.model;
 
 import java.math.BigDecimal;
 import java.util.List;
+import javax.persistence.Id;
 
 /**
  *
@@ -14,14 +15,20 @@ import java.util.List;
  */
 public class Company {
 
+    @Id
     private String id;
     private String companyName;
+
     private String name;
+    private String socialReason;
     private String phone;
+    private String color;
+    private String logo;
     private String owner;
+    private String domain;
+    private String cgccpf;
     private Address address;
     private BigDecimal deliveryCost;
-    private String logo;
     private TimeOpen time;
     private String funcionamento;
     private String messageWelcome;
@@ -29,13 +36,22 @@ public class Company {
     private List<Bairro> bairros;
     private String nameUrl;
     private String aproxTime;
-    private Boolean uniqueDeliveryCost;
-    private Boolean onlyMenu;
-    private Boolean worksCoupon;
+    private Boolean integration;
+    private Boolean trial;
+    private String trialDate;
     private List<CouponCode> coupons;
+    private Boolean uniqueDeliveryCost;
+    private Integer licenseType;
+    private String licenseDate;
+    private Boolean onlyMenu;
     private Boolean freeVersion;
+    private Boolean block;
+    private Boolean worksCoupon;
     private Boolean deliveryOnly, withdrawalOnly, decimalQuantity;
+    private String email;
     private Shift shift;
+    private BigDecimal minimalValue;
+    private Boolean open;
 
     public String getId() {
         return id;
@@ -259,6 +275,110 @@ public class Company {
 
     public void setShift(Shift shift) {
         this.shift = shift;
+    }
+
+    public BigDecimal getMinimalValue() {
+        return minimalValue;
+    }
+
+    public void setMinimalValue(BigDecimal minimalValue) {
+        this.minimalValue = minimalValue;
+    }
+
+    public String getSocialReason() {
+        return socialReason;
+    }
+
+    public void setSocialReason(String socialReason) {
+        this.socialReason = socialReason;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getCgccpf() {
+        return cgccpf;
+    }
+
+    public void setCgccpf(String cgccpf) {
+        this.cgccpf = cgccpf;
+    }
+
+    public Boolean getIntegration() {
+        return integration;
+    }
+
+    public void setIntegration(Boolean integration) {
+        this.integration = integration;
+    }
+
+    public Boolean getTrial() {
+        return trial;
+    }
+
+    public void setTrial(Boolean trial) {
+        this.trial = trial;
+    }
+
+    public String getTrialDate() {
+        return trialDate;
+    }
+
+    public void setTrialDate(String trialDate) {
+        this.trialDate = trialDate;
+    }
+
+    public Integer getLicenseType() {
+        return licenseType;
+    }
+
+    public void setLicenseType(Integer licenseType) {
+        this.licenseType = licenseType;
+    }
+
+    public String getLicenseDate() {
+        return licenseDate;
+    }
+
+    public void setLicenseDate(String licenseDate) {
+        this.licenseDate = licenseDate;
+    }
+
+    public Boolean getBlock() {
+        return block;
+    }
+
+    public void setBlock(Boolean block) {
+        this.block = block;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getOpen() {
+        return open;
+    }
+
+    public void setOpen(Boolean open) {
+        this.open = open;
     }
     
 }
