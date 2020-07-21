@@ -13,7 +13,7 @@
             </goals>
             <properties>
                 <netbeans.deploy>true</netbeans.deploy>
-                <netbeans.deploy.clientUrlPart>/rest/edge#!</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart>rest/maturatto#!</netbeans.deploy.clientUrlPart>
             </properties>
         </action>
     </actions>

@@ -10,7 +10,7 @@
         <title>POP3</title>
         <meta charset="utf-8"/> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <h:outputStylesheet name="css/style4.css"   />
+        <h:outputStylesheet name="css/stylesheet8.css"   />
         <h:outputStylesheet name="css/all.min.css"   />
         <h:outputStylesheet name="css/sweetalert2.min.css"   />
         <h:outputStylesheet name="css/animate.min.css"   />
@@ -29,8 +29,8 @@
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
 
-        <meta property="og:site_name" content="Cardápio Digital #{orderMB.company.name}" />
-        <meta property="og:title" content="Cardápio Digital #{orderMB.company.name}" />
+        <meta property="og:site_name" content="Cardápio Digital #{empresaMB.company.name}" />
+        <meta property="og:title" content="Cardápio Digital #{empresaMB.company.name}" />
         <meta property="og:description" content="Conheça o cardápio e faça seu pedido!" />
         <meta property="og:image" content="http://metre.ddns.net:88/popsales/min.jpg" />
         <meta property="og:url" content="http://pop3sistemas.com.br" />
@@ -40,48 +40,8 @@
     </h:head>
     <h:body>
         <f:view locale="pt-BR">
-            <f:metadata>
-                <f:viewAction action="#{carrinhoMB.iniciarVenda()}" />
-            </f:metadata>
-
             <h:panelGroup id="page" >
-                <h:panelGroup id="welcome" rendered="#{!orderMB.home}" layout="block" style="background: #31353d;    height: 100%;width: 100%; position: fixed;">
-                    <p:blockUI block="welcome" widgetVar="la"  animate="true"  >
-                        <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
-                    </p:blockUI>
-                    <div class="cover"  style="background: #31353d;    height: 100%;width: 100%;position: fixed;"></div>
-                    <div class="container-fluid" style="padding: 30px;">
-                        <div class="row">
-                            <div class="col-xs-12" style="    text-align: center;">
-                                <img src="#{orderMB.company.logo}" style="border-radius: 10%; max-width: 215px;" class="img-reponsive"/>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-12" style="    text-align: center; padding: 0px;">
-                            <h4 style="color: white;    margin-top: 30px;     margin-bottom: 0px; ">Bem Vindo à(o)</h4>
-                            <h3 style="color: white;     margin-top: 0px;">#{orderMB.company.name}</h3>
-
-                        </div>
-
-
-                        <div class="col-xs-12" style="    text-align: center; color: white; margin-top: 50px;">
-                            <h:form>
-                                <h5>#{orderMB.company.messageWelcome}</h5>
-                                <p:commandButton value="Clique aqui" action="#{orderMB.setHome(false)}" update=":page"
-                                                 onstart="PF('la').show()" oncomplete="PF('la').hide()"
-                                                 style="background: #95c70d !important; color: white !important; box-shadow: none !important; text-shadow: none !important; border-color: #95c70d !important;     width: 200px;    margin-top: 5px; padding: 15px;" />
-
-                            </h:form>
-                        </div>
-                        <div class="col-xs-12" style="    text-align: center; margin-top: 15px;">
-                            <span style="color: white;">
-                                <small>by </small> <strong ><a href="http://pop3sistemas.com.br/" target="_blank" style="color: #95c70d;"> POP3</a></strong>
-                            </span>
-                        </div>
-                    </div>
-
-                </h:panelGroup>
-                <h:panelGroup id="order" rendered="#{orderMB.home}" layout="block"  style="height: 100%;width: 100%; position: fixed;">
+                <h:panelGroup id="order"  layout="block"  style="height: 100%;width: 100%; position: fixed;">
                     <p:blockUI block="order" widgetVar="la2"  animate="true"  >
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
                     </p:blockUI>
@@ -93,11 +53,8 @@
                         <ui:include src="grupos.xhtml" />
                         <ui:include src="itens.xhtml" />
                         <ui:include src="fecharPedido.xhtml" />
-
-
                     </h:panelGroup>
 
-                    <ui:include src="sideCart.xhtml" />
                     <ui:include src="modalPedir.xhtml" />
 
                     <h:panelGroup id="pnlend">
@@ -105,18 +62,24 @@
                             <footer class="fixed-bottom">
                                 <div class="row" >
                                     <div class="col-xs-6">
-                                        <div style="    margin-top: 10px;margin-left: 5px;">
-                                            <span>Total</span> 
-                                            <strong style="    color: white;font-size: 20px;">
-                                                <h:outputText  id="outPutTotal" value="#{orderMB.order.products.size()== 0 ? 'R$ 0,00' : orderMB.formatarMoeda(orderMB.order.total)}" />
-                                            </strong>
+                                        <div style="margin-left: 5px;">
+                                            <span>
+                                                <i class="fa fa-cart-plus fa-2x " style="color: white;     margin-top: 15px;"></i>
+                                                <h:panelGroup id="grpNumbers">
+                                                    <span class="badge-custom">#{pedidoMB.order.products.size()}</span>
+                                                </h:panelGroup>
+                                                <strong style="    color: white;font-size: 20px;">
+                                                    <h:outputText  id="outPutTotal" value="#{pedidoMB.order.products.size()== 0 ? 'R$ 0,00' : empresaMB.util.formatarMoeda(pedidoMB.order.total)}" />
+                                                </strong>
+                                            </span>
+
                                         </div>
                                     </div>
                                     <div class="col-xs-6 text-right">
                                         <h:panelGroup id="finish">
-                                            <h:panelGroup rendered="#{orderMB.order.total.doubleValue() >= orderMB.company.minimalValue.doubleValue()}">
+                                            <h:panelGroup rendered="#{pedidoMB.order.total.doubleValue() >= empresaMB.company.minimalValue.doubleValue()}">
                                                 <p:commandButton value="Finalizar Pedido" 
-                                                                 disabled="#{orderMB.fechado}"
+                                                                 disabled="#{!empresaMB.company.open}"
                                                                  style="height: 100% !important;
                                                                  background: #2f8a39;
                                                                  font-size: 14px;
@@ -127,12 +90,12 @@
                                                                  border-color: #2f8a39;
                                                                  height: 45px !important;
                                                                  box-shadow: none;
-                                                                 margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',orderMB.order.products.size())}" actionListener="#{orderMB.checkDeliveryCost()}" rendered="#{!orderMB.company.onlyMenu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
+                                                                 margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',pedidoMB.order.products.size())}" actionListener="#{pedidoMB.checkDeliveryCost()}" rendered="#{!empresaMB.company.onlyMenu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
                                             </h:panelGroup>
-                                            <h:panelGroup rendered="#{orderMB.company.minimalValue.doubleValue() >= orderMB.order.total.doubleValue() and orderMB.company.minimalValue.doubleValue() > 0}">
+                                            <h:panelGroup rendered="#{empresaMB.company.minimalValue.doubleValue() >= pedidoMB.order.total.doubleValue() and empresaMB.company.minimalValue.doubleValue() > 0}">
                                                 <div style="    margin-top: 12px;margin-right: 5px;">
                                                     <strong style="color: black;font-size: 14px; background-color: white; border: 1px; border-radius: 6px; padding: 1%;">
-                                                        <h:outputText  value="Pedido mínimo "/> <h:outputText value="#{orderMB.company.minimalValue.doubleValue()}"><f:convertNumber type="currency"/></h:outputText>
+                                                        <h:outputText  value="Pedido mínimo "/> <h:outputText value="#{empresaMB.company.minimalValue.doubleValue()}"><f:convertNumber type="currency"/></h:outputText>
                                                     </strong>
                                                 </div>
                                             </h:panelGroup>
@@ -162,162 +125,21 @@
 
 
 
-
             <h:panelGroup id="grpScrips" layout="block" >
                 <script>
                     //<![CDATA[
                     function redirecionar() {
                         console.log('redirecionar')
-                        var msg = '#{orderMB.msg}';
+                        var msg = '#{pedidoMB.msg}';
                         msg = msg.split('linebr').join('\n');
                         console.log('msg: ' + msg);
-                        window.location.replace("https://api.whatsapp.com/send?phone=55#{orderMB.company.phoneUnformat}&text=" + window.encodeURIComponent(msg));
+                        window.location.replace("https://api.whatsapp.com/send?phone=55#{empresaMB.company.phoneUnformat}&text=" + window.encodeURIComponent(msg));
                     }
                     //]]>
                 </script>
             </h:panelGroup>
-
-
-            <script>
-
-                    function callBack() {
-                        PF('loading').show();
-                        backGrupos();
-                        PF('loading').hide();
-                    }
-
-                    //<![CDATA[
-                    function finalizarPedido() {
-                        Swal.fire({
-                    title: 'Muito Bom',
-                        text: "Seu pedido foi enviado!",
-                        icon: 'success',
-                    allowOutsideClick: false,
-                    closeOnClickOutside: false,
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Clique Para Sair!'
-                            }).then((result) => {
-                            if (result.value) {
-                            backGrupos();
-                            redirecionar();
-                            }
-                        });
-                    }
-
-                        //]]>
-                            function alerta(msg) {
-                                Swal.fire({
-                                title: 'Atenção',
-                        text: msg, icon: 'warning',
-                    showCancelButton: false,
-                    confirmButtonColor: '#3085d6',
-                        confirmButtonText:
-                        'OK!'
-                        });
-                    }
-
-
-                        //Get the button:
-                        mybutton = document.getElementById("myBtn");
-                                $('img').attr('loading', 'lazy');
-                    // When the user s crolls down 20px from the top of t he document, show the button
-
-
-                    // When the user c licks on the button, scroll to the top of the document
-                    function topFunction() {
-                        document.body.scrollTop = 0; // For Safari
-                        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-                    }
-
-                    //<![CDATA[
-                    (function (global) {
-
-                        if (typeof (global) === "undefined") {
-                            throw new Error("window is undefined");
-                        }
-
-                        var _hash = "!";
-                        var noBackPlease = function () {
-                            global.location.href += "#";
-                            // making sure we have the fruit available for juice (^__^)
-                            global.setTimeout(function () {
-                                global.location.href += "!";
-                            }, 50);
-                        };
-                        global.onhashchange = function () {
-
-                            if (global.location.hash !== _hash) {
-                                global.location.hash = _hash;
-                                if ($('.modal.in, .modal.show').length > 0) {
-                                    closeModal('mdlPedir');
-                                } else {
-                                    // backGrupos();
-                                }
-
-
-                            }
-                        };
-                        global.onload = function () {
-                            noBackPlease();
-                            // disables backspace on page except on input fields and textarea..
-                            document.body.onkeydown = function (e) {
-                                var elm = e.target.nodeName.toLowerCase();
-                                if (e.which === 8 && (elm !== 'input' && elm !== 'textarea')) {
-                                    e.preventDefault();
-                                }
-                                // stopping event bubbling up the DOM tree..
-                                e.stopPropagation();
-                            };
-                        }
-
-                    })(window);
-                    window.addEventListener("load", function () {
-                        setTimeout(function () {
-                            // This hides the address bar:
-                            window.scrollTo(0, 1);
-                        }, 0);
-                    });<!-- Begin Inspectlet Asynchronous Code -->
-                (function () {
-                    window.__insp = window.__insp || [];
-                    __insp.push(['wid', 1278828457]);
-                    var ldinsp = function () {
-                        if (typeof window.__inspld != "undefined")
-                            return;
-                        window.__inspld = 1;
-                        var insp = document.createElement('script');
-                        insp.type = 'text/javascript';
-                        insp.async = true;
-                        insp.id = "inspsync";
-                        insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js?wid=1278828457&r=' + Math.floor(new Date().getTime() / 3600000);
-                        var x = document.getElementsByTagName('script')[0];
-                        x.parentNode.insertBefore(insp, x);
-                    };
-                    setTimeout(ldinsp, 0);
-                })();
-<!-- End Inspectlet Asynchronous Code -->
-
-
-
-
-                $(window).scroll(function () {
-                    console.log($(window).scrollTop());
-                    if ($(window).scrollTop() >= 120) {
-                        $('.stickyrow').addClass('fixed-header');
-                        $('.stickyrow div').addClass('visible-title');
-                    } else {
-                        $('.stickyrow').removeClass('fixed-header');
-                        $('.stickyrow div').removeClass('visible-title');
-                    }
-                });
-
-
-                //]]>
-            </script>
-
-
-
-
+            <p:remoteCommand name="setarCompany" action="#{pedidoMB.setar(companyMB.company)}" />
+            <h:outputScript name="js/script.js"   />
         </f:view>
     </h:body>
 </html>

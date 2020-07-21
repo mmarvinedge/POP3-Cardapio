@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>POP3</title>
+        <meta charset="utf-8"/> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <h:outputStylesheet name="css/newCss.css"   />
+        <h:outputStylesheet name="css/all.min.css"   />
+        <h:outputStylesheet name="css/animate.min_1.css"   />
+        <h:outputStylesheet name="css/normalize.min.css"   />
+        <h:outputStylesheet name="css/sweetalert2.min.css"   />
+
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="256x256" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="128x128" />
+        <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="64x64" />
+
+
+        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon-precomposed" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico"/>
+
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
+
+        <meta property="og:site_name" content="Cardápio Digital #{empresaMB.company.name}" />
+        <meta property="og:title" content="Cardápio Digital #{empresaMB.company.name}" />
+        <meta property="og:description" content="Conheça o cardápio e faça seu pedido!" />
+        <meta property="og:image" content="http://metre.ddns.net:88/popsales/min.jpg" />
+        <meta property="og:url" content="http://pop3sistemas.com.br" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:type" content="article" />
+
+
+    </h:head>
+    <h:body>
+        <f:view locale="pt-BR">
+            <h:panelGroup id="corpo" layout="block">
+                <p:blockUI block="corpo" widgetVar="loading"  >
+                    <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
+                </p:blockUI>
+                <nav>
+                    <center>
+                        <h2>#{empresaMB.company.name}</h2>
+                        <img  src="#{empresaMB.company.logo}" class="logo" style="max-width: 72px;" />
+                    </center>
+
+                </nav>
+                <!--INICIO CATEGORIAS-->
+                <h:form id="frmCategorias">
+                    <div class="cuisines-list" data-test-id="cuisines-list">
+                        <div class="marmita-scrollbox cuisines-list__container hide-btn-nav">
+                            <div class="marmita-scrollbox__wrapper">
+                                <div class="marmita-scrollbox__container" role="list">
+
+                                    <p:commandLink action="#{empresaMB.selecionarCategoria(null)}" update=":frmProdutos" onstart="PF('loading').show()" oncomplete="PF('loading').hide()">
+                                        <div role="listitem" class="marmita-scrollbox__item">
+                                            <div tabindex="0" class="cuisine-item">
+                                                <figure class="cuisine-item__figure">
+                                                    <img src="https://assets.localcoinatm.com/images/wp-content/uploads/2018/09/18160344/300x300-Discount-Icon-01.png" alt="Promoções" class="logo"  />
+                                                </figure>
+                                                <span class="cuisine-item__title">Promoções</span>
+                                            </div>
+                                        </div>
+                                    </p:commandLink>
+
+                                    <ui:repeat value="#{empresaMB.categorias}" var="categoria">
+                                        <p:commandLink action="#{empresaMB.selecionarCategoria(categoria)}" update=":frmProdutos" onstart="PF('loading').show()" oncomplete="PF('loading').hide()">
+                                            <div role="listitem" class="marmita-scrollbox__item">
+                                                <div tabindex="0" class="cuisine-item">
+                                                    <figure class="cuisine-item__figure">
+                                                        <img src="#{categoria.img}" alt="#{categoria.name}" class="cuisine-item__image"  />
+                                                    </figure>
+                                                    <span class="cuisine-item__title">#{categoria.name}</span>
+                                                </div>
+                                            </div>
+                                        </p:commandLink>
+                                    </ui:repeat>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <!--FIM DAS CATEGORIAS-->
+
+                <!--INICIO PROMOCOES-->
+                <h:form id="frmProdutos">
+                    <h:panelGroup id="produtos"  class="promocoes" layout="block">
+                        <h3> <i class="fa fa-star"></i> #{empresaMB.current}</h3>
+                        <div class="cards-itens">
+                            <div class="dish-card-wrapper">
+                                <ui:repeat value="#{empresaMB.produtos}" var="produto">
+                                    <p:commandLink  styleClass="dish-card dish-card--horizontal dish-card--has-image" action="#{empresaMB.setProduto(produto)}" oncomplete="openModal()" update=":grpContent">
+                                        <h3 class="dish-card__info">
+                                            <div class="dish-card__info--top">
+                                                <span class="dish-card__description" style="overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 2;">
+                                                    #{produto.name}
+                                                </span>
+                                                <span class="dish-card__details" style="overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 2;">
+                                                    #{produto.description}
+                                                </span>
+                                            </div>
+                                            <span class="dish-card__price" data-test-id="dish-card-price">
+                                                #{empresaMB.utilidades.formatarMoeda(produto.price)}
+
+                                                <h:panelGroup rendered="#{produto.promo}">
+                                                    <span class="original-price">
+                                                        #{empresaMB.utilidades.formatarMoeda(produto.priceOriginal)}
+                                                    </span>
+                                                </h:panelGroup>
+
+                                            </span>
+
+                                        </h3>
+                                        <div class="dish-card__container-image">
+                                            <img alt="#{produto.name}" src="#{produto.imageBase64}"  class="marmita-image--responsive dish-card__image" />
+                                        </div>
+                                    </p:commandLink>
+                                </ui:repeat>
+
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+
+                <!--FIM DAS PROMOCOES-->
+
+
+
+                <!--FOOTER DA PAGINA-->
+
+                <div class="footer-page">
+                    <div class="bag">
+                        <i class="fa fa-shopping-basket fa-2x text-white"></i>
+                        <span class="badge">3</span>
+                        <small> R$ 0,00</small>
+                    </div>
+                    <div class="total">
+                        <p:commandLink >
+                            Fechar Pedido 
+                        </p:commandLink>
+                    </div>
+                </div>
+            </h:panelGroup>
+
+
+
+
+        </f:view>
+
+        <h:outputScript  name="js/animatedModal.min.js" />
+
+
+        <a id="demo01" href="#animatedModal"></a>
+        <div id="animatedModal" >
+            <div class="close-animatedModal"> 
+                <i class="fa fa-arrow-left fa-2x"></i> #{empresaMB.current}
+            </div>
+            <div class="modal-content" style="padding: 15px !important;">
+                <h:panelGroup id="grpContent">
+
+                    <div  style="display: flex;
+                          flex-direction: column;
+                          justify-content: center;
+                          align-self: center;
+                          max-width: 100%;
+                          max-height: 150px;
+                          overflow: hidden;
+                          border-radius: 4px;
+                          margin: 16px 0 18px;">
+
+                        <img alt="#{empresaMB.produto.name}" src="#{empresaMB.produto.imageBase64}" />
+                    </div>
+
+
+                    <div style="    border-bottom: none;
+                         position: relative !important;
+                         top: initial !important;
+                         left: initial !important;
+                         width: auto !important;
+                         padding: 2px 20px;
+                         margin: 20px 0 0;" >
+                        #{empresaMB.produto.name}
+
+                    </div>
+                    <div style="    font-size: 0.875rem;
+                         margin: 10px 0 0;
+                         font-weight: 300;
+                         line-height: 1.22;
+                         color: #717171;">
+                        #{empresaMB.produto.description}
+                    </div>
+                    <div style="    margin-top: 12px;
+                         font-size: 0.875rem;
+                         color: #3e3e3e;">
+                        <span class="    color: #50a773;
+                              margin-bottom: 10px;">
+                            #{empresaMB.produto.price}
+                        </span>
+                        <span class="original-price">
+                            #{empresaMB.utilidades.formatarMoeda(produto.priceOriginal)}
+                        </span>
+                    </div>
+                </h:panelGroup>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $("#demo01").animatedModal({
+                    color: '#ffffff'
+                });
+            });
+            function openModal() {
+                $('#demo01').click();
+            }
+        </script>
+
+    </h:body>
+
+</html>
+

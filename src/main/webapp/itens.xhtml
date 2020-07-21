@@ -9,7 +9,7 @@
     <h:panelGroup id="item" layout="block" >
         <h:panelGroup rendered="#{actionMB.acao == 'itens'}" >
             <h:form    >
-                <p:panel id="pnl" style="border: none !important;" >
+                <p:panel id="pnl" style="border: none !important; margin-bottom: 25px !important;" >
                     <p:blockUI block="pnl" widgetVar="ldg2"  >
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
                     </p:blockUI>
@@ -18,47 +18,41 @@
                                 <p:commandLink action="#{actionMB.setAcao('grupo')}"  onclick="PF('ldg2').show()" oncomplete="PF('ldg2').hide()" style="color: #95c70d;  "  >
                                     <i class="fa fa-arrow-left fa-2x"></i>
                                 </p:commandLink>
-                                <strong style="font-size: 22px;color: #95c70d;margin-top: 0;position: absolute;margin-left: 10px; ">#{orderMB.categorySelected.name}</strong>
+                                <strong style="font-size: 22px;color: #95c70d;margin-top: 0;position: absolute;margin-left: 10px; ">#{empresaMB.categorySelected.name}</strong>
                             </div>
                             <div class="col-xs-4 text-right">
 
                             </div>
                         </div>
-                    <div class="row equal-cols row-flex" style="padding: 5px;     margin-left: 0px; margin-right: 0px; ">
-                        <ui:repeat value="#{orderMB.products}" var="prod">
+                    <div class="row equal-cols row-flex" style="padding: 5px;     margin-left: 0px; margin-right: 0px; border-bottom: 1px solid #ccc">
+                        <ui:repeat value="#{empresaMB.products}" var="prod">
 
                             <h:panelGroup layout="block" styleClass="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5" style="padding-left: 0;">
-                                <p:commandLink action="#{orderMB.setProduct(prod)}" style="width: 100%;     border-bottom: 1px solid #ccc;" 
-                                               update=":mdlPedir" onstart="PF('ldg2').show()" oncomplete="PF('ldg2').hide(); openModal('mdlPedir'); ">
+                                <p:commandLink action="#{pedidoMB.setProduct(prod, empresaMB.company)}"   styleClass="w-100"
+                                               update=":mdlPedir" oncomplete="PF('ldg').hide(); openModal('mdlPedir')" onstart="PF('ldg').show()"   >
                                     <div class="row">
                                         <div class="col-xs-4" style="padding: 0;">
                                             <div class="itm-img ima-#{prod.id}">
-                                                <center>
-                                                    <h:panelGroup rendered="#{prod.promo}">
-                                                        <span class="label-yellow">
-                                                            <i class="fa fa-star"></i> Promoção
-                                                        </span>
-                                                        <br/>
-                                                    </h:panelGroup>
-                                                    <img  role="presentation" src="#{prod.imageBase64}"  style="max-width: 72px;  max-height: 72px;"/>
+                                                <center style="display: inline-grid;">
+                                                    <span class="label-yellow ">
+                                                        <i class="fa fa-star"></i> Promoção
+                                                    </span>
+                                                    <img  role="presentation" src="#{prod.imageBase64}" loading="lazy"  class="img-item"/>
                                                 </center>
                                             </div>
                                         </div>
-                                        <div class="col-xs-8" >
-                                            <div class="row">
-                                                <div class="col-xs-12" style="    padding-left: 0;">
-                                                    <span style="color: #3e3e3e;font-weight: 500;font-size: 16px;margin-bottom: 3px; text-transform: uppercase;"> #{prod.name}</span>
-                                                </div>
-                                                <div class="col-xs-12" style=" padding-left: 0;">
-                                                    <div style="font-size: 12px;color: #717171;word-break: break-word; text-transform: lowercase;">#{prod.description}</div>
-                                                </div>
-                                                <div class="col-xs-12 text-right">
-                                                    <h:panelGroup rendered="#{prod.promo}">
-                                                        <s style="font-size: 1.46rem;font-weight: 400;color: #929292;WIDTH: auto;margin: 0;
-                                                           padding: 0;">#{orderMB.formatarMoeda(prod.priceOriginal)}</s>
-                                                    </h:panelGroup>
-                                                    <span style="font-size: 16px;font-weight: 400;color: #e83b62;">#{prod.price.doubleValue() == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
-                                                </div>
+                                        <div class="col-xs-8" style=" ">
+                                            <div class="col-xs-12" style="    padding-left: 0;">
+                                                <span class="name-item"> #{prod.name}</span>
+                                            </div>
+                                            <div class="col-xs-12 p-l-0-lg p-l-0-ssm p-l-0-sm p-l-0-md" >
+                                                <div class="description-item">#{prod.description}</div>
+                                            </div>
+                                            <div class="col-xs-12 text-right" style="padding-right: 20px;">
+                                                <h:panelGroup rendered="#{prod.promo}">
+                                                    <s class="old-price">#{empresaMB.util.formatarMoeda(prod.priceOriginal)}</s>
+                                                </h:panelGroup>
+                                                <span class="current-price">#{prod.price.doubleValue() == 0 ? 'Escolha' : empresaMB.util.formatarMoeda(prod.price)}</span>
                                             </div>
                                         </div>
                                     </div>

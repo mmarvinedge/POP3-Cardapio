@@ -6,12 +6,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:panelGroup id="grupos">
-        <h:panelGroup rendered="#{orderMB.fechado}">
+        <h:panelGroup rendered="#{!empresaMB.company.open}">
             <center style="padding-top: 15px;">
                 <span class="badge-danger">
                     Estabelecimento Fechado
-                </span><br/>
-                <span style="line-height: 2.5;">#{orderMB.horario}</span>
+                </span>
             </center>
         </h:panelGroup>
         <h:panelGroup rendered="#{actionMB.acao == 'grupo'}">
@@ -21,17 +20,18 @@
                         <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
                     </p:blockUI>
                     <div  class="container-fluid testimonial-group">
-                        <div id="contant" class="row rowfull"  style="    margin-top: 5px; padding-left: 15px;padding-right: 15px;" onscroll="scrolled(this)"  >
-                            <ui:repeat value="#{orderMB.categories}" var="cate">
+                        <div id="contant" class="row rowfull row-item"   onscroll="scrolled(this)"  >
+                            <ui:repeat value="#{empresaMB.categories}" var="cate">
                                 <h:panelGroup layout="block" class="col-xs-4 "  rendered="#{cate != null and cate.name != null}" style="width: auto !important;">
-                                    <p:commandLink action="#{actionMB.setAcao('itens')}" actionListener="#{orderMB.selectGroup(cate,cate.id)}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); " style="display: flow-root; text-align: center"  >
-                                        <div  style="display: inline-block;text-align: center;transition: color 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);">
-                                            <div style="    margin: 0;border-radius: 50%;width: 60px;height: 60px;overflow: hidden;position: relative;z-index: 1; display: block;margin-left: auto;
-                                                 margin-right: auto ">
-                                                <img style="position: absolute;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);top: 50%;left: 50%;z-index: 0;height: 100%;-o-object-fit: cover;object-fit: cover; max-width: 72px; max-height: 72px;"
+                                    <p:commandLink action="#{actionMB.setAcao('itens')}" 
+                                                   actionListener="#{empresaMB.carregarProdutos(cate)}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); " 
+                                                   styleClass="command-link-item"  >
+                                        <div  class="command-link-item-content">
+                                            <div class="command-link-item-content-image">
+                                                <img class="img-product"
                                                      src="#{cate.img == null ? 'https://www.qgjeitinhocaseiro.com/wp-content/uploads/2019/10/como-fazer-sandu%C3%ADche-artigo-crop.jpg' : cate.img}"  />
                                             </div>
-                                            <span style="    text-align: center;margin-top: 10px;display: block;font-size: 14px;font-weight: 500;line-height: 2rem;color: #717171; text-transform: uppercase;">
+                                            <span class="command-link-item-content-name">
                                                 #{cate.name}
                                             </span>
                                         </div>
@@ -42,32 +42,30 @@
 
                         </div>
                     </div>
-                    <button id="slideLeft" type="button"   style="    position: absolute;top: 55px;z-index: 1000;border-radius: 50%;     height: 40px;width: 40px;border: transparent;color: white;background: #95c70d; display: none; margin-left: 3px;"
+                    <button id="slideLeft" type="button"  
                             onclick="changeback()">
                         <i class="fa fa-arrow-left"></i>
                     </button>
-                    <button id="slideRight" type="button" onclick="changeNext()"  style="    position: absolute;top: 55px;z-index: 1000;border-radius: 50%;right: 0;    height: 40px;width: 40px;border: transparent;color: white;background: #95c70d;  margin-right: 5px;">
+                    <button id="slideRight" type="button" onclick="changeNext()"  >
                         <i class="fa fa-arrow-right"></i>
                     </button>
 
-                    <div class="row" style="margin-left: -15px;margin-right: -22px;">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 contain" style="border-top: 1px solid #ccc; padding-top: 10px;padding-bottom: 10px; ">
-                            <h:panelGroup layout="block" rendered="#{orderMB.productsPromo.size() == 0}" >
+                    <div class="row container-empty-promo" >
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 contain col-empty-promo" >
+                            <h:panelGroup layout="block" rendered="#{empresaMB.products.size() == 0}" >
                                 <center >
-
                                     <h5>Selecione uma categoria acima</h5>
-
-                                    <h4 style="margin-top: 75px;">Sem promoções no momento!</h4>
+                                    <h4 class="mt-75">Sem promoções no momento!</h4>
 
                                     <i class="fa fa-sad-tear fa-3x" style="color: #95c70d"></i>
                                 </center>
                             </h:panelGroup>
                         </div>
-                        <ui:repeat value="#{orderMB.productsPromo}" var="prod">
+                        <ui:repeat value="#{empresaMB.products}" var="prod">
                             <h:panelGroup layout="block" styleClass="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5" >
                                 <div class="">
                                     <div style="border-bottom: 1px solid #ccc;">
-                                        <p:commandLink action="#{orderMB.setProduct(prod)}" style="width: 100%;     " 
+                                        <p:commandLink action="#{pedidoMB.setProduct(prod, empresaMB.company)}"   styleClass="w-100"
                                                        update=":mdlPedir" oncomplete="PF('ldg').hide(); openModal('mdlPedir')" onclick="PF('ldg').show()"   >
                                             <div class="row">
                                                 <div class="col-xs-4" style="padding: 0;">
@@ -76,23 +74,22 @@
                                                             <span class="label-yellow">
                                                                 <i class="fa fa-star"></i> Promoção
                                                             </span>
-                                                            <img  role="presentation" src="#{prod.imageBase64}"  style="max-width: 116px;  min-height: 64px; margin-top: 3px; max-height: 96px;"/>
+                                                            <img  role="presentation" src="#{prod.imageBase64}" loading="lazy" class="img-item"/>
                                                         </center>
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-8" style=" ">
                                                     <div class="col-xs-12" style="    padding-left: 0;">
-                                                        <span style="color: #3e3e3e;font-weight: 400;font-size: 16px;margin-bottom: 3px; text-transform: uppercase;"> #{prod.name}</span>
+                                                        <span class="name-item"> #{prod.name}</span>
                                                     </div>
-                                                    <div class="col-xs-12" style=" padding-left: 0;">
-                                                        <div style="font-size: 12px;color: #717171;word-break: break-word; text-transform: lowercase;">#{prod.description}</div>
+                                                    <div class="col-xs-12 p-l-0-lg p-l-0-ssm p-l-0-sm p-l-0-md" >
+                                                        <div class="description-item">#{prod.description}</div>
                                                     </div>
                                                     <div class="col-xs-12 text-right" style="padding-right: 20px;">
                                                         <h:panelGroup rendered="#{prod.promo}">
-                                                            <s style="font-size: 1.46rem;font-weight: 400;color: #929292;WIDTH: auto;margin: 0;
-                                                               padding: 0;">#{orderMB.formatarMoeda(prod.priceOriginal)}</s>
+                                                            <s class="old-price">#{empresaMB.util.formatarMoeda(prod.priceOriginal)}</s>
                                                         </h:panelGroup>
-                                                        <span style="font-size: 16px;font-weight: 400;color: #e83b62;">#{prod.price.doubleValue() == 0 ? 'Escolha' : orderMB.formatarMoeda(prod.price)}</span>
+                                                        <span class="current-price">#{prod.price.doubleValue() == 0 ? 'Escolha' : empresaMB.util.formatarMoeda(prod.price)}</span>
                                                     </div>
                                                 </div>
                                             </div>

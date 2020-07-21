@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import javax.ejb.Stateless;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -76,5 +77,19 @@ public class OrderService {
             throw new IOException("Erro Carai");
         }
         return order;
+    }
+    
+    public void sendOrder(Order order, String companyID) throws IOException {
+        System.out.println(Constantes.URL);
+        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm:ss").create();
+        RequestBody body = RequestBody.create(gson.toJson(order), Constantes.JSON); // new
+        // RequestBody body = RequestBody.create(JSON, json); // old
+        Request request = new Request.Builder()
+                .url(Constantes.URL + "/order/")
+                .post(body)
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        String b = response.body().string();
+        System.out.println(b);
     }
 }

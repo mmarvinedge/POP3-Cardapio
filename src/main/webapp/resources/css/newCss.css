@@ -1,0 +1,351 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+.ui-widget{
+    font-family: 'Roboto', sans-serif !important;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+nav{
+    background: #31353d;
+    position: absolute;
+    top: 0;
+    height: 65px;
+    width: 100%;
+    left: 0;
+    right: 0;
+}
+
+nav h2{
+    margin-bottom: 0;
+    margin-top: 5px;
+    color: white;
+}
+.logo{
+    max-width: 72px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    -webkit-box-shadow: 0px 33px 62px -16px rgba(49,53,61,1);
+    -moz-box-shadow: 0px 33px 62px -16px rgba(49,53,61,1);
+    box-shadow: 0px 33px 62px -16px rgba(49,53,61,1);
+}
+
+
+
+
+.cuisines-list {
+    padding: 100px 0 0;
+}
+
+.home-page .cuisines-list__container {
+    height: auto;
+    max-height: 148px;
+    min-height: 112px;
+}
+.home-page .cuisines-list__container {
+    height: 0;
+    max-height: 183px;
+}
+.cuisines-list__container {
+    min-height: 140px;
+}
+.marmita-scrollbox {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 145px;
+}
+.marmita-scrollbox {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 145px;
+}
+
+
+.home-page .cuisines-list__container .marmita-scrollbox__wrapper {
+    border-bottom: 0;
+}
+@media only screen and (max-width: 559px)
+.home-page .cuisines-list__container .marmita-scrollbox__wrapper {
+    border-bottom: 0;
+}
+.marmita-scrollbox__wrapper {
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding-bottom: 0px;
+    box-sizing: content-box;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+}
+.marmita-scrollbox__wrapper {
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding-bottom: 17px;
+    box-sizing: content-box;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+}
+
+
+
+.marmita-scrollbox__container {
+    height: 100%;
+    border-radius: 5px;
+    position: relative;
+    display: inline-flex;
+}
+.marmita-scrollbox__container {
+    height: 100%;
+    border-radius: 5px;
+    position: relative;
+    display: inline-flex;
+}
+
+.marmita-scrollbox__container > *:first-child {
+    margin-left: 20px;
+}
+.marmita-scrollbox__container>:first-child {
+    margin-left: 20px;
+}
+.marmita-scrollbox__container > * {
+    margin-right: 1.25rem;
+}
+.marmita-scrollbox__container>* {
+    margin-right: 1.25rem;
+}
+
+.cuisines-list .cuisine-item__figure img {
+    position: absolute;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+.cuisines-list .cuisine-item {
+    display: inline-block;
+    text-align: center;
+    transition: color 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.cuisines-list .cuisine-item a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cuisines-list .cuisine-item__figure {
+    margin: 0;
+    border-radius: 10%;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.cuisines-list .cuisine-item__title {
+    text-align: center;
+    margin-top: 20px;
+    display: block;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.125rem;
+    color: #717171;
+}
+
+.dish-card-wrapper {
+    position: relative;
+    border-top: 1px solid #ccc;
+    padding-top: 16px;
+}
+
+
+@media only screen and (max-width: 559px){
+    .restaurant-menu .dish-card--horizontal {
+        padding: 10px 20px;
+    }
+}
+.dish-card--has-image {
+    grid-template-columns: 1fr 100px;
+    grid-gap: 15px;
+}
+@media only screen and (max-width: 742px){
+    .dish-card {
+        position: relative;
+    }
+}
+.dish-card {
+    position: relative;
+    display: grid;
+    min-height: 100px;
+    width: 100%;
+    background: #ffffff;
+    padding: 0px;
+    text-decoration: none;
+    transition: 200ms;
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+
+.dish-card__info {
+    display: grid;
+    grid-template-rows: 1fr 20px;
+    margin: 0;
+}
+
+.dish-card__info--top {
+    margin-bottom: 23px;
+    padding-left: 10px;
+}
+.dish-card__description {
+    display: grid;
+    color: #3e3e3e;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    margin-bottom: 9px;
+}
+
+.dish-card__details {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: lighter;
+    color: #717171;
+    word-break: break-word;
+}
+
+.dish-card__price {
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-weight: 400;
+    color: #3e3e3e;
+    padding-left: 10px;
+}
+
+.original-price {
+    position: relative;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    color: #717171;
+    text-decoration: line-through;
+    margin-left: 5px;
+}
+.dish-card .dish-card__container-image {
+    position: relative;
+    text-align: center;
+}
+
+.dish-card__image {
+    height: 75px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 4px;
+    pointer-events: none;
+    align-self: flex-start;
+    max-width: 124px;
+}
+
+
+.promocoes h2{
+    margin-top: 0px;
+    color: #3f3e3e;
+}
+
+.footer-page{
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+    background: #31353d;
+    right: 0;
+    left: 0;
+    display: flex;
+}
+
+.footer-page .bag{
+    color: white;
+    width: 50%;
+    text-align: center;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+}
+
+.footer-page .bag small{
+    margin-left: 30px;
+}
+.footer-page .bag .badge{
+    background: #95c70d;
+    border-radius: 50%;
+    padding: 2px;
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    margin-left: -20px;
+}
+
+.footer-page .total{
+    width: 50%;
+    text-align: right
+}
+.footer-page .total a{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 50px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    text-decoration: none;
+    color: white;
+
+}
+
+
+
+.ui-widget-overlay {
+    background: #ffffff ;
+    opacity: 0.8 !important;
+    filter: Alpha(Opacity=80) !important;
+}
+
+
+
+.ui-blockui-content {
+    position: absolute !important;;
+    text-align: center !important;;
+    padding: 1em !important;;
+    border: none !important;;
+    box-shadow: none !important;;
+    top: 185px !important;
+    background: transparent !important;;
+}
+#animatedModal{
+    background-color: white !important;
+}
+
+.promocoes{
+    padding: 20px;
+}
+
+

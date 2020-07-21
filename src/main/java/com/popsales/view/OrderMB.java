@@ -52,7 +52,7 @@ import org.primefaces.event.FlowEvent;
  * @author Renato
  */
 @ManagedBean
-@javax.faces.bean.SessionScoped
+@javax.faces.bean.ViewScoped
 public class OrderMB implements Serializable {
 
     public Boolean home = true;
@@ -179,7 +179,7 @@ public class OrderMB implements Serializable {
     @PostConstruct
     public void init() {
         System.out.println("POST CONSTRUC");
-
+        
     }
 
     public void preReload() {

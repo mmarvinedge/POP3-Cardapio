@@ -39,6 +39,11 @@
         <view-id value="/index.xhtml" />
     </url-mapping>
     
+    <url-mapping id="name3">
+        <pattern value="/loja/#{name}" />
+        <view-id value="/index2.jsf" />
+    </url-mapping>
+    
     
 
 

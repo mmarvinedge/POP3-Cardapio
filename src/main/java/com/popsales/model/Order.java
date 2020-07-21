@@ -66,6 +66,23 @@ public class Order {
         clientInfo = new ClientInfo();
         address = new Address();
     }
+    
+    public Order(Company comp) {
+        products = new ArrayList();
+        total = BigDecimal.ZERO;
+        deliveryCost = BigDecimal.ZERO;
+        discountValue = BigDecimal.ZERO;
+        forma = "Dinheiro";
+        delivery = true;
+        clientInfo = new ClientInfo();
+        address = new Address();
+        this.merchant = new Merchant(comp);
+        if(this.address == null){
+            this.address = new Address();
+        } 
+        this.address.setCity(comp.getAddress().getCity());
+        
+    }
 
     public Integer getItemNumber() {
         return itemNumber;
