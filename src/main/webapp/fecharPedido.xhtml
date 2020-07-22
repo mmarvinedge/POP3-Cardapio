@@ -76,7 +76,7 @@
                                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                                                     <div class="ui-inputgroup" style="margin-bottom: 15px;">
-                                                        <span class="ui-inputgroup-addon"><i class="fa fa-search"></i> Rua, Av.</span>
+                                                        <span class="ui-inputgroup-addon"><i class="fa fa-search"></i> Rua.</span>
                                                         <p:autoComplete id="ban" value="#{pedidoMB.enderecoFiltro}"   var="band" minQueryLength="5" 
                                                                         queryDelay="500"  converter="Converter"
                                                                         forceSelection="true"
@@ -190,36 +190,23 @@
                                         </div>
                                         <h:panelGroup id="grpTroco" style="margin-top: 5px;">
                                             <h:panelGroup rendered="#{pedidoMB.order.forma == 'Dinheiro'}">
-                                                <div class="col-xs-12">
-                                                    <div class="col-xs-4" >
-                                                        <p:outputLabel value="Levar Troco?" /><br/>
-                                                        <p:toggleSwitch label="Troco?" value="#{pedidoMB.order.troco}"  >
-                                                            <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
-                                                        </p:toggleSwitch>
-                                                    </div>
-                                                    <div class="col-xs-8">
-                                                        <h:panelGroup id="gpTroco" >
-                                                            <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{pedidoMB.order.trocoPara}" required="true" 
-                                                                         requiredMessage="Troco para quanto?"  rendered="#{pedidoMB.order.troco}"/>
-                                                        </h:panelGroup>
-                                                    </div>
+                                                <div class="col-xs-6" >
+                                                    <p:outputLabel value="Levar Troco?" /><br/>
+                                                    <p:toggleSwitch label="Troco?" value="#{pedidoMB.order.troco}"  >
+                                                        <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                                                    </p:toggleSwitch>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <h:panelGroup id="gpTroco" >
+                                                        <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{pedidoMB.order.trocoPara}" required="true" 
+                                                                     requiredMessage="Troco para quanto?"  rendered="#{pedidoMB.order.troco}"/>
+                                                    </h:panelGroup>
                                                 </div>
                                             </h:panelGroup>
                                         </h:panelGroup>
                                         <h:panelGroup id="grpCoupon" rendered="#{empresaMB.company.worksCoupon and empresaMB.company.coupons.size() > 0}" >
                                             <div class="row">
-                                                <div class="col-xs-12">
-                                                    <div style="width: 100%; 
-                                                         text-align: center; 
-                                                         border-bottom: 1px solid #999999; 
-                                                         line-height: 0.1em;
-                                                         margin: 10px 0 20px; ">
 
-                                                        <strong style="background:#fff; padding:0 10px; ">
-                                                            <i class="fa fa-tag"></i> CUPOM DE DESCONTO
-                                                        </strong>
-                                                    </div>
-                                                </div>
                                                 <div class="col-xs-12" style="margin-bottom: 5px;">
                                                     <div class="input-group">
                                                         <b:inputText id="couponCode" disabled="#{pedidoMB.couponValid}" value="#{pedidoMB.couponCode}" style="width: 100% !important" placeholder="Cupom de desconto">
@@ -234,59 +221,63 @@
                                                 </div>
                                             </div>
                                         </h:panelGroup>
-                                        <div style="width: 100%; 
-                                             text-align: center; 
-                                             border-bottom: 1px solid #999999; 
-                                             line-height: 0.1em;
-                                             margin: 10px 0 20px; ">
 
-                                            <strong style="background:#fff; padding:0 10px; ">
+                                        <div class="col-xs-12" >
+                                            <h3>
                                                 TOTAIS
-                                            </strong>
+                                            </h3>
                                         </div>
-                                        <div class="col-xs-6" style="border-bottom: 1px solid #ccc;" >
-                                            <strong>Subtotal</strong>
+                                        <div class="col-xs-7" style="border-bottom: 1px solid #ccc;" >
+                                            <h4>Subtotal</h4>
                                         </div>
-                                        <div class="col-xs-6"  style="text-align: right; border-bottom: 1px solid #ccc;">
-                                            <h:outputText  value="#{pedidoMB.order.subtotal}" styleClass="text-right">
-                                                <f:convertNumber type="currency" />
-                                            </h:outputText>
+                                        <div class="col-xs-5"  style="text-align: right; border-bottom: 1px solid #ccc;">
+                                            <h4>
+                                                <h:outputText  value="#{pedidoMB.order.subtotal}" styleClass="text-right">
+                                                    <f:convertNumber type="currency" />
+                                                </h:outputText>
+                                            </h4>
                                         </div>
                                         <h:panelGroup id="grpValorEntrega">
                                             <h:panelGroup  rendered="#{pedidoMB.order.delivery}">
-                                                <div class="col-xs-6" style="border-bottom: 1px solid #ccc;" >
-                                                    <strong>Taxa de Entrega</strong>
+                                                <div class="col-xs-7" style="border-bottom: 1px solid #ccc;" >
+                                                    <h4>Taxa de Entrega</h4>
                                                 </div>
-                                                <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;" >
-                                                    <h:outputText value="#{pedidoMB.order.deliveryCost}" styleClass="text-right" >
-                                                        <f:convertNumber type="currency" />
-                                                    </h:outputText>
+                                                <div class="col-xs-5" style="text-align: right; border-bottom: 1px solid #ccc;" >
+                                                    <h4>
+                                                        <h:outputText value="#{pedidoMB.order.deliveryCost}" styleClass="text-right" >
+                                                            <f:convertNumber type="currency" />
+                                                        </h:outputText>
+                                                    </h4>
                                                 </div>
                                             </h:panelGroup>
                                             <h:panelGroup rendered="#{pedidoMB.couponValid}">
-                                                <div class="col-xs-6"  style="border-bottom: 1px solid #ccc;">
-                                                    <strong>Cupom de desconto</strong>
+                                                <div class="col-xs-7"  style="border-bottom: 1px solid #ccc;">
+                                                    <h4>
+                                                        <strong>Cupom de desconto</strong>
+                                                    </h4>
                                                 </div>
-                                                <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;"  >
-                                                    <h:outputText value="#{pedidoMB.order.discountValue}" styleClass="text-right" >
-                                                        <f:convertNumber type="currency" />
-                                                    </h:outputText>
+                                                <div class="col-xs-5" style="text-align: right; border-bottom: 1px solid #ccc;"  >
+                                                    <h4>
+                                                        <h:outputText value="#{pedidoMB.order.discountValue}" styleClass="text-right" >
+                                                            <f:convertNumber type="currency" />
+                                                        </h:outputText>
+                                                    </h4>
                                                 </div>
                                             </h:panelGroup>
                                         </h:panelGroup>
-                                        <div class="col-xs-6"  style="border-bottom: 1px solid #ccc;">
-                                            <strong>TOTAL</strong>
+                                        <div class="col-xs-7"  style="border-bottom: 1px solid #ccc;">
+                                            <h3>TOTAL</h3>
                                         </div>
-                                        <div class="col-xs-6" style="text-align: right; border-bottom: 1px solid #ccc;" >
-                                            <strong>
+                                        <div class="col-xs-5" style="text-align: right; border-bottom: 1px solid #ccc;" >
+                                            <h3>
                                                 <h:outputText value="#{pedidoMB.order.total}" styleClass="text-right" style="font-weight: bolder;" >
                                                     <f:convertNumber type="currency" />
                                                 </h:outputText>
-                                            </strong>
+                                            </h3>
                                         </div>
                                         <div class="col-xs-12" style="margin-bottom: 20px;" >
                                             <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{pedidoMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid; margin-top: 15px !important;" 
-                                                           update="@form" 
+                                                           update="fechamento" 
                                                            action="#{pedidoMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
 
                                         </div>
@@ -295,6 +286,8 @@
                             </p:wizard>
                         </div>
                     </div>
+
+
 
 
                     <script>
@@ -366,6 +359,7 @@
             </script>
 
         </h:panelGroup>
+
     </h:panelGroup>
 </html>
 

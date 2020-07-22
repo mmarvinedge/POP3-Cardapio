@@ -53,12 +53,13 @@
                         <ui:include src="grupos.xhtml" />
                         <ui:include src="itens.xhtml" />
                         <ui:include src="fecharPedido.xhtml" />
+                        <ui:include src="finalizado.xhtml   " />
                     </h:panelGroup>
 
                     <ui:include src="modalPedir.xhtml" />
 
                     <h:panelGroup id="pnlend">
-                        <h:panelGroup rendered="#{actionMB.acao != 'fechar'}" >
+                        <h:panelGroup rendered="#{actionMB.acao == 'grupo' or actionMB.acao == 'itens'}" >
                             <footer class="fixed-bottom">
                                 <div class="row" >
                                     <div class="col-xs-6">
@@ -118,6 +119,9 @@
 
             <p:remoteCommand name="backGrupos" action="#{actionMB.setAcao('grupo')}"  update="grpPrincipal,:grpNumbers" immediate="true"/>
 
+            
+              <p:remoteCommand name="endCom" action="#{actionMB.setAcao('end')}" update="grpPrincipal,:grpNumbers" immediate="true"/>
+            
             <h:outputScript name="js/all.min.js"   />
             <h:outputScript name="js/functions.js"   />
             <h:outputScript name="js/jquery.mask.js"   />
@@ -125,6 +129,15 @@
 
 
 
+
+            <p:remoteCommand name="setarCompany" action="#{pedidoMB.setar(empresaMB.company,empresaMB.phone)}" />
+            <h:outputScript name="js/script.js"   />
+            <script>
+                $(document).ready(function () {
+                    console.log('Setando dados!')
+                    setarCompany();
+                });
+            </script>
             <h:panelGroup id="grpScrips" layout="block" >
                 <script>
                     //<![CDATA[
@@ -135,11 +148,10 @@
                         console.log('msg: ' + msg);
                         window.location.replace("https://api.whatsapp.com/send?phone=55#{empresaMB.company.phoneUnformat}&text=" + window.encodeURIComponent(msg));
                     }
+
                     //]]>
                 </script>
             </h:panelGroup>
-            <p:remoteCommand name="setarCompany" action="#{pedidoMB.setar(companyMB.company)}" />
-            <h:outputScript name="js/script.js"   />
         </f:view>
     </h:body>
 </html>

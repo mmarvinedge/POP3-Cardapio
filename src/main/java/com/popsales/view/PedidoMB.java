@@ -28,12 +28,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FlowEvent;
 
@@ -63,18 +63,22 @@ public class PedidoMB implements Serializable {
     private Boolean couponValid = false;
     private String couponCode = "";
 
+    private String telefone = "";
+
+    private Boolean finalizado = false;
+
     public PedidoMB() {
         order = new Order();
     }
 
-
-
-
     private void carregarUltimoPedidoNumero() {
-        String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
-        if (phone != null) {
+        if (telefone != null) {
             try {
-                lastOrder = orderService.lastOrderByPhone(company.getId(), phone);
+                lastOrder = orderService.lastOrderByPhone(company.getId(), telefone);
+                if (lastOrder != null && lastOrder.getId() != null) {
+                    order.setClientInfo(lastOrder.getClientInfo());
+                    order.setAddress(lastOrder.getAddress());
+                }
             } catch (Exception e) {
                 System.err.println("Erro ao capturar o ultimo pedido");
                 e.printStackTrace();
@@ -84,7 +88,6 @@ public class PedidoMB implements Serializable {
     }
 
     public void setProduct(Product product, Company comp) {
-        System.out.println("PRODUTO: " + product.getName());
         this.product = product;
         this.item = new Item();
         item.setName(product.getName());
@@ -166,13 +169,11 @@ public class PedidoMB implements Serializable {
             if (item.getProduct().getRulePricePizza().equals("Média")) {
                 item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(new BigDecimal(item.getFlavors().size())));
             } else {
-                System.out.println(item.getFlavors().get(0).getSku());
                 item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).max((BigDecimal o1, BigDecimal o2) -> o1.compareTo(o2)).get());
             }
         } else {
             item.setPrice(BigDecimal.ZERO);
         }
-        System.out.println(item.getTotalAds());
         if (item.getTotalAds() != null) {
             item.setTotal(item.getPrice().multiply(item.getQuantity()).add(item.getTotalAds()));
         } else {
@@ -240,7 +241,6 @@ public class PedidoMB implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append(imprimirOrderControle(order));
         msg = sb.toString();
-        System.out.println("MSG MONTADA:: " + msg);
     }
 
     public String genCodigo() {
@@ -316,11 +316,10 @@ public class PedidoMB implements Serializable {
             }
             montarMensagemFinalizar();
             PrimefacesUtil.Update("grpScrips");
-            System.out.println("CHEGOU AQUI");
             PrimeFaces.current().executeScript("finalizarPedido();");
-            System.out.println("FINALIZOU");
             PrimeFaces.current().executeScript("PF('ldg').hide()");
             PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
+            PrimeFaces.current().executeScript("endCom()");
 
             order = new Order();
             couponValid = false;
@@ -343,7 +342,6 @@ public class PedidoMB implements Serializable {
         } else {
             order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()));
         }
-        System.out.println("TOTAL: " + order.getTotal());
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -355,7 +353,6 @@ public class PedidoMB implements Serializable {
     }
 
     public void adicionarRemoverTaxa() {
-        System.out.println("IS DELIVERY: " + order.getDelivery());
         if (order.getDelivery()) {
             if (company.getDeliveryCost() != null) {
                 if (order.getAddress().getAuto() != null) {
@@ -364,7 +361,6 @@ public class PedidoMB implements Serializable {
                     } else {
                         order.setDeliveryCost(BigDecimal.ZERO);
                     }
-                    System.out.println("ORDER: " + order.getDeliveryCost());
                 }
             } else {
 
@@ -382,7 +378,6 @@ public class PedidoMB implements Serializable {
             Optional<Bairro> find = company.getBairros().stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
             if (find.isPresent()) {
                 Bairro found = find.get();
-                System.out.println("Bairro: " + found);
                 order.setDeliveryCost(found.getTaxa());
                 calcularTotal();
             }
@@ -487,6 +482,7 @@ public class PedidoMB implements Serializable {
     }
 
     public void checkDeliveryCost() {
+        finalizado = false;
         if (order.getDelivery()) {
             if (company.getUniqueDeliveryCost()) {
                 order.setDeliveryCost(company.getDeliveryCost());
@@ -496,7 +492,6 @@ public class PedidoMB implements Serializable {
                     Optional<Bairro> find = company.getBairros().stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
                     if (find.isPresent()) {
                         Bairro found = find.get();
-                        System.out.println("Bairro: " + found);
                         order.setDeliveryCost(found.getTaxa());
                         calcularTotal();
                     }
@@ -506,6 +501,7 @@ public class PedidoMB implements Serializable {
             order.setDeliveryCost(BigDecimal.ZERO);
             calcularTotal();
         }
+        PrimefacesUtil.Update("grpPrincipal");
     }
 
     public void applyCoupon() throws Exception {
@@ -514,7 +510,6 @@ public class PedidoMB implements Serializable {
         BigDecimal totalSemTaxa = order.getTotal().subtract(order.getDeliveryCost());
         if (lastOrder != null) {
             String checkCoupon = couponMB.couponValid(couponsCompany, couponCode, lastOrder, order.getTotal(), totalSemTaxa);
-            System.out.println(checkCoupon);
             if (checkCoupon.equals("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
@@ -523,7 +518,6 @@ public class PedidoMB implements Serializable {
                         couponValid = true;
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
                         PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                        System.out.println("apliquei o cupom");
                     }
                 }
             } else if (checkCoupon.equals("onetime")) {
@@ -552,7 +546,6 @@ public class PedidoMB implements Serializable {
             if (checkCoupon.equalsIgnoreCase("true")) {
                 for (CouponCode c : company.getCoupons()) {
                     if (c.getSlug().equalsIgnoreCase(couponCode)) {
-                        System.out.println(company.getCoupons().toString());
                         order.setCoupon(couponCode);
                         calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
                         couponValid = true;
@@ -570,10 +563,8 @@ public class PedidoMB implements Serializable {
     }
 
     private void calcularDescontoCupom(BigDecimal desconto, Boolean deliveryCost, Boolean percentual) {
-        System.out.println(percentual);
         if (percentual) {
             BigDecimal discount = order.getTotal().multiply(desconto).divide(BigDecimal.valueOf(100));
-            System.out.println("desconto no valor de " + discount);
             if (deliveryCost) {
                 order.setDiscountValue(discount);
                 order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(discount));
@@ -597,16 +588,19 @@ public class PedidoMB implements Serializable {
             this.company = company;
             order = new Order(this.company);
             order.setProducts(new ArrayList());
-        } 
+        }
 
     }
 
-    public Company setar(Company company) {
+    public Company setar(Company company, String telefone) {
         if ((this.company.getId() == null) || (this.company.getId() != null && !this.company.getId().equals(company.getId()))) {
+            finalizado = false;
             this.company = company;
             order = new Order(this.company);
             products = new ArrayList();
-        } 
+            this.telefone = telefone;
+            carregarUltimoPedidoNumero();
+        }
         return this.company;
 
     }
@@ -623,6 +617,14 @@ public class PedidoMB implements Serializable {
         content.append("<div class='col-xs-12'><hr style='margin-top: 0;margin-bottom: 0;border-color: #95c70d;' /></div>");
         content.append("</div>");
         return content.toString();
+    }
+
+    public Boolean getFinalizado() {
+        return finalizado;
+    }
+
+    public void setFinalizado(Boolean finalizado) {
+        this.finalizado = finalizado;
     }
 
 }

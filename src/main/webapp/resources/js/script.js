@@ -3,9 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$(document).ready(function () {
-    setarCompany();
-});
+
 function callBack() {
     PF('loading').show();
     backGrupos();
@@ -15,14 +13,14 @@ function callBack() {
 //<![CDATA[
 function finalizarPedido() {
     Swal.fire({
-        title: 'Muito Bom',
-        text: "Seu pedido foi enviado!",
+        title: 'Pedido Registrado',
+        text: "Dentro de instantes aceitaremos seu pedido!",
         icon: 'success',
         allowOutsideClick: false,
         closeOnClickOutside: false,
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Clique Para Sair!'
+        confirmButtonColor: '#25D366',
+        confirmButtonText: 'Ir para Whatsapp'
     }).then((result) => {
         if (result.value) {
             backGrupos();
@@ -145,76 +143,6 @@ $(document).ready(function () {
         buttonRight.style.display = 'none';
     }
 });
-
-
-
-function changeNext() {
-    $('#contant').animate({scrollLeft: '+=75'}, 300);
-//document.getElementById('contant').scrollLeft += 75;
-}
-;
-
-function changeback() {
-    $('#contant').animate({scrollLeft: '-=75'}, 300);
-// document.getElementById('contant').scrollLeft -= 75;
-}
-;
-function scrolled(o)
-{
-    var buttonRight = document.getElementById('slideRight');
-    var buttonLeft = document.getElementById('slideLeft');
-    //visible height + pixel scrolled = total height
-
-    if (o.scrollLeft === 0) {
-        //buttonLeft.style.display = 'none';
-        $("#slideLeft").hide(1000);
-    } else {
-        //buttonLeft.style.display = '';
-        $("#slideLeft").show(1000);
-    }
-
-    if (o.offsetWidth + o.scrollLeft == o.scrollWidth)
-    {
-        $("#slideRight").hide(1000);
-        //buttonRight.style.display = 'none';
-    } else {
-        $("#slideRight").show(1000);
-        // buttonRight.style.display = '';
-    }
-}
-
-function isScrollable(el) {
-
-    /*The scrollTop() method sets or returns the  
-     vertical scrollbar position for the selected elements*/
-    var y1 = el.scrollTop;
-    el.scrollTop += 1;
-    var y2 = el.scrollTop;
-    el.scrollTop -= 1;
-    var y3 = el.scrollTop;
-    el.scrollTop = y1;
-    /*The scrollLeft() method returns the horizontal  
-     scrollbar position for the selected elements.*/
-    var x1 = el.scrollLeft;
-    el.scrollLeft += 1;
-    var x2 = el.scrollLeft;
-    el.scrollLeft -= 1;
-    var x3 = el.scrollLeft;
-    el.scrollLeft = x1;
-    //returns true or false accordingly 
-    return {
-        horizontallyScrollable: x1 !== x2 || x2 !== x3,
-        verticallyScrollable: y1 !== y2 || y2 !== y3
-    }
-}
-
-function check(id) {
-    /*the data is JSON type, convert it to string and then 
-     check the element with given id for scrollbar*/
-    var jsonObj = JSON.stringify(isScrollable(document.getElementById(id)));
-    var jsonObj2 = JSON.parse(jsonObj);
-    return jsonObj2['horizontallyScrollable'];
-}
 
 //]]>
 

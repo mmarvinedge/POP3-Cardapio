@@ -39,10 +39,10 @@ public class EmpresaMB implements Serializable {
     private Category categorySelected = new Category();
     //pedidos ou menu
     private Boolean menu = false;
+    private String phone = "";
 
     private List<Category> categories = new ArrayList();
     private List<Product> products = new ArrayList();
-
 
     private JSFUtil util = new JSFUtil();
 
@@ -54,9 +54,14 @@ public class EmpresaMB implements Serializable {
 
     private void carregarCompany() {
         String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
+        String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
+        System.out.println("PHONE:? "+phone);
+        if (phone != null) {
+            this.phone = phone;
+        }
         if (name != null) {
             try {
-                this.company = categoriaService.loadCompanyName(name);
+                this.company = companyService.loadCompanyName(name);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.company = null;
@@ -145,8 +150,16 @@ public class EmpresaMB implements Serializable {
         company = this.company;
     }
 
-    public String getStart(){
+    public String getStart() {
         return "";
     }
-}
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+}
