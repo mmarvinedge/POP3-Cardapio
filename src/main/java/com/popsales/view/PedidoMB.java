@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -354,16 +355,12 @@ public class PedidoMB implements Serializable {
 
     public void adicionarRemoverTaxa() {
         if (order.getDelivery()) {
-            if (company.getDeliveryCost() != null) {
-                if (order.getAddress().getAuto() != null) {
-                    if (order != null && order.getDelivery()) {
-                        validarTaxaServico();
-                    } else {
-                        order.setDeliveryCost(BigDecimal.ZERO);
-                    }
+            if (order.getAddress().getAuto() != null) {
+                if (order != null && order.getDelivery()) {
+                    validarTaxaServico();
+                } else {
+                    order.setDeliveryCost(BigDecimal.ZERO);
                 }
-            } else {
-
             }
         } else {
             order.setDeliveryCost(BigDecimal.ZERO);
@@ -373,15 +370,18 @@ public class PedidoMB implements Serializable {
     }
 
     public void validarTaxaServico() {
-
-        if (order.getAddress().getAuto() != null) {
-            Optional<Bairro> find = company.getBairros().stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
-            if (find.isPresent()) {
-                Bairro found = find.get();
-                order.setDeliveryCost(found.getTaxa());
-                calcularTotal();
+        try {
+            if (company.getUniqueDeliveryCost()) {
+                order.setDeliveryCost(company.getDeliveryCost());
+            } else {
+                List<Bairro> b = company.getBairros().stream().filter(bb -> bb.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).collect(Collectors.toList());
+                order.setDeliveryCost(b.get(0).getTaxa());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            order.setDeliveryCost(BigDecimal.ZERO);
         }
+
     }
 
     public List<EnderecoDTO> pesquisarEndereco(String end) {
@@ -492,6 +492,7 @@ public class PedidoMB implements Serializable {
                     Optional<Bairro> find = company.getBairros().stream().filter(c -> c.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).findAny();
                     if (find.isPresent()) {
                         Bairro found = find.get();
+                        System.out.println(found.getTaxa());
                         order.setDeliveryCost(found.getTaxa());
                         calcularTotal();
                     }
@@ -508,6 +509,7 @@ public class PedidoMB implements Serializable {
         List<CouponCode> couponsCompany = new ArrayList();
         couponsCompany = couponService.couponsByCompany(company.getId());
         BigDecimal totalSemTaxa = order.getTotal().subtract(order.getDeliveryCost());
+        System.out.println(totalSemTaxa);
         if (lastOrder != null) {
             String checkCoupon = couponMB.couponValid(couponsCompany, couponCode, lastOrder, order.getTotal(), totalSemTaxa);
             if (checkCoupon.equals("true")) {
@@ -545,7 +547,7 @@ public class PedidoMB implements Serializable {
             String checkCoupon = couponMB.checkCouponNoOrder(couponsCompany, couponCode, order.getTotal(), totalSemTaxa);
             if (checkCoupon.equalsIgnoreCase("true")) {
                 for (CouponCode c : company.getCoupons()) {
-                    if (c.getSlug().equalsIgnoreCase(couponCode)) {
+                    if (c.getSlug() != null && c.getSlug().equalsIgnoreCase(couponCode)) {
                         order.setCoupon(couponCode);
                         calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
                         couponValid = true;
@@ -553,6 +555,11 @@ public class PedidoMB implements Serializable {
                         PrimefacesUtil.Update(":frmFechar:msgsCoupon");
                     }
                 }
+            } else if (checkCoupon.equalsIgnoreCase("minimal")) {
+                couponValid = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O valor minimo para utilizar esse cupom não foi atingido!", "O valor minimo para utilizar esse cupom não foi atingido!"));
+                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                couponCode = "";
             } else {
                 couponValid = false;
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom inválido!", "Cupom inválido!"));
@@ -609,10 +616,14 @@ public class PedidoMB implements Serializable {
         StringBuilder content = new StringBuilder();
         content.append("<div class='row'>");
         content.append("<div class='col-xs-12' style='    line-height: 1.1;'><strong>" + bairro.getBairro() + "</strong> </div>");
-        if (bairro.getTaxa().doubleValue() == 0.00 || bairro.getTaxa() == null) {
-            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;color: #95c70d;     line-height: 1.1;'>Entrega Grátis</small> </div>");
+        if (company.getUniqueDeliveryCost()) {
+            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;     line-height: 1.1;'>Taxa: " + OUtils.formatarMoeda(company.getDeliveryCost().doubleValue()) + "</small></div>");
         } else {
-            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;     line-height: 1.1;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
+            if (bairro.getTaxa().doubleValue() == 0.00 || bairro.getTaxa() == null) {
+                content.append("<div class='col-xs-12'><small style='    font-weight: bolder;color: #95c70d;     line-height: 1.1;'>Entrega Grátis</small> </div>");
+            } else {
+                content.append("<div class='col-xs-12'><small style='    font-weight: bolder;     line-height: 1.1;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
+            }
         }
         content.append("<div class='col-xs-12'><hr style='margin-top: 0;margin-bottom: 0;border-color: #95c70d;' /></div>");
         content.append("</div>");

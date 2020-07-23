@@ -52,7 +52,7 @@
 
                     <div class="row container-empty-promo" >
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 contain col-empty-promo" >
-                            <h:panelGroup layout="block" rendered="#{empresaMB.products.size() == 0}" >
+                            <h:panelGroup layout="block" rendered="#{empresaMB.productsPromo.size() == 0}" >
                                 <center >
                                     <h5>Selecione uma categoria acima</h5>
                                     <h4 class="mt-75">Sem promoções no momento!</h4>
@@ -61,7 +61,7 @@
                                 </center>
                             </h:panelGroup>
                         </div>
-                        <ui:repeat value="#{empresaMB.products}" var="prod">
+                        <ui:repeat value="#{empresaMB.productsPromo}" var="prod">
                             <h:panelGroup layout="block" styleClass="col-xs-12 col-sm-12 col-md-6 col-lg-3 containp5" >
                                 <div class="">
                                     <div style="border-bottom: 1px solid #ccc;">
