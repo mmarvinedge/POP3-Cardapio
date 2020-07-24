@@ -9,7 +9,14 @@
       xmlns:o="http://omnifaces.org/ui">
     <h:panelGroup id="fechamento">
         <h:panelGroup rendered="#{actionMB.acao == 'fechar'}">
+            <style>
+                .ui-inputnumber{
 
+                }
+                .ui-inputgroup input{
+                    text-align: center !important;
+                }
+            </style>
             <p:panel id="pnl" >
                 <p:blockUI block="pnl" widgetVar="ldg"  >
                     <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="color: #95c70d;"></i>
@@ -52,8 +59,8 @@
                                             <div class="col-xs-12 m-b-5" style="margin-bottom: 20px;" >
                                                 <center>
                                                     <p:selectOneRadio value="#{pedidoMB.order.delivery}" >
-                                                        <f:selectItem itemEscaped="false" itemValue="true" itemLabel="#{htmlMB.cardHome(pedidoMB.order.delivery)}" itemDisabled="#{!empresaMB.company.deliveryOnly}"  />
-                                                        <f:selectItem itemEscaped="false" itemValue="false" itemLabel="#{htmlMB.cardStore(pedidoMB.order.delivery)}" itemDisabled="#{!empresaMB.company.withdrawalOnly}" />
+                                                        <f:selectItem itemEscaped="true" itemValue="true" itemLabel="Receber Em Casa" itemDisabled="#{!empresaMB.company.deliveryOnly}"  />
+                                                        <f:selectItem itemEscaped="true" itemValue="false" itemLabel="Retirar na Loja" itemDisabled="#{!empresaMB.company.withdrawalOnly}" />
                                                         <p:ajax event="change" update="wizard"   onstart="PF('ldg').show()" oncomplete="PF('ldg').hide();" listener="#{pedidoMB.adicionarRemoverTaxa()}"/>
                                                     </p:selectOneRadio>
 
@@ -83,7 +90,7 @@
                                                                         completeMethod="#{pedidoMB.pesquisarEndereco}" 
                                                                         style="width: 100% !important;" maxResults="4" 
                                                                         itemValue="#{band}" itemLabel="#{band.logradouro}" 
-                                                                        placeholder="Digite o nome da rua!" emptyMessage="Endereço não encontrada!" >
+                                                                        placeholder="Pesquise seu endereço" emptyMessage="Endereço não encontrada!" >
                                                             <p:column >
                                                                 #{band.tipo_logradouro} #{band.logradouro} 
                                                                 <br/>
@@ -93,18 +100,9 @@
                                                         </p:autoComplete>
                                                     </div>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  >
-                                                    <div style="width: 100%; 
-                                                         text-align: center; 
-                                                         border-bottom: 1px solid #999999; 
-                                                         line-height: 0.1em;
-                                                         margin: 10px 0 20px; ">
-                                                        <strong style="background:#fff; padding:0 10px; ">
-                                                            Entrega em #{pedidoMB.order.address.city}
-                                                        </strong>
-                                                    </div>
-                                                </div>
+
                                                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4" style="margin-bottom: 5px;">
+                                                    <p:outputLabel for="bair" value="Bairro" />
                                                     <p:selectOneMenu id="bair"   value="#{pedidoMB.order.address.auto}"  required="true" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     " >
                                                         <f:selectItem itemLabel="Selecione o bairro" itemValue="" />
                                                         <f:selectItems value="#{empresaMB.company.bairros}" var="b"
@@ -114,119 +112,128 @@
                                                     <b:message for="@previous" />
                                                 </div>
                                                 <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6"  >
-                                                    <b:inputText  id="end" placeholder="Rua Central" value="#{pedidoMB.order.address.street}"   required="true" requiredMessage="Obrigatorio!">
+                                                    <b:inputText  id="end" label="Endereço" placeholder="Rua Central" value="#{pedidoMB.order.address.street}"   required="true" requiredMessage="Obrigatorio!">
                                                         <p:ajax event="blur" update="@this" />
                                                     </b:inputText>
                                                     <b:message for="@previous" />
                                                 </div>
 
                                                 <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2" >
-                                                    <b:inputText id="numeroEnd" styleClass="numberHome" placeholder="Número"   value="#{pedidoMB.order.address.streetNumber}"  required="true" required-message="Obrigatorio!"                                                                   >
+                                                    <b:inputText id="numeroEnd" label="Número" styleClass="numberHome" placeholder="Número"   value="#{pedidoMB.order.address.streetNumber}"  required="true" required-message="Obrigatorio!"                                                                   >
                                                         <p:ajax event="blur" update="@this" />
                                                     </b:inputText>
                                                     <b:message for="@previous" />
                                                 </div>
                                                 <div class="col-xs-12">
-                                                    <b:inputText  placeholder="Complemento"   value="#{pedidoMB.order.address.suburb}">
+                                                    <b:inputText  placeholder="Complemento" label="Complemento"  value="#{pedidoMB.order.address.suburb}">
                                                         <p:ajax event="blur" update="@this" />
                                                     </b:inputText>
 
                                                 </div>
-
                                             </h:panelGroup>
-
-
-
                                         </div>
-
-
                                     </h:panelGroup>
-
                                 </p:tab>
 
                                 <p:tab id="produtos"  title="Produtos">
-                                    <div class="row">
-                                        <div class="col-xs-12 text-right">
-                                            <p:commandButton value="Pedir Mais" icon="fa-plus" action="#{actionMB.setAcao('grupo')}"  onclick="PF('ldg').show()" oncomplete="PF('ldg').hide()" style="background: #95c70d !important; border: none !important; color: white!important; text-shadow: none !important;font-weight: 300!important;" />
-                                        </div>
-                                    </div>
+                                    <h:panelGroup id="grpProdutos">
+                                        <ui:repeat id="rpt" value="#{pedidoMB.order.products}" var="prod" varStatus="var">
+                                            <b:row id="row" style="    margin-left: 0px !important;margin-right: 0px !important;border: 1px solid #ccc;padding: 5px;
+                                                   border-radius: 5px;margin-top: 5px;">
+                                                <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
+                                                    <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}"  loading="lazy" style="max-width: 78px; max-height: 78px;"/>
+                                                </div>
+                                                <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
+                                                    <span class="title-item" style="color: #31353d;">#{prod.product.name} </span>
+                                                    <p:commandLink style="    position: absolute;top: 0;right: 13px;font-size: 20px;" action="#{pedidoMB.removerItem(prod)}" update="frmFechar:grpProdutos" >
+                                                        <i class="fa fa-trash text-danger"></i>
+                                                    </p:commandLink>
+                                                    <b:row >
+                                                        <div class="col-xs-12" style="    margin: 0px;">
+                                                            <small style="    color: #999999;font-size: 12px;">
+                                                                <h:panelGroup rendered="#{prod.totalAds > 0}">
+                                                                    Ads: #{empresaMB.util.formatarMoeda(prod.totalAds)}
+                                                                </h:panelGroup>
+                                                            </small>
+                                                        </div>
+                                                    </b:row>
+                                                </div>
+                                                <div class="col-xs-12"  style="    margin: 0px;     padding-left: 0;">
+                                                    <hr style="border-top: 1px solid #d3d3d3;margin-top: 10px;margin-bottom: 10px;"/>
+                                                </div>
 
-                                    <ui:repeat value="#{pedidoMB.order.products}" var="prod">
-                                        <b:row style="" class="item">
-                                            <div class="col-xs-3 text-center" style="    margin-left: 0px;margin-right: 0;padding-left: 0;padding-right: 0;">
-                                                <img src="#{prod.product.imageBase64}" alt="#{prod.product.name}"  loading="lazy" style="max-width: 78px; max-height: 78px;"/>
-                                            </div>
-
-                                            <div class="col-xs-9" style="    margin: 0px;     padding-left: 0;">
-                                                <span class="title-item" style="color: #31353d;">#{prod.product.name} </span><br/>
-                                                <b:row >
-                                                    <div class="col-xs-6" style="    margin: 0px;">
-                                                        <small style="    color: #999999;font-size: 12px;">#{prod.quantity} x #{empresaMB.util.formatarMoeda(prod.price)}
-                                                            <h:panelGroup rendered="#{prod.totalAds > 0}">
-                                                                <br/>Ads: #{empresaMB.util.formatarMoeda(prod.totalAds)}
-                                                            </h:panelGroup>
-                                                        </small>
+                                                <div class="col-xs-6" style="padding: 0px !important;" >
+                                                    <div class="ui-inputgroup">
+                                                        <p:commandLink  styleClass="buttonplusminus ripple" action="#{pedidoMB.diminuir(prod)}"  update="frmFechar:rpt:#{var.index}:row"
+                                                                        style="border: 1px solid #bebebe;border-right: none !important;    border-top-left-radius: 20px;border-bottom-left-radius: 20px;" >
+                                                            <i class="fa fa-minus text-danger"></i>
+                                                        </p:commandLink>
+                                                        <p:inputNumber value="#{prod.quantity}"  readonly="true"  />
+                                                        <p:commandLink  styleClass="buttonplusminus ripple" action="#{pedidoMB.adicionar(prod)}" update="frmFechar:rpt:#{var.index}:row"
+                                                                        style="    border: 1px solid #bebebe;border-left: none !important;border-top-right-radius:20px;border-bottom-right-radius: 20px;border-top-left-radius: 0px;    border-bottom-left-radius: 0px;" >
+                                                            <i class="fa fa-plus text-success"></i>
+                                                        </p:commandLink>
                                                     </div>
-                                                    <div class="col-xs-6 pull-right text-right" style="color: #95c70d;     margin: 0px;">
-                                                        <h3 style="font-weight: bolder; color: #95c70d; font-size: 18px;">  #{empresaMB.util.formatarMoeda(prod.total)}</h3>
-                                                    </div>
-                                                </b:row>
-                                            </div>
-                                        </b:row>
-                                    </ui:repeat>
-
+                                                </div>
+                                                <div class="col-xs-6 text-right" >
+                                                    <small>#{empresaMB.util.formatarMoeda(prod.price)}</small>
+                                                    <h3 style="font-weight: bolder; color: #95c70d; font-size: 18px; margin: 0;">  #{empresaMB.util.formatarMoeda(prod.total)}</h3>
+                                                </div>
+                                            </b:row>
+                                        </ui:repeat>
+                                    </h:panelGroup>
                                 </p:tab>
                                 <p:tab id="finalizado" title="Finalizar">
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <center>
-                                                <b:selectOneMenu label="Forma de Pagamento" value="#{pedidoMB.order.forma}" styleClass="customone">
-                                                    <f:selectItem itemLabel="Dinheiro" itemEscaped="true" itemValue="Dinheiro"  />
-                                                    <f:selectItem itemLabel="Cartão de Crédito" itemEscaped="true" itemValue="Cartão de Crédito" />
-                                                    <f:selectItem itemLabel="Cartão de Débito" itemEscaped="true" itemValue="Cartão de Débito" />
-                                                    <p:ajax event="change" update="grpTroco, @this" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
-                                                </b:selectOneMenu>
-                                            </center>
+                                            <b:selectOneMenu label="Forma de Pagamento" value="#{pedidoMB.order.forma}" styleClass="customone">
+                                                <f:selectItem itemLabel="Dinheiro" itemEscaped="true" itemValue="Dinheiro"  />
+                                                <f:selectItem itemLabel="Cartão de Crédito" itemEscaped="true" itemValue="Cartão de Crédito" />
+                                                <f:selectItem itemLabel="Cartão de Débito" itemEscaped="true" itemValue="Cartão de Débito" />
+                                                <p:ajax event="change" update="grpTroco, @this" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                                            </b:selectOneMenu>
                                         </div>
                                         <h:panelGroup id="grpTroco" style="margin-top: 5px;">
                                             <h:panelGroup rendered="#{pedidoMB.order.forma == 'Dinheiro'}">
-                                                <div class="col-xs-6" >
-                                                    <p:outputLabel value="Levar Troco?" /><br/>
-                                                    <p:toggleSwitch label="Troco?" value="#{pedidoMB.order.troco}"  >
-                                                        <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
-                                                    </p:toggleSwitch>
+                                                <div class="row">
+                                                    <div class="col-xs-12" style=" margin-bottom: 5px;margin-top: 5px;border-top: 1px solid #aeaeae;padding-top: 0px;border-bottom: 1px solid #aeaeae;                                                      padding-bottom: 10px;">>
+                                                        <div class="row" style="margin: 0 !important;">
+                                                            <div class="col-xs-6"  >
+                                                                <p:outputLabel value="Levar Troco?" /><br/>
+                                                                <p:toggleSwitch label="Troco?" value="#{pedidoMB.order.troco}"  >
+                                                                    <p:ajax event="change" update="gpTroco" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()" />
+                                                                </p:toggleSwitch>
+                                                            </div>
+                                                            <div class="col-xs-6">
+                                                                <h:panelGroup id="gpTroco" >
+                                                                    <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{pedidoMB.order.trocoPara}" required="true" 
+                                                                                 requiredMessage="Troco para quanto?"  rendered="#{pedidoMB.order.troco}"/>
+                                                                </h:panelGroup>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-xs-6">
-                                                    <h:panelGroup id="gpTroco" >
-                                                        <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{pedidoMB.order.trocoPara}" required="true" 
-                                                                     requiredMessage="Troco para quanto?"  rendered="#{pedidoMB.order.troco}"/>
-                                                    </h:panelGroup>
-                                                </div>
+
                                             </h:panelGroup>
                                         </h:panelGroup>
                                         <h:panelGroup id="grpCoupon" rendered="#{empresaMB.company.worksCoupon and empresaMB.company.coupons.size() > 0}" >
                                             <div class="row">
 
-                                                <div class="col-xs-12" style="margin-bottom: 5px;">
+                                                <div class="col-xs-12" style=" margin-bottom: 5px;margin-top: 5px;border-top: 1px solid #aeaeae;padding-top: 10px;border-bottom: 1px solid #aeaeae;                                                      padding-bottom: 10px;">
                                                     <div class="input-group">
-                                                        <b:inputText id="couponCode" disabled="#{pedidoMB.couponValid}" value="#{pedidoMB.couponCode}" style="width: 100% !important" placeholder="Cupom de desconto">
+                                                        <b:inputText id="couponCode" disabled="#{pedidoMB.couponValid}" value="#{pedidoMB.couponCode}" style="width: 100% !important;border: 1px solid #95c70d !important; height: 45px !important;" placeholder="Cupom de desconto">
                                                             <p:ajax event="blur" update="@this"/>
                                                             <f:facet name="append">
-                                                                <p:commandLink value="APLICAR" styleClass="btn btn-primary" style="height: 34px !important; color: white;  display: grid;     border-top-left-radius: 0px;border-bottom-left-radius: 0px;" action="#{pedidoMB.applyCoupon()}"
+                                                                <p:commandLink value="APLICAR" styleClass="btn btn-primary" style="height: 34px !important; color: white;  display: grid;     border-top-left-radius: 0px;border-bottom-left-radius: 0px; height: 45px !important;align-items: center;" action="#{pedidoMB.applyCoupon()}"
                                                                                update="wizard" immediate="true" disabled="#{pedidoMB.couponValid}"  />
                                                             </f:facet>
                                                         </b:inputText>
                                                     </div>
-                                                    <p:messages id="msgsCoupon" closable="true"/>
+                                                    <p:messages id="msgsCoupon" for="couponCode" closable="true"/>
                                                 </div>
                                             </div>
                                         </h:panelGroup>
 
-                                        <div class="col-xs-12" >
-                                            <h3>
-                                                TOTAIS
-                                            </h3>
-                                        </div>
                                         <div class="col-xs-7" style="border-bottom: 1px solid #ccc;" >
                                             <h4>Subtotal</h4>
                                         </div>
@@ -320,9 +327,7 @@
             </p:panel>
             <style>
 
-                .ui-radiobutton{
-                    display: none !important;
-                }
+
                 .input-group{
                     width: 100% !important;
                     margin-left: 7px !important;

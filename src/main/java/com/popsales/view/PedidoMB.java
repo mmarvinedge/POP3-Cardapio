@@ -124,6 +124,25 @@ public class PedidoMB implements Serializable {
         atingiuMaximo(at);
     }
 
+    public void diminuir(Item item) {
+        if (item.getQuantity().doubleValue() > 1) {
+            item.setQuantity(item.getQuantity().subtract(BigDecimal.ONE));
+            item.setTotal(item.getPrice().multiply(item.getQuantity()));
+        }
+        calcularTotal();
+    }
+
+    public void adicionar(Item item) {
+        item.setQuantity(item.getQuantity().add(BigDecimal.ONE));
+        item.setTotal(item.getPrice().multiply(item.getQuantity()));
+        calcularTotal();
+    }
+
+    public void removerItem(Item item) {
+        order.getProducts().remove(item);
+        calcularTotal();
+    }
+
     public void atingiuMaximo(Attribute at) {
         BigDecimal bd = at.getValues().stream().map(m -> m.getQuantity()).reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -337,6 +356,7 @@ public class PedidoMB implements Serializable {
     }
 
     private void calcularTotal() {
+        order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
         if (order.getDiscountValue() != null) {
             order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(order.getDiscountValue()));
         } else {

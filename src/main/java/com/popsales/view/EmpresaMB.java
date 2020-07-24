@@ -55,7 +55,6 @@ public class EmpresaMB implements Serializable {
     private void carregarCompany() {
         String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
         String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
-        System.out.println("PHONE:? "+phone);
         if (phone != null) {
             this.phone = phone;
         }

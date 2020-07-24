@@ -7,6 +7,7 @@ package com.popsales.model;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -134,5 +135,80 @@ public class Item {
     public void setFlavors(List<FlavorPizza> flavors) {
         this.flavors = flavors;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.id);
+        hash = 89 * hash + Objects.hashCode(this.sku);
+        hash = 89 * hash + Objects.hashCode(this.name);
+        hash = 89 * hash + Objects.hashCode(this.price);
+        hash = 89 * hash + Objects.hashCode(this.quantity);
+        hash = 89 * hash + Objects.hashCode(this.totalAds);
+        hash = 89 * hash + Objects.hashCode(this.total);
+        hash = 89 * hash + Objects.hashCode(this.obs);
+        hash = 89 * hash + Objects.hashCode(this.attributes);
+        hash = 89 * hash + Objects.hashCode(this.attributesValues);
+        hash = 89 * hash + Objects.hashCode(this.product);
+        hash = 89 * hash + Objects.hashCode(this.printer);
+        hash = 89 * hash + Objects.hashCode(this.flavors);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.sku, other.sku)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.obs, other.obs)) {
+            return false;
+        }
+        if (!Objects.equals(this.printer, other.printer)) {
+            return false;
+        }
+        if (!Objects.equals(this.price, other.price)) {
+            return false;
+        }
+        if (!Objects.equals(this.quantity, other.quantity)) {
+            return false;
+        }
+        if (!Objects.equals(this.totalAds, other.totalAds)) {
+            return false;
+        }
+        if (!Objects.equals(this.total, other.total)) {
+            return false;
+        }
+        if (!Objects.equals(this.attributes, other.attributes)) {
+            return false;
+        }
+        if (!Objects.equals(this.attributesValues, other.attributesValues)) {
+            return false;
+        }
+        if (!Objects.equals(this.product, other.product)) {
+            return false;
+        }
+        if (!Objects.equals(this.flavors, other.flavors)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
 }

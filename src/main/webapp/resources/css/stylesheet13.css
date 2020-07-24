@@ -513,9 +513,25 @@ footer {
 .ui-radiobutton-box{
     background: white !important;
 }
+
+.ui-radiobutton .ui-radiobutton-box {
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 16px !important;
+    -moz-border-radius: 10px !important;
+    -webkit-border-radius: 10px !important;
+    border-radius: 10px !important;
+}
+.ui-icon-bullet {
+    background: #95c70d !important;
+    border-radius: 15px !important;
+    background-image: none !important;
+}
+
+
 .ui-radiobutton-icon {
-    margin-left: 0  !important;
-    margin-top: -1px  !important;
+    margin-left: 1px !important;
+    margin-top: 1px !important;
 }
 
 .ui-widget-overlay{
@@ -1068,4 +1084,38 @@ button, a{
     box-shadow: none !important;;
     top: 185px !important;
     background: transparent !important;;
+}
+
+.buttonplusminus{
+    background: white;
+
+    padding-left: 15px !important;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 15px;
+}
+
+.ui-autocomplete-input{
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.ui-wizard{
+    margin-bottom: 20px !important;
+}
+
+/* Ripple effect */
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+}
+.ripple:active {
+  background-color: #6eb9f7;
+  background-size: 100%;
+  transition: background 0s;
 }
