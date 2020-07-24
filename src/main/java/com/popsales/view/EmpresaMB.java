@@ -5,6 +5,7 @@
  */
 package com.popsales.view;
 
+import com.popsales.model.Bairro;
 import com.popsales.model.Category;
 import com.popsales.model.Company;
 import com.popsales.model.Product;
@@ -13,7 +14,9 @@ import com.popsales.services.CompanyService;
 import com.popsales.services.CouponService;
 import com.popsales.services.OrderService;
 import com.popsales.util.JSFUtil;
+import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -43,6 +46,7 @@ public class EmpresaMB implements Serializable {
 
     private List<Category> categories = new ArrayList();
     private List<Product> products = new ArrayList();
+    private List<Product> productsPromo = new ArrayList();
 
     private JSFUtil util = new JSFUtil();
 
@@ -90,7 +94,7 @@ public class EmpresaMB implements Serializable {
     public void carregarProdutos(Category cat) {
         try {
             if (cat == null) {
-                products = categoriaService.getProductsPromo(company.getId());
+                productsPromo = categoriaService.getProductsPromo(company.getId());
             } else {
                 categorySelected = cat;
                 products = categoriaService.getProducts(company.getId(), cat.getId());
@@ -101,7 +105,19 @@ public class EmpresaMB implements Serializable {
         }
     }
 
-    public Company getCompany() {
+    public Company getCompany() throws IOException {
+        if (company.getBairros() == null || company.getBairros().size() == 0) {
+            List<String> bairros = new ArrayList();
+            company.setBairros(new ArrayList());
+            bairros = categoriaService.getBairros(company.getAddress().getCity());
+            for (String b : bairros) {
+                if (company.getDeliveryCost() == null) {
+                    company.getBairros().add(new Bairro(b, BigDecimal.ZERO));
+                } else {
+                    company.getBairros().add(new Bairro(b, company.getDeliveryCost()));
+                }
+            }
+        }
         return company;
     }
 
@@ -159,6 +175,14 @@ public class EmpresaMB implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<Product> getProductsPromo() {
+        return productsPromo;
+    }
+
+    public void setProductsPromo(List<Product> productsPromo) {
+        this.productsPromo = productsPromo;
     }
 
 }

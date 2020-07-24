@@ -86,6 +86,9 @@ public class CouponCode {
     }
 
     public BigDecimal getMinimalValue() {
+        if(minimalValue == null) {
+            minimalValue = BigDecimal.ZERO;
+        }
         return minimalValue;
     }
 
