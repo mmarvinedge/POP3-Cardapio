@@ -98,5 +98,4 @@ public class HtmlMB implements Serializable {
                 + "                                                    </div></div>";
     }
 
-   
 }
