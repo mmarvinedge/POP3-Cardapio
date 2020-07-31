@@ -276,6 +276,11 @@ public class PedidoMB implements Serializable {
 
     public void registarPedido() {
         try {
+            if(order.getTotal().doubleValue() < company.getMinimalValue().doubleValue()) {
+                PrimeFaces.current().executeScript("alerta('O valor do pedido não atingiu o mínimo de "+ OUtils.formatarMoeda(company.getMinimalValue().doubleValue()) +"')");
+                return;
+            }
+            
             if (order.getProducts().size() == 0 || order.getProducts().isEmpty()) {
                 return;
             }
@@ -501,7 +506,7 @@ public class PedidoMB implements Serializable {
         this.msg = msg;
     }
 
-    public void checkDeliveryCost() {
+     public void checkDeliveryCost() {
         finalizado = false;
         if (order.getDelivery()) {
             if (company.getUniqueDeliveryCost()) {

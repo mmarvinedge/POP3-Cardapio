@@ -17,6 +17,7 @@ public class Bairro {
 
     private String bairro;
     private BigDecimal taxa;
+    private Boolean entrega;
 
     private String html;
 
@@ -27,9 +28,10 @@ public class Bairro {
         this.bairro = bairro;
     }
 
-    public Bairro(String bairro, BigDecimal taxa) {
+    public Bairro(String bairro, BigDecimal taxa, Boolean entrega) {
         this.bairro = bairro;
         this.taxa = taxa;
+        this.entrega = entrega;
     }
 
     public String getBairro() {
@@ -48,6 +50,14 @@ public class Bairro {
         this.taxa = taxa;
     }
 
+    public Boolean getEntrega() {
+        return entrega;
+    }
+
+    public void setEntrega(Boolean entrega) {
+        this.entrega = entrega;
+    }
+    
     @Override
     public String toString() {
         return "Bairro{" + "bairro=" + bairro + ", taxa=" + taxa + '}';

@@ -105,7 +105,7 @@
                                                     <p:outputLabel for="bair" value="Bairro" />
                                                     <p:selectOneMenu id="bair"   value="#{pedidoMB.order.address.auto}"  required="true" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     " >
                                                         <f:selectItem itemLabel="Selecione o bairro" itemValue="" />
-                                                        <f:selectItems value="#{empresaMB.company.bairros}" var="b"
+                                                        <f:selectItems value="#{empresaMB.company.bairros}" var="b" 
                                                                        itemLabel="#{pedidoMB.formatarMoedaTaxa(b)}" itemLabelEscaped="false" itemValue="#{b.bairro}" />
                                                         <p:ajax event="itemSelect" listener="#{pedidoMB.validarTaxaServico()}" update="@this" />
                                                     </p:selectOneMenu>

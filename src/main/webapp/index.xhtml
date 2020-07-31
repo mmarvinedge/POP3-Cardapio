@@ -10,11 +10,11 @@
         <title>POP3 Food</title>
         <meta charset="utf-8"/> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-       
+
         <h:outputStylesheet name="css/all.min.css"   />
         <h:outputStylesheet name="css/sweetalert2.min.css"   />
         <h:outputStylesheet name="css/animate.min.css"   />
-         <h:outputStylesheet name="css/stylesheet13.css"   />
+        <h:outputStylesheet name="css/stylesheet13.css"   />
 
         <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="256x256" />
         <link rel="icon" href="#{facesContext.externalContext.request.contextPath}/resources/favicon/favicon.ico" sizes="128x128" />
@@ -79,28 +79,19 @@
                                     </div>
                                     <div class="col-xs-6 text-right">
                                         <h:panelGroup id="finish">
-                                            <h:panelGroup rendered="#{pedidoMB.order.total.doubleValue() >= empresaMB.company.minimalValue.doubleValue()}">
-                                                <p:commandButton value="Finalizar Pedido" 
-                                                                 disabled="#{!empresaMB.company.open}"
-                                                                 style="height: 100% !important;
-                                                                 background: #2f8a39;
-                                                                 font-size: 14px;
-                                                                 border: 1px solid #2f8a39;
-                                                                 border-radius: 25px;
-                                                                 text-shadow: none;
-                                                                 width: 98%;
-                                                                 border-color: #2f8a39;
-                                                                 height: 45px !important;
-                                                                 box-shadow: none;
-                                                                 margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',pedidoMB.order.products.size())}" actionListener="#{pedidoMB.checkDeliveryCost()}" rendered="#{!empresaMB.company.onlyMenu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{empresaMB.company.minimalValue.doubleValue() >= pedidoMB.order.total.doubleValue() and empresaMB.company.minimalValue.doubleValue() > 0}">
-                                                <div style="    margin-top: 12px;margin-right: 5px;">
-                                                    <strong style="color: black;font-size: 14px; background-color: white; border: 1px; border-radius: 6px; padding: 1%;">
-                                                        <h:outputText  value="Pedido mínimo "/> <h:outputText value="#{empresaMB.company.minimalValue.doubleValue()}"><f:convertNumber type="currency"/></h:outputText>
-                                                    </strong>
-                                                </div>
-                                            </h:panelGroup>
+                                            <p:commandButton value="Finalizar Pedido" 
+                                                             disabled="#{!empresaMB.company.open}"
+                                                             style="height: 100% !important;
+                                                             background: #2f8a39;
+                                                             font-size: 14px;
+                                                             border: 1px solid #2f8a39;
+                                                             border-radius: 25px;
+                                                             text-shadow: none;
+                                                             width: 98%;
+                                                             border-color: #2f8a39;
+                                                             height: 45px !important;
+                                                             box-shadow: none;
+                                                             margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',pedidoMB.order.products.size())}" actionListener="#{pedidoMB.checkDeliveryCost()}" rendered="#{!empresaMB.company.onlyMenu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
                                         </h:panelGroup>
                                     </div>
                                 </div>
@@ -120,9 +111,9 @@
 
             <p:remoteCommand name="backGrupos" action="#{actionMB.setAcao('grupo')}"  update="grpPrincipal,:grpNumbers" immediate="true"/>
 
-            
-              <p:remoteCommand name="endCom" action="#{actionMB.setAcao('end')}" update="grpPrincipal,:grpNumbers" immediate="true"/>
-            
+
+            <p:remoteCommand name="endCom" action="#{actionMB.setAcao('end')}" update="grpPrincipal,:grpNumbers" immediate="true"/>
+
             <h:outputScript name="js/all.min.js"   />
             <h:outputScript name="js/functions.js"   />
             <h:outputScript name="js/jquery.mask.js"   />
