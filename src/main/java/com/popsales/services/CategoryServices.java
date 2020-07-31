@@ -33,6 +33,8 @@ import okhttp3.Response;
  */
 @Stateless
 public class CategoryServices {
+    
+    public final String companyID = "company_id";
 
     private final OkHttpClient httpClient = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
@@ -95,7 +97,7 @@ public class CategoryServices {
         List<Category> saida = new ArrayList();
         Request request = new Request.Builder()
                 .url(Constantes.URL + "/product/categories/")
-                .header("company_id", idCompany)
+                .header(companyID, idCompany)
                 .get()
                 .build();
         try (Response response = httpClient.newCall(request).execute()) {
@@ -119,7 +121,7 @@ public class CategoryServices {
         List<Product> saida = new ArrayList();
         Request request = new Request.Builder()
                 .url(Constantes.URL + "/product/byCategory/" + idCat)
-                .header("company_id", idCompany)
+                .header(companyID, idCompany)
                 .get()
                 .build();
         Response response = httpClient.newCall(request).execute();
@@ -171,7 +173,7 @@ public class CategoryServices {
         List<Product> saida = new ArrayList();
         Request request = new Request.Builder()
                 .url(Constantes.URL + "/product/promo/")
-                .header("company_id", idCompany)
+                .header(companyID, idCompany)
                 .get()
                 .build();
         Response response = httpClient.newCall(request).execute();
@@ -241,7 +243,7 @@ public class CategoryServices {
         List<Product> saida = new ArrayList();
         Request request = new Request.Builder()
                 .url(Constantes.URL + "/product/")
-                .header("company_id", idCompany)
+                .header(companyID, idCompany)
                 .get()
                 .build();
         Response response = httpClient.newCall(request).execute();
@@ -266,7 +268,7 @@ public class CategoryServices {
         List<Product> saida = new ArrayList();
         Request request = new Request.Builder()
                 .url(Constantes.URL + "/product/allByTurn")
-                .header("company_id", idCompany)
+                .header(companyID, idCompany)
                 .get()
                 .build();
         Response response = httpClient.newCall(request).execute();

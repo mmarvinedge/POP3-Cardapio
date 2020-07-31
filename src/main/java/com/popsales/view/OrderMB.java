@@ -346,7 +346,6 @@ public class OrderMB implements Serializable {
         System.out.println(percentual);
         if (percentual) {
             BigDecimal discount = order.getTotal().multiply(desconto).divide(BigDecimal.valueOf(100));
-            System.out.println("desconto no valor de " + discount);
             if (deliveryCost) {
                 order.setDiscountValue(discount);
                 order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(discount));
@@ -448,9 +447,7 @@ public class OrderMB implements Serializable {
             }
             montarMensagemFinalizar();
             PrimefacesUtil.Update("grpScrips");
-            System.out.println("CHEGOU AQUI");
             PrimeFaces.current().executeScript("finalizarPedido();");
-            System.out.println("FINALIZOU");
             PrimeFaces.current().executeScript("PF('ldg').hide()");
             PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
 
@@ -640,13 +637,11 @@ public class OrderMB implements Serializable {
             if (item.getProduct().getRulePricePizza().equals("Média")) {
                 item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(new BigDecimal(item.getFlavors().size())));
             } else {
-                System.out.println(item.getFlavors().get(0).getSku());
                 item.setPrice(item.getFlavors().stream().map(m -> m.getPrice()).max((BigDecimal o1, BigDecimal o2) -> o1.compareTo(o2)).get());
             }
         } else {
             item.setPrice(BigDecimal.ZERO);
         }
-        System.out.println(item.getTotalAds());
         if (item.getTotalAds() != null) {
             item.setTotal(item.getPrice().multiply(item.getQuantity()).add(item.getTotalAds()));
         } else {
@@ -768,9 +763,7 @@ public class OrderMB implements Serializable {
         this.bairros = bairros;
     }
 
-    public void adicionarBairro() {
 
-    }
 
     public void validarTaxaServico() {
 

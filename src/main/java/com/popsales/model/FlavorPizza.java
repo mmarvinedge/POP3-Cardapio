@@ -6,6 +6,7 @@
 package com.popsales.model;
 
 import com.popsales.util.OUtils;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
  *
  * @author Renato
  */
-public class FlavorPizza {
+public class FlavorPizza implements Serializable{
 
     private String sku;
     private String flavor;
@@ -40,12 +41,7 @@ public class FlavorPizza {
             if (flavor != null) {
                 if (i.getProduct().getPromo()) {
                     StringBuilder sb = new StringBuilder();
-                    sb.append("<div class='row' style='margin-top: 7px !important;'>"
-                            + nome(i) + valor(i)
-                            + "</div> "
-                            + "<div class='row'>"
-                            + descricao(i)
-                            + "</div><hr/>");
+                    sb.append("<div class='row' style='margin-top: 7px !important;'>").append(nome(i)).append(valor(i)).append("</div> <div class='row'>").append(descricao(i)).append("</div><hr/>");
                     return sb.toString();
                 } else {
                     StringBuilder sb = new StringBuilder();

@@ -5,11 +5,13 @@
  */
 package com.popsales.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Renato
  */
-public class ProductDay {
+public class ProductDay implements Serializable{
 
     private Boolean naoVenderDom = false;
     private Boolean naoVenderSeg = false;

@@ -5,13 +5,14 @@
  */
 package com.popsales.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Marvin
  */
-public class Shift {
+public class Shift implements Serializable{
 
     private Boolean morning;
     private Boolean afternoon;
