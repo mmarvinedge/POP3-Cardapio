@@ -35,28 +35,28 @@ import org.primefaces.PrimeFaces;
 @ManagedBean
 @ViewScoped
 public class EmpresaMB implements Serializable {
-    
+
     private CategoryServices categoriaService = new CategoryServices();
     private CompanyService companyService = new CompanyService();
-    
+
     private Company company = new Company();
     private Category categorySelected = new Category();
     //pedidos ou menu
     private Boolean menu = false;
     private String phone = "";
-    
+
     private List<Category> categories = new ArrayList();
     private List<Product> products = new ArrayList();
     private List<Product> productsPromo = new ArrayList();
-    
+
     private JSFUtil util = new JSFUtil();
-    
+
     public EmpresaMB() {
         carregarCompany();
         carregarCategorias();
         carregarProdutos(null);
     }
-    
+
     private void carregarCompany() {
         String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
         String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
@@ -80,9 +80,9 @@ public class EmpresaMB implements Serializable {
         if (menu != null) {
             this.menu = true;
         }
-        
+
     }
-    
+
     private void carregarCategorias() {
         try {
             categories = categoriaService.getCategoryList(company.getId());
@@ -91,21 +91,29 @@ public class EmpresaMB implements Serializable {
             e.printStackTrace();
         }
     }
-    
+
     public void carregarProdutos(Category cat) {
         try {
             if (cat == null) {
+//                if (menu) {
+//                    productsPromo = categoriaService.getProductsMenuPromo(company.getId());
+//                } else {
                 productsPromo = categoriaService.getProductsPromo(company.getId());
+//                }
             } else {
                 categorySelected = cat;
+//                if (menu) {
+//                    products = categoriaService.getProductsMenu(company.getId(), cat.getId());
+//                } else {
                 products = categoriaService.getProducts(company.getId(), cat.getId());
+//                }
             }
         } catch (Exception e) {
             System.err.println("Erro ao carregar os produtos!");
             e.printStackTrace();
         }
     }
-    
+
     public Company getCompany() throws IOException {
         if (company.getBairros() == null || company.getBairros().size() == 0) {
             List<String> bairros = new ArrayList();
@@ -122,69 +130,69 @@ public class EmpresaMB implements Serializable {
         company.setBairros(company.getBairros().stream().filter(b -> b.getEntrega()).collect(Collectors.toList()));
         return company;
     }
-    
+
     public void setCompany(Company company) {
         this.company = company;
     }
-    
+
     public List<Category> getCategories() {
         return categories;
     }
-    
+
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
-    
+
     public Boolean getMenu() {
         return menu;
     }
-    
+
     public void setMenu(Boolean menu) {
         this.menu = menu;
     }
-    
+
     public List<Product> getProducts() {
         return products;
     }
-    
+
     public void setProducts(List<Product> products) {
         this.products = products;
     }
-    
+
     public Category getCategorySelected() {
         return categorySelected;
     }
-    
+
     public void setCategorySelected(Category categorySelected) {
         this.categorySelected = categorySelected;
     }
-    
+
     public JSFUtil getUtil() {
         return util;
     }
-    
+
     public void carregarEmpresa(Company company) {
         company = this.company;
     }
-    
+
     public String getStart() {
         return "";
     }
-    
+
     public String getPhone() {
         return phone;
     }
-    
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    
+
     public List<Product> getProductsPromo() {
         return productsPromo;
     }
-    
+
     public void setProductsPromo(List<Product> productsPromo) {
         this.productsPromo = productsPromo;
     }
-    
+
 }

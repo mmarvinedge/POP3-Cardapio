@@ -1037,17 +1037,17 @@ public class OrderMB implements Serializable {
     public static String imprimirOrderControle(Order or) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("========DETALHE======== linebr linebr");
-        sb.append("PEDIDO : ").append(or.getNum_order()).append("linebr");
-        sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("linebr");
-        sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("linebr");
-        sb.append("HORA: ").append(OUtils.formataData(OUtils.getDataByTexto(or.getDtRegister(), "yyyy-MM-dd HH:mm:ss"), "dd/MM/yyyy HH:mm")).append("linebr linebr");
+        sb.append("-------- DETALHE -------- linebr linebr");
+        sb.append("📃 PEDIDO : ").append(or.getNum_order()).append(" linebr");
+        sb.append("👤 CLIENTE : ").append(or.getClientInfo().getName()).append(" linebr");
+        sb.append("📞 TELEFONE: ").append(or.getClientInfo().getPhone()).append(" linebr");
+        sb.append("⏱ HORA: ").append(OUtils.formataData(OUtils.getDataByTexto(or.getDtRegister(), "yyyy-MM-dd HH:mm:ss"), "dd/MM/yyyy HH:mm")).append(" linebr linebr");
 
-        sb.append("========ITENS======== linebr");
+        sb.append("-------- ITENS -------- linebr");
         or.getProducts().forEach(pp -> {
             sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
             if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
-                sb.append(pp.getFlavors().stream().map(m -> "   1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("linebr"))).append("linebr");
+                sb.append(pp.getFlavors().stream().map(m -> "   1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining(" linebr"))).append(" linebr");
             }
 
             if (pp.getAttributes() != null) {
@@ -1059,34 +1059,34 @@ public class OrderMB implements Serializable {
                     sb.append("linebr");
                 }
             }
-            if (pp.getObs().length() > 0) {
-                sb.append("\t").append(pp.getObs()).append("linebr");
+            if (pp.getObs() != null && pp.getObs().length() > 0) {
+                sb.append("\t").append(pp.getObs()).append(" linebr");
 
             }
         });
         sb.append("linebr");
-        sb.append("========TOTAIS======== linebr");
-        sb.append("PRODUTOS: ").append(OUtils.formatarMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue())).append("linebr");
-        sb.append("TAXA ENTREGA: ").append(OUtils.formatarMoeda(or.getDeliveryCost().doubleValue())).append("linebr");
-        sb.append("TOTAL: ").append(OUtils.formatarMoeda(or.getTotal().doubleValue())).append("linebr");
-        sb.append("FORMA: ").append(or.getForma()).append("linebr");
+        sb.append("-------- TOTAIS -------- linebr");
+        sb.append("PRODUTOS: ").append(OUtils.formatarMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue())).append(" linebr");
+        sb.append("TAXA ENTREGA: ").append(OUtils.formatarMoeda(or.getDeliveryCost().doubleValue())).append(" linebr");
+        sb.append("TOTAL: ").append(OUtils.formatarMoeda(or.getTotal().doubleValue())).append(" linebr linebr");
 
         if (or.getDelivery()) {
-            sb.append("========ENDERECO======== linebr").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append("linebr");
+            sb.append("-------- ENDEREÇO -------- linebr").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append(" linebr");
             if (!or.getAddress().getSuburb().isEmpty()) {
-                sb.append(or.getAddress().getSuburb()).append("linebr");
+                sb.append(or.getAddress().getSuburb()).append(" linebr");
             }
-            sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity()).append("linebr");
+            sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity()).append(" linebr linebr");
         } else {
-            sb.append("RETIRADA EM BALCAO").append(" linebr linebr linebr");
+            sb.append("RETIRADA EM BALCAO").append(" linebr linebr");
         }
         if (or.getForma().equalsIgnoreCase("Dinheiro")) {
+            sb.append("💰 FORMA DE PAGTO: " + or.getForma()).append(" linebr ");
             if (or.getTroco()) {
-                sb.append(" linebrLEVAR TROCO PARA ").append(OUtils.formatarMoeda(or.getTrocoPara())).append(" linebr linebr");
+                sb.append("*LEVAR TROCO PARA* ").append(OUtils.formatarMoeda(or.getTrocoPara())).append(" linebr linebr");
             }
         } else {
-            sb.append("FORMA DE PAGTO: " + or.getForma());
-            sb.append(" linebr LEVAR MARQUINA DE CARTAO!").append(" linebr linebr");
+            sb.append("💳 FORMA DE PAGTO: " + or.getForma()).append(" linebr ");
+            sb.append("*LEVAR MÁQUINA DE CARTAO!*").append(" linebr linebr");
         }
         return sb.toString();
 

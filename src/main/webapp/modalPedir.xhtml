@@ -115,7 +115,7 @@
 
                         <div class="col-xs-7 col-sm-7 col-md-6 col-lg-6 text-right" style="padding-left: 0px;padding-right: 25px; padding-bottom: 15px;">
                             <p:messages id="msgs" closable="true" />
-                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{pedidoMB.addCart()}"  rendered="#{!pedidoMB.company.onlyMenu}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();"  style="padding: 15px;    border-radius: 25px !important; background: #2f8a39 !important;"
+                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{pedidoMB.addCart()}"  rendered="#{!empresaMB.menu}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();"  style="padding: 15px;    border-radius: 25px !important; background: #2f8a39 !important;"
                                            update=":grpNumbers, pnlend,frmModal:msgs" disabled="#{!pedidoMB.company.open}">
                                 <div class="row">
                                     <div class="col-xs-5 text-left bold">

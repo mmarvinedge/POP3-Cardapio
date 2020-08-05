@@ -288,5 +288,54 @@ public class CategoryServices {
 
         return saida;
     }
+    
+    public List<Product> getProductsMenuPromo(String idCompany) throws IOException {
+        List<Product> saida = new ArrayList();
+        Request request = new Request.Builder()
+                .url(Constantes.URL + "/product/promoMenu/")
+                .header(companyID, idCompany)
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (response.code() == 202) {
+            throw new IOException("Nenhum dado retornado!");
+        } else {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+        }
+
+        // Get response body
+        String json = response.body().string();
+        saida = new Gson().fromJson(json, new TypeToken<List<Product>>() {
+        }.getType());
+
+        return saida;
+    }
+    
+    public List<Product> getProductsMenu(String idCompany, String idCat) throws IOException {
+        List<Product> saida = new ArrayList();
+        Request request = new Request.Builder()
+                .url(Constantes.URL + "/product/byCategoryMenu/" + idCat)
+                .header(companyID, idCompany)
+                .get()
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (response.code() == 202) {
+            throw new IOException("Nenhum dado retornado!");
+        } else {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+        }
+
+        // Get response body
+        String json = response.body().string();
+
+        saida = new Gson().fromJson(json, new TypeToken<List<Product>>() {
+        }.getType());
+
+        return saida;
+    }
 
 }

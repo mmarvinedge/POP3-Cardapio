@@ -29,6 +29,24 @@ function finalizarPedido() {
     });
 }
 
+function finalizarPedidoFree() {
+    Swal.fire({
+        title: 'Pedido Montado',
+        text: "Para enviar seu pedido aperte o botão Ir para o WhatsApp e envie a mensagem com o pedido!",
+        icon: 'success',
+        allowOutsideClick: false,
+        closeOnClickOutside: false,
+        showCancelButton: false,
+        confirmButtonColor: '#25D366',
+        confirmButtonText: 'Ir para Whatsapp'
+    }).then((result) => {
+        if (result.value) {
+            backGrupos();
+            redirecionar();
+        }
+    });
+}
+
 //]]>
 function alerta(msg) {
     Swal.fire({

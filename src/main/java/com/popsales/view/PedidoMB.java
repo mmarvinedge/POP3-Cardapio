@@ -276,11 +276,11 @@ public class PedidoMB implements Serializable {
 
     public void registarPedido() {
         try {
-            if(order.getTotal().doubleValue() < company.getMinimalValue().doubleValue()) {
-                PrimeFaces.current().executeScript("alerta('O valor do pedido não atingiu o mínimo de "+ OUtils.formatarMoeda(company.getMinimalValue().doubleValue()) +"')");
+            if (order.getTotal().doubleValue() < company.getMinimalValue().doubleValue()) {
+                PrimeFaces.current().executeScript("alerta('O valor do pedido não atingiu o mínimo de " + OUtils.formatarMoeda(company.getMinimalValue().doubleValue()) + "')");
                 return;
             }
-            
+
             if (order.getProducts().size() == 0 || order.getProducts().isEmpty()) {
                 return;
             }
@@ -341,7 +341,11 @@ public class PedidoMB implements Serializable {
             }
             montarMensagemFinalizar();
             PrimefacesUtil.Update("grpScrips");
-            PrimeFaces.current().executeScript("finalizarPedido();");
+            if (company.getFreeVersion()) {
+                PrimeFaces.current().executeScript("finalizarPedidoFree();");
+            } else {
+                PrimeFaces.current().executeScript("finalizarPedido();");
+            }
             PrimeFaces.current().executeScript("PF('ldg').hide()");
             PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
             PrimeFaces.current().executeScript("endCom()");
@@ -352,7 +356,11 @@ public class PedidoMB implements Serializable {
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
-            PrimeFaces.current().executeScript("finalizarPedido();");
+            if (company.getFreeVersion()) {
+                PrimeFaces.current().executeScript("finalizarPedidoFree();");
+            } else {
+                PrimeFaces.current().executeScript("finalizarPedido();");
+            }
             PrimeFaces.current().executeScript("PF('ldg').hide()");
             PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
         } catch (Exception e) {
@@ -506,7 +514,7 @@ public class PedidoMB implements Serializable {
         this.msg = msg;
     }
 
-     public void checkDeliveryCost() {
+    public void checkDeliveryCost() {
         finalizado = false;
         if (order.getDelivery()) {
             if (company.getUniqueDeliveryCost()) {
