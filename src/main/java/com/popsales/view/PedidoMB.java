@@ -128,14 +128,16 @@ public class PedidoMB implements Serializable {
     public void diminuir(Item item) {
         if (item.getQuantity().doubleValue() > 1) {
             item.setQuantity(item.getQuantity().subtract(BigDecimal.ONE));
-            item.setTotal(item.getPrice().multiply(item.getQuantity()));
+            item.setTotal(item.getPrice().add(item.getTotalAds()).multiply(item.getQuantity()));
         }
         calcularTotal();
     }
 
     public void adicionar(Item item) {
         item.setQuantity(item.getQuantity().add(BigDecimal.ONE));
-        item.setTotal(item.getPrice().multiply(item.getQuantity()));
+        System.out.println(item.getPrice());
+        System.out.println(item.getTotalAds());
+        item.setTotal(item.getTotal().add(item.getPrice().add(item.getTotalAds())));
         calcularTotal();
     }
 

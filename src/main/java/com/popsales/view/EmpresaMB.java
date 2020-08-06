@@ -95,18 +95,18 @@ public class EmpresaMB implements Serializable {
     public void carregarProdutos(Category cat) {
         try {
             if (cat == null) {
-//                if (menu) {
-//                    productsPromo = categoriaService.getProductsMenuPromo(company.getId());
-//                } else {
-                productsPromo = categoriaService.getProductsPromo(company.getId());
-//                }
+                if (menu) {
+                    productsPromo = categoriaService.getProductsMenuPromo(company.getId());
+                } else {
+                    productsPromo = categoriaService.getProductsPromo(company.getId());
+                }
             } else {
                 categorySelected = cat;
-//                if (menu) {
-//                    products = categoriaService.getProductsMenu(company.getId(), cat.getId());
-//                } else {
-                products = categoriaService.getProducts(company.getId(), cat.getId());
-//                }
+                if (menu) {
+                    products = categoriaService.getProductsMenu(company.getId(), cat.getId());
+                } else {
+                    products = categoriaService.getProducts(company.getId(), cat.getId());
+                }
             }
         } catch (Exception e) {
             System.err.println("Erro ao carregar os produtos!");
