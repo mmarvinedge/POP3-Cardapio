@@ -179,7 +179,7 @@ public class OrderMB implements Serializable {
     @PostConstruct
     public void init() {
         System.out.println("POST CONSTRUC");
-        
+
     }
 
     public void preReload() {
@@ -746,7 +746,6 @@ public class OrderMB implements Serializable {
 //        System.out.println("TEM " + bairros.size());
 //        return bairros;
 //    }
-
     public String getBairroManual() {
         return bairroManual;
     }
@@ -762,8 +761,6 @@ public class OrderMB implements Serializable {
     public void setBairros(List<Bairro> bairros) {
         this.bairros = bairros;
     }
-
-
 
     public void validarTaxaServico() {
 
@@ -1045,7 +1042,7 @@ public class OrderMB implements Serializable {
 
         sb.append("-------- ITENS -------- linebr");
         or.getProducts().forEach(pp -> {
-            sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
+            sb.append(String.format(formatQntity, pp.getQuantity() + " x ", "*" + pp.getName().toUpperCase() + "*"));
             if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
                 sb.append(pp.getFlavors().stream().map(m -> "   1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining(" linebr"))).append(" linebr");
             }
@@ -1061,21 +1058,27 @@ public class OrderMB implements Serializable {
             }
             if (pp.getObs() != null && pp.getObs().length() > 0) {
                 sb.append("\t").append(pp.getObs()).append(" linebr");
-
             }
+            sb.append("VALOR: ").append(OUtils.formatarMoeda(pp.getTotal().doubleValue())).append(" linebr");
+            sb.append(" linebr");
         });
-        sb.append("linebr");
         sb.append("-------- TOTAIS -------- linebr");
         sb.append("PRODUTOS: ").append(OUtils.formatarMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue())).append(" linebr");
         sb.append("TAXA ENTREGA: ").append(OUtils.formatarMoeda(or.getDeliveryCost().doubleValue())).append(" linebr");
         sb.append("TOTAL: ").append(OUtils.formatarMoeda(or.getTotal().doubleValue())).append(" linebr linebr");
 
         if (or.getDelivery()) {
-            sb.append("-------- ENDEREÇO -------- linebr").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append(" linebr");
+//            sb.append("-------- ENDEREÇO -------- linebr").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append(" linebr");
+            sb.append("-------- ENDEREÇO -------- linebr");
+            sb.append("*RUA*: ").append(or.getAddress().getStreet()).append(", ").append(or.getAddress().getStreetNumber()).append(" linebr");
+            sb.append("*BAIRRO*: ").append(or.getAddress().getAuto()).append(" linebr");
             if (!or.getAddress().getSuburb().isEmpty()) {
-                sb.append(or.getAddress().getSuburb()).append(" linebr");
+                sb.append("*COMPLEMENTO*: ").append(or.getAddress().getSuburb()).append(" linebr");
+//                sb.append(or.getAddress().getSuburb()).append(" linebr");
             }
-            sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity()).append(" linebr linebr");
+            sb.append("*CIDADE*: ").append(or.getAddress().getCity()).append(" linebr");
+//            sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity()).append(" linebr linebr");
+            sb.append(" linebr linebr");
         } else {
             sb.append("RETIRADA EM BALCAO").append(" linebr linebr");
         }

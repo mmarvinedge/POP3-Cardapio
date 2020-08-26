@@ -57,7 +57,11 @@
                                                 <span class="name-item"> #{prod.name}</span>
                                             </div>
                                             <div class="col-xs-12 p-l-0-lg p-l-0-ssm p-l-0-sm p-l-0-md" >
-                                                <div class="description-item">#{prod.description}</div>
+                                                <div class="description-item" style="overflow: hidden;
+                                                     text-overflow: ellipsis;
+                                                     display: -webkit-box;
+                                                     -webkit-line-clamp: 4; /* number of lines to show */
+                                                     -webkit-box-orient: vertical;">#{prod.description}</div>
                                             </div>
                                             <div class="col-xs-12 text-right" style="padding-right: 20px;">
                                                 <h:panelGroup rendered="#{empresaMB.menu}">

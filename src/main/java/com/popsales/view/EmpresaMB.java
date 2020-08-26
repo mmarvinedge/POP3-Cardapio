@@ -11,20 +11,18 @@ import com.popsales.model.Company;
 import com.popsales.model.Product;
 import com.popsales.services.CategoryServices;
 import com.popsales.services.CompanyService;
-import com.popsales.services.CouponService;
-import com.popsales.services.OrderService;
 import com.popsales.util.JSFUtil;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.PrimeFaces;
 
@@ -48,6 +46,8 @@ public class EmpresaMB implements Serializable {
     private List<Category> categories = new ArrayList();
     private List<Product> products = new ArrayList();
     private List<Product> productsPromo = new ArrayList();
+    private Boolean phoneParam = false;
+    private String horaAbertura, horaFechamento;
 
     private JSFUtil util = new JSFUtil();
 
@@ -62,6 +62,7 @@ public class EmpresaMB implements Serializable {
         String phone = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tel");
         if (phone != null) {
             this.phone = phone;
+            this.phoneParam = true;
         }
         if (name != null) {
             try {
@@ -195,4 +196,94 @@ public class EmpresaMB implements Serializable {
         this.productsPromo = productsPromo;
     }
 
+    public Boolean getPhoneParam() {
+        return phoneParam;
+    }
+
+    public void setPhoneParam(Boolean phoneParam) {
+        this.phoneParam = phoneParam;
+    }
+
+    public Boolean validaTimes() {
+        if (company.getTime() != null) {
+            String dia = new SimpleDateFormat("EE").format(new Date());
+            switch (dia) {
+                case "Seg":
+                case "Mon":
+                    if (company.getTime().getOpenSeg() != null && company.getTime().getCloseSeg()!= null) {
+                        horaAbertura = company.getTime().getOpenSeg();
+                        horaFechamento = company.getTime().getCloseSeg();
+                        return true;
+                    }
+                    break;
+                case "Ter":
+                case "Tue":
+                    if (company.getTime().getOpenTer()!= null && company.getTime().getCloseTer()!= null) {
+                        horaAbertura = company.getTime().getOpenTer();
+                        horaFechamento = company.getTime().getCloseTer();
+                        return true;
+                    }
+                    break;
+                case "Qua":
+                case "Wed":
+                    if (company.getTime().getOpenQua()!= null && company.getTime().getCloseQua()!= null) {
+                        horaAbertura = company.getTime().getOpenQua();
+                        horaFechamento = company.getTime().getCloseQua();
+                        return true;
+                    }
+                    break;
+                case "Qui":
+                case "Thu":
+                    if (company.getTime().getOpenQui()!= null && company.getTime().getCloseQui()!= null) {
+                        horaAbertura = company.getTime().getOpenQui();
+                        horaFechamento = company.getTime().getCloseQui();
+                        return true;
+                    }
+                    break;
+                case "Sex":
+                case "Fri":
+                    if (company.getTime().getOpenSex()!= null && company.getTime().getCloseSex()!= null) {
+                        horaAbertura = company.getTime().getOpenSex();
+                        horaFechamento = company.getTime().getCloseSex();
+                        return true;
+                    }
+                    break;
+                case "Sab":
+                case "Sáb":
+                case "Sat":
+                    if (company.getTime().getOpenSab()!= null && company.getTime().getCloseSab()!= null) {
+                        horaAbertura = company.getTime().getOpenSab();
+                        horaFechamento = company.getTime().getCloseSab();
+                        return true;
+                    }
+                    break;
+                case "Dom":
+                case "Sun":
+                    if (company.getTime().getOpenDom() != null && company.getTime().getCloseDom() != null) {
+                        horaAbertura = company.getTime().getOpenDom();
+                        horaFechamento = company.getTime().getCloseDom();
+                        return true;
+                    }
+                    break;
+            }
+        }
+        return false;
+    }
+
+    public String getHoraAbertura() {
+        return horaAbertura;
+    }
+
+    public void setHoraAbertura(String horaAbertura) {
+        this.horaAbertura = horaAbertura;
+    }
+
+    public String getHoraFechamento() {
+        return horaFechamento;
+    }
+
+    public void setHoraFechamento(String horaFechamento) {
+        this.horaFechamento = horaFechamento;
+    }
+    
 }

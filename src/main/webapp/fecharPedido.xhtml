@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="col-xs-12">
                                             <div class="ui-fone">
-                                                <b:inputText label="Telefone"  value="#{pedidoMB.order.clientInfo.phone}"   requiredMessage="Informe o telefone" onkeypress="startPhone()" type="tel" required="true" update="@this" styleClass="ui-fone" style-class="ui-fone" style="height: 40px !important;" />
+                                                <b:inputText label="Telefone"  value="#{pedidoMB.order.clientInfo.phone}" disabled="#{empresaMB.phoneParam}" requiredMessage="Informe o telefone" onkeypress="startPhone()" type="tel" required="true" update="@this" styleClass="ui-fone" style-class="ui-fone" style="height: 40px !important;" />
                                                 <b:message for="@previous" />
                                             </div>
                                         </div>
@@ -288,6 +288,13 @@
                                                            action="#{pedidoMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
 
                                         </div>
+                                        <h:panelGroup rendered="#{pedidoMB.order.delivery and empresaMB.company.aproxTime != null}">
+                                            <div class="col-xs-12">
+                                                <center>
+                                                    <h5><h:outputText value="Tempo médio de entrega #{empresaMB.company.aproxTime}" style="font-weight: bolder;"/></h5>
+                                                </center>
+                                            </div>
+                                        </h:panelGroup>
                                     </div>
                                 </p:tab>
                             </p:wizard>

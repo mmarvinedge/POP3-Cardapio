@@ -33,8 +33,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FlowEvent;
 
@@ -83,6 +81,8 @@ public class PedidoMB implements Serializable {
             } catch (Exception e) {
                 System.err.println("Erro ao capturar o ultimo pedido");
                 e.printStackTrace();
+                System.out.println(OUtils.formataNinePhone(telefone));
+                order.getClientInfo().setPhone(OUtils.formataNinePhone(telefone));
             }
 
         }
@@ -112,6 +112,7 @@ public class PedidoMB implements Serializable {
     public void addQnt(AttributeValue av, Attribute at) {
         av.setQuantity(av.getQuantity().add(BigDecimal.ONE));
         av.setTotal(av.getQuantity().multiply(av.getPrice()));
+        System.out.println(av.getTotal());
         atingiuMaximo(at);
     }
 
@@ -230,9 +231,10 @@ public class PedidoMB implements Serializable {
                         if (value.getQuantity() != null && value.getQuantity().doubleValue() > 0) {
                             novos.add(value);
                             value.setQuantity(value.getQuantity().multiply(item.getQuantity()));
-                            value.setTotal(value.getPrice().multiply(item.getQuantity()));
+                            value.setTotal(value.getPrice().multiply(value.getQuantity()));
                             if (value.getTotal() != null) {
                                 totalAdicionais = totalAdicionais.add(value.getTotal());
+                                System.out.println(totalAdicionais);
                             }
                         }
                     }
@@ -245,6 +247,7 @@ public class PedidoMB implements Serializable {
             }
             item.setAttributes(atrs);
             item.setTotalAds(totalAdicionais);
+            System.out.println(item.getTotalAds());
             order.getProducts().add(item);
             order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
             calcularTotal();

@@ -31,7 +31,7 @@ function finalizarPedido() {
 
 function finalizarPedidoFree() {
     Swal.fire({
-        title: 'Pedido Montado',
+        title: 'Só falta enviar o pedido',
         text: "Para enviar seu pedido aperte o botão Ir para o WhatsApp e envie a mensagem com o pedido!",
         icon: 'success',
         allowOutsideClick: false,
