@@ -234,7 +234,6 @@ public class PedidoMB implements Serializable {
                             value.setTotal(value.getPrice().multiply(value.getQuantity()));
                             if (value.getTotal() != null) {
                                 totalAdicionais = totalAdicionais.add(value.getTotal());
-                                System.out.println(totalAdicionais);
                             }
                         }
                     }
