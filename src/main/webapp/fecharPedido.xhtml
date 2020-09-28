@@ -80,26 +80,28 @@
                                             </div>
 
                                             <h:panelGroup rendered="#{pedidoMB.order.delivery}">
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <h:panelGroup rendered="#{empresaMB.company.autoAdress}">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                                                    <div class="ui-inputgroup" style="margin-bottom: 15px;">
-                                                        <span class="ui-inputgroup-addon"><i class="fa fa-search"></i> Rua.</span>
-                                                        <p:autoComplete id="ban" value="#{pedidoMB.enderecoFiltro}"   var="band" minQueryLength="5" 
-                                                                        queryDelay="500"  converter="Converter"
-                                                                        forceSelection="true"
-                                                                        completeMethod="#{pedidoMB.pesquisarEndereco}" 
-                                                                        style="width: 100% !important;" maxResults="4" 
-                                                                        itemValue="#{band}" itemLabel="#{band.logradouro}" 
-                                                                        placeholder="Pesquise seu endereço" emptyMessage="Endereço não encontrada!" >
-                                                            <p:column >
-                                                                #{band.tipo_logradouro} #{band.logradouro} 
-                                                                <br/>
-                                                                #{band.bairro} - #{band.cidade}
-                                                            </p:column>
-                                                            <p:ajax event="itemSelect"  listener="#{pedidoMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); "  />
-                                                        </p:autoComplete>
+                                                        <div class="ui-inputgroup" style="margin-bottom: 15px;">
+                                                            <span class="ui-inputgroup-addon"><i class="fa fa-search"></i> Rua.</span>
+                                                            <p:autoComplete id="ban" value="#{pedidoMB.enderecoFiltro}"   var="band" minQueryLength="5" 
+                                                                            queryDelay="500"  converter="Converter"
+                                                                            forceSelection="true"
+                                                                            completeMethod="#{pedidoMB.pesquisarEndereco}" 
+                                                                            style="width: 100% !important;" maxResults="4" 
+                                                                            itemValue="#{band}" itemLabel="#{band.logradouro}" 
+                                                                            placeholder="Pesquise seu endereço" emptyMessage="Endereço não encontrada!" >
+                                                                <p:column >
+                                                                    #{band.tipo_logradouro} #{band.logradouro} 
+                                                                    <br/>
+                                                                    #{band.bairro} - #{band.cidade}
+                                                                </p:column>
+                                                                <p:ajax event="itemSelect"  listener="#{pedidoMB.selectEndereco()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide(); "  />
+                                                            </p:autoComplete>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </h:panelGroup>
 
                                                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4" style="margin-bottom: 5px;">
                                                     <p:outputLabel for="bair" value="Bairro" />
@@ -225,11 +227,14 @@
                                                             <p:ajax event="blur" update="@this"/>
                                                             <f:facet name="append">
                                                                 <p:commandLink value="APLICAR" styleClass="btn btn-primary" style="height: 34px !important; color: white;  display: grid;     border-top-left-radius: 0px;border-bottom-left-radius: 0px; height: 45px !important;align-items: center;" action="#{pedidoMB.applyCoupon()}"
-                                                                               update="wizard" immediate="true" disabled="#{pedidoMB.couponValid}"  />
+                                                                               update="wizard, msgsCoupon" immediate="true" disabled="#{pedidoMB.couponValid}"  />
                                                             </f:facet>
                                                         </b:inputText>
                                                     </div>
-                                                    <p:messages id="msgsCoupon" for="couponCode" closable="true"/>
+                                                    <br/>
+                                                    <div class="col-xs-12">
+                                                        <p:messages id="msgsCoupon" closable="true"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </h:panelGroup>

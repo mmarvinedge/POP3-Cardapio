@@ -33,6 +33,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FlowEvent;
 
@@ -518,7 +519,7 @@ public class PedidoMB implements Serializable {
         this.msg = msg;
     }
 
-    public void checkDeliveryCost() {
+    public void checkDeliveryCost(String phone) {
         finalizado = false;
         if (order.getDelivery()) {
             if (company.getUniqueDeliveryCost()) {
@@ -539,6 +540,9 @@ public class PedidoMB implements Serializable {
             order.setDeliveryCost(BigDecimal.ZERO);
             calcularTotal();
         }
+        String newPhone = OUtils.formataNinePhone(phone);
+        System.out.println(newPhone);
+        order.getClientInfo().setPhone(newPhone);
         PrimefacesUtil.Update("grpPrincipal");
     }
 
@@ -549,59 +553,74 @@ public class PedidoMB implements Serializable {
         System.out.println(totalSemTaxa);
         if (lastOrder != null) {
             String checkCoupon = couponMB.couponValid(couponsCompany, couponCode, lastOrder, order.getTotal(), totalSemTaxa);
-            if (checkCoupon.equals("true")) {
-                for (CouponCode c : company.getCoupons()) {
-                    if (c.getSlug().equalsIgnoreCase(couponCode)) {
-                        order.setCoupon(couponCode);
-                        calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
-                        couponValid = true;
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
-                        PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+            System.out.println("VALIDADE: " + checkCoupon);
+            switch (checkCoupon) {
+                case "true":
+                    for (CouponCode c : company.getCoupons()) {
+                        if (c.getSlug().equalsIgnoreCase(couponCode)) {
+                            order.setCoupon(couponCode);
+                            calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
+                            couponValid = true;
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
+                            PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                        }
                     }
-                }
-            } else if (checkCoupon.equals("onetime")) {
-                couponValid = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom já foi utilizado hoje!", "Cupom já foi utilizado hoje!"));
-                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                couponCode = "";
-            } else if (checkCoupon.equals("expired")) {
-                couponValid = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom atingiu o limite máximo de utilizações!", "Cupom atingiu o limite máximo de utilizações!"));
-                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                couponCode = "";
-            } else if (checkCoupon.equals("minimal")) {
-                couponValid = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O valor minimo para utilizar esse cupom não foi atingido!", "O valor minimo para utilizar esse cupom não foi atingido!"));
-                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                couponCode = "";
-            } else {
-                couponValid = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom inválido!", "Cupom inválido!"));
-                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                couponCode = "";
+                    break;
+                case "onetime":
+                    couponValid = false;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom já foi utilizado hoje!", "Cupom já foi utilizado hoje!"));
+                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                    couponCode = "";
+                    break;
+                case "expired":
+                    couponValid = false;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom atingiu o limite máximo de utilizações!", "Cupom atingiu o limite máximo de utilizações!"));
+                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                    couponCode = "";
+                    break;
+                case "minimal":
+                    couponValid = false;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O valor minimo para utilizar esse cupom não foi atingido!", "O valor minimo para utilizar esse cupom não foi atingido!"));
+                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                    couponCode = "";
+                    break;
+                default:
+                    couponValid = false;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom inválido!", "Cupom inválido!"));
+                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                    couponCode = "";
+                    break;
             }
         } else {
             String checkCoupon = couponMB.checkCouponNoOrder(couponsCompany, couponCode, order.getTotal(), totalSemTaxa);
-            if (checkCoupon.equalsIgnoreCase("true")) {
-                for (CouponCode c : company.getCoupons()) {
-                    if (c.getSlug() != null && c.getSlug().equalsIgnoreCase(couponCode)) {
-                        order.setCoupon(couponCode);
-                        calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
-                        couponValid = true;
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
-                        PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+            System.out.println("VALIDADE ELSE: " + checkCoupon);
+            switch (checkCoupon) {
+                case "true":
+                    for (CouponCode c : company.getCoupons()) {
+                        if (c.getSlug() != null && c.getSlug().equalsIgnoreCase(couponCode)) {
+                            order.setCoupon(couponCode);
+                            calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
+                            couponValid = true;
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
+//                            PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                            addDetailMessage("Cupom aplicado!", FacesMessage.SEVERITY_INFO);
+                        }
                     }
-                }
-            } else if (checkCoupon.equalsIgnoreCase("minimal")) {
-                couponValid = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O valor minimo para utilizar esse cupom não foi atingido!", "O valor minimo para utilizar esse cupom não foi atingido!"));
-                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                couponCode = "";
-            } else {
-                couponValid = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom inválido!", "Cupom inválido!"));
-                PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                couponCode = "";
+                    break;
+                case "minimal":
+                    couponValid = false;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O valor minimo para utilizar esse cupom não foi atingido!", "O valor minimo para utilizar esse cupom não foi atingido!"));
+//                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                    addDetailMessage("O valor minimo para utilizar esse cupom não foi atingido!", FacesMessage.SEVERITY_ERROR);
+                    couponCode = "";
+                    break;
+                default:
+                    couponValid = false;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom inválido!", "Cupom inválido!"));
+//                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                    addDetailMessage("Cupom inválido!", FacesMessage.SEVERITY_ERROR);
+                    couponCode = "";
+                    break;
             }
         }
     }
@@ -673,6 +692,15 @@ public class PedidoMB implements Serializable {
 
     public void setFinalizado(Boolean finalizado) {
         this.finalizado = finalizado;
+    }
+    
+    public static void addDetailMessage(String message, FacesMessage.Severity severity) {
+
+        FacesMessage facesMessage = Messages.create("").detail(message).get();
+        if (severity != null && severity != FacesMessage.SEVERITY_INFO) {
+            facesMessage.setSeverity(severity);
+        }
+        Messages.add(null, facesMessage);
     }
 
 }

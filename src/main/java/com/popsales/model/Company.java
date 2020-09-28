@@ -19,7 +19,6 @@ public class Company {
     @Id
     private String id;
     private String companyName;
-
     private String name;
     private String socialReason;
     private String phone;
@@ -53,6 +52,11 @@ public class Company {
     private Shift shift;
     private BigDecimal minimalValue;
     private Boolean open;
+    private Boolean openForClient;
+    private String payLink;
+    private String nameOwner;
+    private String phoneOwner;
+    private Boolean autoAdress;
 
     public String getId() {
         return id;
@@ -382,6 +386,46 @@ public class Company {
         this.open = open;
     }
 
+    public Boolean getOpenForClient() {
+        return openForClient;
+    }
+
+    public void setOpenForClient(Boolean openForClient) {
+        this.openForClient = openForClient;
+    }
+
+    public String getPayLink() {
+        return payLink;
+    }
+
+    public void setPayLink(String payLink) {
+        this.payLink = payLink;
+    }
+
+    public String getNameOwner() {
+        return nameOwner;
+    }
+
+    public void setNameOwner(String nameOwner) {
+        this.nameOwner = nameOwner;
+    }
+
+    public String getPhoneOwner() {
+        return phoneOwner;
+    }
+
+    public void setPhoneOwner(String phoneOwner) {
+        this.phoneOwner = phoneOwner;
+    }
+
+    public Boolean getAutoAdress() {
+        return autoAdress;
+    }
+
+    public void setAutoAdress(Boolean autoAdress) {
+        this.autoAdress = autoAdress;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

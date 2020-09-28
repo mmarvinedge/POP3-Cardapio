@@ -119,8 +119,14 @@
                             <br/>
                             <h:outputText value="#{consultaMB.formatarData(consultaMB.order.dtDelivery, 'Hora')}" />
                         </div>
-                        <div class="item-title">Saiu para entrega</div>
-                        <div class="item-detail"><i class="fa fa-motorcycle"></i> Pedido já está chegando</div>
+                        <h:panelGroup rendered="#{consultaMB.order.delivery}">
+                            <div class="item-title">Saiu para entrega</div>
+                            <div class="item-detail"><i class="fa fa-motorcycle"></i> Pedido já está chegando</div>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{!consultaMB.order.delivery}">
+                            <div class="item-title">Pedido pronto para ser retirado</div>
+                            <div class="item-detail"><i class="fa fa-cutlery"></i> Seu pedido está te aguardando</div>
+                        </h:panelGroup>
                     </li>
 
                     <li class="tl-item" ng-repeat="item in retailer_history" style="display: #{consultaMB.order.dtFinish == null ? 'none':''}">
@@ -129,8 +135,15 @@
                             <br/> 
                             <h:outputText value="#{consultaMB.formatarData(consultaMB.order.dtFinish, 'Hora')}" />
                         </div>
-                        <div class="item-title">Pedido entregue</div>
-                        <div class="item-detail"><i class="fa fa-grin-wink"></i> Agradecemos a preferência =)</div>
+                        <h:panelGroup rendered="#{consultaMB.order.delivery}">
+                            <div class="item-title">Pedido entregue</div>
+                            <div class="item-detail"><i class="fa fa-grin-wink"></i> Agradecemos a preferência =)</div>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{!consultaMB.order.delivery}">
+                            <div class="item-title">Pedido retirado</div>
+                            <div class="item-detail"><i class="fa fa-grin-wink"></i> Agradecemos a preferência =)</div>
+                        </h:panelGroup>
+
                     </li>
                 </ul>
             </div>

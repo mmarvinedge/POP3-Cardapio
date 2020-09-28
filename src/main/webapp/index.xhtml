@@ -91,7 +91,7 @@
                                                              border-color: #2f8a39;
                                                              height: 45px !important;
                                                              box-shadow: none;
-                                                             margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',pedidoMB.order.products.size())}" actionListener="#{pedidoMB.checkDeliveryCost()}" rendered="#{!empresaMB.menu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
+                                                             margin-top: 3px;"  action="#{actionMB.setAcaoFechar('fechar',pedidoMB.order.products.size())}" actionListener="#{pedidoMB.checkDeliveryCost(empresaMB.phone)}" rendered="#{!empresaMB.menu}" onstart="PF('la2').show()" oncomplete=" PF('la2').hide(); " update="pnlend" />
                                         </h:panelGroup>
                                     </div>
                                 </div>
