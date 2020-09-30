@@ -62,9 +62,7 @@ public class CouponMB {
                             return "true";
                         }
                     }
-                } else {
-                    return "false";
-                }
+                } 
             }
         }
         // essa company não possui cupons cadastrados
@@ -89,8 +87,6 @@ public class CouponMB {
                     }
                     return "true";
                 }
-                // slug de cupom não existente
-                return "false";
             }
         }
         // company não possui cupons cadastrados

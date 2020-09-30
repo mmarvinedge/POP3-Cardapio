@@ -57,6 +57,7 @@ public class Company {
     private String nameOwner;
     private String phoneOwner;
     private Boolean autoAdress;
+    private String orderProducts;
 
     public String getId() {
         return id;
