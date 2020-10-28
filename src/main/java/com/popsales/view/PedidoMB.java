@@ -285,6 +285,11 @@ public class PedidoMB implements Serializable {
                 PrimeFaces.current().executeScript("alerta('O valor do pedido não atingiu o mínimo de " + OUtils.formatarMoeda(company.getMinimalValue().doubleValue()) + "')");
                 return;
             }
+            
+            if (order.getClientInfo().getPhone().length() < 12) {
+                PrimeFaces.current().executeScript("alerta('O telefone informado está inválido!')");
+                return;
+            }
 
             if (order.getProducts().size() == 0 || order.getProducts().isEmpty()) {
                 return;
@@ -549,6 +554,7 @@ public class PedidoMB implements Serializable {
     public void applyCoupon() throws Exception {
         List<CouponCode> couponsCompany = new ArrayList();
         couponsCompany = couponService.couponsByCompany(company.getId());
+        System.out.println("LISTA DE CUPONS:" + couponsCompany.size());
         BigDecimal totalSemTaxa = order.getTotal().subtract(order.getDeliveryCost());
         System.out.println(totalSemTaxa);
         if (lastOrder != null) {
