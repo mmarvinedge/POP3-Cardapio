@@ -35,6 +35,7 @@ public class Product implements Serializable {
     private List<Attribute> attributesSelected;
     private String printer;
     private Boolean promo;
+    private Boolean fraction;
 
     private String sizePizza;
     private Integer maxPizza;
@@ -255,6 +256,17 @@ public class Product implements Serializable {
 
     public void setOnlyMenu(Boolean showMenu) {
         this.onlyMenu = showMenu;
+    }
+
+    public Boolean getFraction() {
+        if (fraction == null) {
+            fraction = false;
+        }
+        return fraction;
+    }
+
+    public void setFraction(Boolean fraction) {
+        this.fraction = fraction;
     }
 
     @Override

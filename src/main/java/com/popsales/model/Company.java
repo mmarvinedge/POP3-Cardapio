@@ -58,6 +58,9 @@ public class Company {
     private String phoneOwner;
     private Boolean autoAdress;
     private String orderProducts;
+    
+    private BigDecimal valueMaxPromoDelivery;
+    private BigDecimal valuePromoDelivery;
 
     public String getId() {
         return id;
@@ -426,6 +429,32 @@ public class Company {
     public void setAutoAdress(Boolean autoAdress) {
         this.autoAdress = autoAdress;
     }
+
+    public String getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(String orderProducts) {
+        this.orderProducts = orderProducts;
+    }
+
+    public BigDecimal getValueMaxPromoDelivery() {
+        return valueMaxPromoDelivery;
+    }
+
+    public void setValueMaxPromoDelivery(BigDecimal valueMaxPromoDelivery) {
+        this.valueMaxPromoDelivery = valueMaxPromoDelivery;
+    }
+
+    public BigDecimal getValuePromoDelivery() {
+        return valuePromoDelivery;
+    }
+
+    public void setValuePromoDelivery(BigDecimal valuePromoDelivery) {
+        this.valuePromoDelivery = valuePromoDelivery;
+    }
+    
+    
     
     @Override
     public int hashCode() {
