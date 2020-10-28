@@ -285,7 +285,7 @@ public class PedidoMB implements Serializable {
                 PrimeFaces.current().executeScript("alerta('O valor do pedido não atingiu o mínimo de " + OUtils.formatarMoeda(company.getMinimalValue().doubleValue()) + "')");
                 return;
             }
-            
+
             if (order.getClientInfo().getPhone().length() < 12) {
                 PrimeFaces.current().executeScript("alerta('O telefone informado está inválido!')");
                 return;
@@ -414,11 +414,18 @@ public class PedidoMB implements Serializable {
 
     public void validarTaxaServico() {
         try {
+            System.out.println("TOTAL: " + order.getTotal());
             if (company.getUniqueDeliveryCost()) {
                 order.setDeliveryCost(company.getDeliveryCost());
             } else {
                 List<Bairro> b = company.getBairros().stream().filter(bb -> bb.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).collect(Collectors.toList());
                 order.setDeliveryCost(b.get(0).getTaxa());
+            }
+            if (company.getValueMaxPromoDelivery() != null && company.getValueMaxPromoDelivery().doubleValue() > 0
+                    && company.getValuePromoDelivery() != null ) {
+                if (order.getTotal().doubleValue() >= company.getValueMaxPromoDelivery().doubleValue()) {
+                    order.setDeliveryCost(company.getValuePromoDelivery());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -699,7 +706,7 @@ public class PedidoMB implements Serializable {
     public void setFinalizado(Boolean finalizado) {
         this.finalizado = finalizado;
     }
-    
+
     public static void addDetailMessage(String message, FacesMessage.Severity severity) {
 
         FacesMessage facesMessage = Messages.create("").detail(message).get();

@@ -48,6 +48,8 @@ public class EmpresaMB implements Serializable {
     private List<Product> productsPromo = new ArrayList();
     private Boolean phoneParam = false;
     private String horaAbertura, horaFechamento;
+    
+    
 
     private JSFUtil util = new JSFUtil();
 

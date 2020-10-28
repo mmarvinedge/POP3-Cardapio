@@ -101,10 +101,10 @@
                     <p:remoteCommand name="complete" action="#{pedidoMB.change()}" />
                     <div class="row">
                         <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6 text-left" style="padding-left: 25px;padding-right: 25px;">
-                            <h:panelGroup rendered="#{pedidoMB.company.decimalQuantity}">
-                                <p:inputNumber  id="iptNum" value="#{pedidoMB.item.quantity}" style="text-align: center !important; margin-bottom: 5px !important;"  onblur="PF('ldga').show(); complete(); PF('ldga').hide();" minValue="0.100" required="true" requiredMessage="Informe a quantidade!"  />
+                            <h:panelGroup rendered="#{pedidoMB.product.fraction}">
+                                <p:inputNumber  id="iptNum" styleClass="inputnumberfield" value="#{pedidoMB.item.quantity}" style="text-align: center !important; margin-bottom: 5px !important;" onfocus="this.select()" onblur="PF('ldga').show(); complete(); PF('ldga').hide();"  decimalSeparator="," decimalPlaces="3" required="true" requiredMessage="Informe a quantidade!"  />
                             </h:panelGroup>
-                            <h:panelGroup rendered="#{!pedidoMB.company.decimalQuantity}">
+                            <h:panelGroup rendered="#{!pedidoMB.product.fraction}">
                                 <b:touchSpin id="spin1" min="1" max="50" step="1" readonly="false"  value="#{pedidoMB.item.quantity}" style="text-align: center;"  
                                              booster="true" 
                                              style-class="ipt-touch" onkeydown="return false"  onchange="complete();"    >

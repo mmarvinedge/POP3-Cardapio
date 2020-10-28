@@ -251,14 +251,35 @@
                                         </div>
                                         <h:panelGroup id="grpValorEntrega">
                                             <h:panelGroup  rendered="#{pedidoMB.order.delivery}">
+                                                <h:panelGroup class="col-xs-12" rendered="#{empresaMB.company.valueMaxPromoDelivery != null and empresaMB.company.valueMaxPromoDelivery.doubleValue() > 0}" >
+                                                    <center style="    margin-top: 5px;background: #efb924;
+                                                            color: white;padding: 2px;border-radius: 20px;">
+                                                        Pedido acima de <strong>
+                                                            <h:outputText value="#{empresaMB.company.valueMaxPromoDelivery}">
+                                                                <f:convertNumber type="currency" />
+                                                            </h:outputText>
+                                                        </strong>
+                                                        frete grátis! <i class="fa fa-smile"></i>
+                                                    </center>
+                                                </h:panelGroup>
                                                 <div class="col-xs-7" style="border-bottom: 1px solid #ccc;" >
                                                     <h4>Taxa de Entrega</h4>
                                                 </div>
                                                 <div class="col-xs-5" style="text-align: right; border-bottom: 1px solid #ccc;" >
                                                     <h4>
-                                                        <h:outputText value="#{pedidoMB.order.deliveryCost}" styleClass="text-right" >
-                                                            <f:convertNumber type="currency" />
-                                                        </h:outputText>
+
+                                                        <h:panelGroup class="col-xs-12" rendered="#{empresaMB.company.valueMaxPromoDelivery != null and empresaMB.company.valueMaxPromoDelivery.doubleValue() > 0}" >
+                                                            <h:outputText value="Grátis!!!" styleClass="text-right" />
+                                                                
+                                                        </h:panelGroup>
+
+                                                        <h:panelGroup class="col-xs-12" rendered="#{empresaMB.company.valueMaxPromoDelivery == null or empresaMB.company.valueMaxPromoDelivery.doubleValue() == 0}" >
+                                                            <h:outputText value="#{pedidoMB.order.deliveryCost}" styleClass="text-right" >
+                                                                <f:convertNumber type="currency" />
+                                                            </h:outputText>
+                                                        </h:panelGroup>
+
+
                                                     </h4>
                                                 </div>
                                             </h:panelGroup>
