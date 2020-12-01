@@ -685,16 +685,16 @@ public class PedidoMB implements Serializable {
         StringBuilder content = new StringBuilder();
         content.append("<div class='row'>");
         content.append("<div class='col-xs-12' style='    line-height: 1.1;'><strong>" + bairro.getBairro() + "</strong> </div>");
-        if (company.getUniqueDeliveryCost()) {
-            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;     line-height: 1.1;'>Taxa: " + OUtils.formatarMoeda(company.getDeliveryCost().doubleValue()) + "</small></div>");
-        } else {
-            if (bairro.getTaxa().doubleValue() == 0.00 || bairro.getTaxa() == null) {
-                content.append("<div class='col-xs-12'><small style='    font-weight: bolder;color: #95c70d;     line-height: 1.1;'>Entrega Grátis</small> </div>");
-            } else {
-                content.append("<div class='col-xs-12'><small style='    font-weight: bolder;     line-height: 1.1;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
-            }
-        }
-        content.append("<div class='col-xs-12'><hr style='margin-top: 0;margin-bottom: 0;border-color: #95c70d;' /></div>");
+//        if (company.getUniqueDeliveryCost()) {
+//            content.append("<div class='col-xs-12'><small style='    font-weight: bolder;     line-height: 1.1;'>Taxa: " + OUtils.formatarMoeda(company.getDeliveryCost().doubleValue()) + "</small></div>");
+//        } else {
+//            if (bairro.getTaxa().doubleValue() == 0.00 || bairro.getTaxa() == null) {
+//                content.append("<div class='col-xs-12'><small style='    font-weight: bolder;color: #95c70d;     line-height: 1.1;'>Entrega Grátis</small> </div>");
+//            } else {
+//                content.append("<div class='col-xs-12'><small style='    font-weight: bolder;     line-height: 1.1;'>Taxa: " + OUtils.formatarMoeda(bairro.getTaxa().doubleValue()) + "</small></div>");
+//            }
+//        }
+//        content.append("<div class='col-xs-12'><hr style='margin-top: 0;margin-bottom: 0;border-color: #95c70d;' /></div>");
         content.append("</div>");
         return content.toString();
     }

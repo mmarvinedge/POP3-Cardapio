@@ -8,6 +8,7 @@ package com.popsales.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -211,6 +212,9 @@ public class Product implements Serializable {
     }
 
     public List<FlavorPizza> getFlavorsPizza() {
+        if (flavorsPizza != null && flavorsPizza.size() > 0) {
+            return flavorsPizza.stream().filter(f -> !f.getDisabled()).collect(Collectors.toList());
+        }
         return flavorsPizza;
     }
 

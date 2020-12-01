@@ -105,10 +105,10 @@
 
                                                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4" style="margin-bottom: 5px;">
                                                     <p:outputLabel for="bair" value="Bairro" />
-                                                    <p:selectOneMenu id="bair"   value="#{pedidoMB.order.address.auto}"  required="true" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains"  filter="true" style="width: 100% !important;     " >
+                                                    <p:selectOneMenu id="bair" value="#{pedidoMB.order.address.auto}"  required="true" requiredMessage="Obrigatorio!" filterMatchMode="custom" filterFunction="contains" filter="true" style="width: 100% !important;" >
                                                         <f:selectItem itemLabel="Selecione o bairro" itemValue="" />
                                                         <f:selectItems value="#{empresaMB.company.bairros}" var="b" 
-                                                                       itemLabel="#{pedidoMB.formatarMoedaTaxa(b)}" itemLabelEscaped="false" itemValue="#{b.bairro}" />
+                                                                       itemLabel="#{b.bairro}" itemLabelEscaped="false" itemValue="#{b.bairro}" />
                                                         <p:ajax event="itemSelect" listener="#{pedidoMB.validarTaxaServico()}" update="@this" />
                                                     </p:selectOneMenu>
                                                     <b:message for="@previous" />
@@ -259,7 +259,17 @@
                                                                 <f:convertNumber type="currency" />
                                                             </h:outputText>
                                                         </strong>
-                                                        frete grátis! <i class="fa fa-smile"></i>
+                                                        frete 
+                                                        <h:panelGroup rendered="#{empresaMB.company.valuePromoDelivery.doubleValue() > 0}">
+                                                            <strong>
+                                                                <h:outputText value="#{empresaMB.company.valuePromoDelivery}">
+                                                                    <f:convertNumber type="currency" />
+                                                                </h:outputText>
+                                                            </strong>
+                                                        </h:panelGroup>
+                                                        <h:panelGroup rendered="#{empresaMB.company.valuePromoDelivery.doubleValue() == 0}">
+                                                            grátis! <i class="fa fa-smile"></i>
+                                                        </h:panelGroup>
                                                     </center>
                                                 </h:panelGroup>
                                                 <div class="col-xs-7" style="border-bottom: 1px solid #ccc;" >
@@ -269,8 +279,14 @@
                                                     <h4>
 
                                                         <h:panelGroup class="col-xs-12" rendered="#{empresaMB.company.valueMaxPromoDelivery != null and empresaMB.company.valueMaxPromoDelivery.doubleValue() > 0}" >
-                                                            <h:outputText value="Grátis!!!" styleClass="text-right" />
-                                                                
+                                                            <h:panelGroup rendered="#{empresaMB.company.valuePromoDelivery.doubleValue() > 0}">
+                                                                <h:outputText value="#{empresaMB.company.valuePromoDelivery}" styleClass="text-right">
+                                                                    <f:convertNumber type="currency" />
+                                                                </h:outputText>
+                                                            </h:panelGroup>
+                                                            <h:panelGroup rendered="#{empresaMB.company.valuePromoDelivery.doubleValue() == 0}">
+                                                                <h:outputText value="Grátis!!!" styleClass="text-right" />
+                                                            </h:panelGroup>
                                                         </h:panelGroup>
 
                                                         <h:panelGroup class="col-xs-12" rendered="#{empresaMB.company.valueMaxPromoDelivery == null or empresaMB.company.valueMaxPromoDelivery.doubleValue() == 0}" >

@@ -20,6 +20,7 @@ public class FlavorPizza implements Serializable{
     private String flavor;
     private String description;
     private BigDecimal price;
+    private Boolean disabled;
 
     public FlavorPizza() {
     }
@@ -150,6 +151,14 @@ public class FlavorPizza implements Serializable{
         this.description = description;
     }
 
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
