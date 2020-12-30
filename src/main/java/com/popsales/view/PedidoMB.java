@@ -129,17 +129,19 @@ public class PedidoMB implements Serializable {
 
     public void diminuir(Item item) {
         if (item.getQuantity().doubleValue() > 1) {
+            BigDecimal ads = item.getTotalAds().divide(item.getQuantity());
             item.setQuantity(item.getQuantity().subtract(BigDecimal.ONE));
-            item.setTotal(item.getPrice().add(item.getTotalAds()).multiply(item.getQuantity()));
+            item.setTotalAds(ads.multiply(item.getQuantity()));
+            item.setTotal(item.getTotal().subtract(item.getPrice().add(ads)));
         }
         calcularTotal();
     }
 
     public void adicionar(Item item) {
+        BigDecimal ads = item.getTotalAds().divide(item.getQuantity());
         item.setQuantity(item.getQuantity().add(BigDecimal.ONE));
-        System.out.println(item.getPrice());
-        System.out.println(item.getTotalAds());
-        item.setTotal(item.getTotal().add(item.getPrice().add(item.getTotalAds())));
+        item.setTotalAds(ads.multiply(item.getQuantity()));
+        item.setTotal(item.getTotal().add(item.getPrice().add(ads)));
         calcularTotal();
     }
 
@@ -422,7 +424,7 @@ public class PedidoMB implements Serializable {
                 order.setDeliveryCost(b.get(0).getTaxa());
             }
             if (company.getValueMaxPromoDelivery() != null && company.getValueMaxPromoDelivery().doubleValue() > 0
-                    && company.getValuePromoDelivery() != null ) {
+                    && company.getValuePromoDelivery() != null) {
                 if (order.getTotal().doubleValue() >= company.getValueMaxPromoDelivery().doubleValue()) {
                     order.setDeliveryCost(company.getValuePromoDelivery());
                 }
