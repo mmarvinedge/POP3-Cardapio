@@ -20,7 +20,7 @@
                 <div class="image m-t-10" >
                     <center>
                         <img  role="presentation" src="#{pedidoMB.product.imageBase64}" loading="lazy" /><br/>
-                        <small >
+                        <small style="color: white; white-space: pre-line;">
                             #{pedidoMB.product.description}
                         </small>
                     </center>    
@@ -72,17 +72,19 @@
                                                                 #{it.description}
                                                             </i>
                                                         </div>
-                                                        <div class="col-xs-4 text-right" style="    max-width: 166px !important; float: right;">
-                                                            <h:panelGrid columns="3" style="float: right;     max-width: 166px !important"  >
-                                                                <p:commandLink id="btnMinus" action="#{pedidoMB.minQnt(it,at)}"  disabled="#{(at.travado and it.quantity == 0) or it.quantity == 0}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true" >
-                                                                    <i class="fa fa-minus-circle fa-2x " style="color: #95c70d;"></i> 
-                                                                </p:commandLink>
-                                                                <h:outputText id="totQnt" value="#{it.quantity}"  style="font-size: 20px;margin-right: 5px;margin-left: 5px;font-weight: bolder;" />
-                                                                <p:commandLink id="btnPlus" action="#{pedidoMB.addQnt(it,at)}"  disabled="#{at.travado}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true">
-                                                                    <i class="fa fa-plus-circle fa-2x " style="color: #95c70d;"></i> 
-                                                                </p:commandLink>
-                                                            </h:panelGrid>
-                                                        </div>
+                                                        <h:panelGroup rendered="#{!empresaMB.menu}">
+                                                            <div class="col-xs-4 text-right" style="    max-width: 166px !important; float: right;">
+                                                                <h:panelGrid columns="3" style="float: right;     max-width: 166px !important"  >
+                                                                    <p:commandLink id="btnMinus" action="#{pedidoMB.minQnt(it,at)}"  disabled="#{(at.travado and it.quantity == 0) or it.quantity == 0}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true" >
+                                                                        <i class="fa fa-minus-circle fa-2x " style="color: #95c70d;"></i> 
+                                                                    </p:commandLink>
+                                                                    <h:outputText id="totQnt" value="#{it.quantity}"  style="font-size: 20px;margin-right: 5px;margin-left: 5px;font-weight: bolder;" />
+                                                                    <p:commandLink id="btnPlus" action="#{pedidoMB.addQnt(it,at)}"  disabled="#{at.travado}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();" immediate="true">
+                                                                        <i class="fa fa-plus-circle fa-2x " style="color: #95c70d;"></i> 
+                                                                    </p:commandLink>
+                                                                </h:panelGrid>
+                                                            </div>
+                                                        </h:panelGroup>
                                                     </div>
                                                 </h:panelGroup>
                                             </ui:repeat>
@@ -95,39 +97,58 @@
 
                     <div class="row" style="padding: 10px;">
                         <div class="col-xs-12">
-                            <b:inputTextarea rows="2" value="#{pedidoMB.item.obs}" update="@this"  placeholder="Digite aqui seu recado. Ex: Sem cebola, mal passado" style="margin-bottom: 0px;" rendered="#{!pedidoMB.company.onlyMenu}"/>
+                            <b:inputTextarea rows="2" value="#{pedidoMB.item.obs}" update="@this"  placeholder="Digite aqui seu recado. Ex: Sem cebola, mal passado" style="margin-bottom: 0px;" rendered="#{!empresaMB.menu}"/>
                         </div>
                     </div>
                     <p:remoteCommand name="complete" action="#{pedidoMB.change()}" />
                     <div class="row">
                         <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6 text-left" style="padding-left: 25px;padding-right: 25px;">
-                            <h:panelGroup rendered="#{pedidoMB.product.fraction}">
-                                <p:inputNumber  id="iptNum" styleClass="inputnumberfield" value="#{pedidoMB.item.quantity}" style="text-align: center !important; margin-bottom: 5px !important;" onfocus="this.select()" onblur="PF('ldga').show(); complete(); PF('ldga').hide();"  decimalSeparator="," decimalPlaces="3" required="true" requiredMessage="Informe a quantidade!"  />
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{!pedidoMB.product.fraction}">
-                                <b:touchSpin id="spin1" min="1" max="50" step="1" readonly="false"  value="#{pedidoMB.item.quantity}" style="text-align: center;"  
-                                             booster="true" 
-                                             style-class="ipt-touch" onkeydown="return false"  onchange="complete();"    >
-                                </b:touchSpin>
-                            </h:panelGroup>
+                            <h:panelGroup rendered="#{!empresaMB.menu}">
 
+                                <h:panelGroup rendered="#{pedidoMB.product.fraction}">
+                                    <p:inputNumber  id="iptNum" styleClass="inputnumberfield" value="#{pedidoMB.item.quantity}" style="text-align: center !important; margin-bottom: 5px !important;" onfocus="this.select()" onblur="PF('ldga').show(); complete(); PF('ldga').hide();"  decimalSeparator="," decimalPlaces="3" required="true" requiredMessage="Informe a quantidade!"  />
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{!pedidoMB.product.fraction}">
+                                    <b:touchSpin id="spin1" min="1" max="50" step="1" readonly="false"  value="#{pedidoMB.item.quantity}" style="text-align: center;"  
+                                                 booster="true" 
+                                                 style-class="ipt-touch" onkeydown="return false"  onchange="complete();"    >
+                                    </b:touchSpin>
+                                </h:panelGroup>
+                            </h:panelGroup>
                         </div>
+
 
                         <div class="col-xs-7 col-sm-7 col-md-6 col-lg-6 text-right" style="padding-left: 0px;padding-right: 25px; padding-bottom: 15px;">
                             <p:messages id="msgs" closable="true" />
-                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{pedidoMB.addCart()}"  rendered="#{!empresaMB.menu}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();"  style="padding: 15px;    border-radius: 25px !important; background: #2f8a39 !important;"
-                                           update=":grpNumbers, pnlend,frmModal:msgs" disabled="#{!pedidoMB.company.open}">
+                            <p:commandLink id="btnLinkAdd" styleClass="btn btn-primary btn-block text-right" action="#{pedidoMB.addCart()}" onstart="PF('ldga').show();" oncomplete="PF('ldga').hide();"  style="padding: 15px;    border-radius: 25px !important; background: #2f8a39 !important;"
+                                           update=":grpNumbers, pnlend,frmModal:msgs" disabled="#{!pedidoMB.company.open or empresaMB.menu}">
                                 <div class="row">
                                     <div class="col-xs-5 text-left bold">
                                         <h:panelGroup id="grpValue">
-                                            <strong>
-                                                #{empresaMB.util.formatarMoeda(((pedidoMB.item.total)))}
-                                            </strong>
+                                            <h:panelGroup rendered="#{empresaMB.menu}">
+                                                <h:panelGroup rendered="#{pedidoMB.item.product.priceMenu != null}">
+                                                    <strong>
+                                                        #{empresaMB.util.formatarMoeda(((pedidoMB.item.product.priceMenu)))}
+                                                    </strong>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{pedidoMB.item.product.priceMenu == null}">
+                                                    <strong>
+                                                        #{empresaMB.util.formatarMoeda(((pedidoMB.item.total)))}
+                                                    </strong>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{!empresaMB.menu}">
+                                                <strong>
+                                                    #{empresaMB.util.formatarMoeda(((pedidoMB.item.total)))}
+                                                </strong>
+                                            </h:panelGroup>
                                         </h:panelGroup>
 
                                     </div>
                                     <div class="col-xs-7 text-right">
-                                        <strong>Adicionar</strong>
+                                        <h:panelGroup rendered="#{!empresaMB.menu}">
+                                            <strong>Adicionar</strong>
+                                        </h:panelGroup>
                                     </div>
                                 </div>
                             </p:commandLink>

@@ -114,7 +114,7 @@
                                                     <b:message for="@previous" />
                                                 </div>
                                                 <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6"  >
-                                                    <b:inputText  id="end" label="Endereço" placeholder="Rua Central" value="#{pedidoMB.order.address.street}"   required="true" requiredMessage="Obrigatorio!">
+                                                    <b:inputText  id="end" label="Rua" placeholder="Rua Central" value="#{pedidoMB.order.address.street}" maxlength="100"  required="true" requiredMessage="Obrigatorio!">
                                                         <p:ajax event="blur" update="@this" />
                                                     </b:inputText>
                                                     <b:message for="@previous" />
@@ -127,7 +127,7 @@
                                                     <b:message for="@previous" />
                                                 </div>
                                                 <div class="col-xs-12">
-                                                    <b:inputText  placeholder="Complemento" label="Complemento"  value="#{pedidoMB.order.address.suburb}">
+                                                    <b:inputText  placeholder="Complemento" label="Complemento" maxlength="200"  value="#{pedidoMB.order.address.suburb}">
                                                         <p:ajax event="blur" update="@this" />
                                                     </b:inputText>
 
@@ -154,7 +154,7 @@
                                                         <div class="col-xs-12" style="    margin: 0px;">
                                                             <small style="    color: #999999;font-size: 12px;">
                                                                 <h:panelGroup rendered="#{prod.totalAds > 0}">
-                                                                    Ads: #{empresaMB.util.formatarMoeda(prod.totalAds)}
+                                                                    Ads: #{empresaMB.util.formatarMoeda(prod.totalAds.multiply(prod.quantity))}
                                                                 </h:panelGroup>
                                                             </small>
                                                         </div>

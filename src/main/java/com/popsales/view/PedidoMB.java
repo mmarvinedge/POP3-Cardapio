@@ -129,19 +129,15 @@ public class PedidoMB implements Serializable {
 
     public void diminuir(Item item) {
         if (item.getQuantity().doubleValue() > 1) {
-            BigDecimal ads = item.getTotalAds().divide(item.getQuantity());
             item.setQuantity(item.getQuantity().subtract(BigDecimal.ONE));
-            item.setTotalAds(ads.multiply(item.getQuantity()));
-            item.setTotal(item.getTotal().subtract(item.getPrice().add(ads)));
+            item.setTotal(item.getTotal().subtract(item.getPrice().add(item.getTotalAds())));
         }
         calcularTotal();
     }
 
     public void adicionar(Item item) {
-        BigDecimal ads = item.getTotalAds().divide(item.getQuantity());
         item.setQuantity(item.getQuantity().add(BigDecimal.ONE));
-        item.setTotalAds(ads.multiply(item.getQuantity()));
-        item.setTotal(item.getTotal().add(item.getPrice().add(ads)));
+        item.setTotal(item.getTotal().add(item.getPrice().add(item.getTotalAds())));
         calcularTotal();
     }
 
@@ -235,9 +231,7 @@ public class PedidoMB implements Serializable {
                             novos.add(value);
                             value.setQuantity(value.getQuantity().multiply(item.getQuantity()));
                             value.setTotal(value.getPrice().multiply(value.getQuantity()));
-                            if (value.getTotal() != null) {
-                                totalAdicionais = totalAdicionais.add(value.getTotal());
-                            }
+                            totalAdicionais = totalAdicionais.add(value.getPrice());
                         }
                     }
                     atr.setValues(novos);
@@ -248,6 +242,7 @@ public class PedidoMB implements Serializable {
                 }
             }
             item.setAttributes(atrs);
+            System.out.println(totalAdicionais);
             item.setTotalAds(totalAdicionais);
             System.out.println(item.getTotalAds());
             order.getProducts().add(item);
