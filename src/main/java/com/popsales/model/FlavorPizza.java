@@ -14,7 +14,7 @@ import java.util.Objects;
  *
  * @author Renato
  */
-public class FlavorPizza implements Serializable{
+public class FlavorPizza implements Serializable {
 
     private String sku;
     private String flavor;
@@ -66,7 +66,7 @@ public class FlavorPizza implements Serializable{
             return flavor;
         }
     }
-    
+
     public String htmlGetFlavorDesktop(Item i) {
         try {
             if (flavor != null) {
@@ -93,7 +93,11 @@ public class FlavorPizza implements Serializable{
 
     public String valor(Item i) {
         if (i.getProduct().getPromo()) {
-            return "<div class='text-right'><small><s>" + OUtils.formatarMoeda(getPrice().doubleValue()) + "</s></small> <span class='color-value'>" + OUtils.formatarMoeda(i.getProduct().getPrice().doubleValue()) + "</span></div></div>";
+            if (i.getProduct().getPriceOriginal().doubleValue() > 0) {
+                return "<div class='text-right'><small><s>" + OUtils.formatarMoeda(getPrice().doubleValue()) + "</s></small> <span class='color-value'>" + OUtils.formatarMoeda(i.getProduct().getPrice().doubleValue()) + "</span></div></div>";
+            } else {
+                return "<div class='text-right'><span class='color-value'>" + OUtils.formatarMoeda(price.doubleValue()) + "</span></div>";
+            }
         } else {
             return "<div class='text-right'><span class='color-value'>" + OUtils.formatarMoeda(price.doubleValue()) + "</span></div>";
         }
@@ -158,7 +162,7 @@ public class FlavorPizza implements Serializable{
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;

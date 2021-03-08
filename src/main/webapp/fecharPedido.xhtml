@@ -279,13 +279,18 @@
                                                     <h4>
 
                                                         <h:panelGroup class="col-xs-12" rendered="#{empresaMB.company.valueMaxPromoDelivery != null and empresaMB.company.valueMaxPromoDelivery.doubleValue() > 0}" >
-                                                            <h:panelGroup rendered="#{empresaMB.company.valuePromoDelivery.doubleValue() > 0}">
+                                                            <h:panelGroup rendered="#{empresaMB.company.valuePromoDelivery.doubleValue() > 0 and pedidoMB.order.total.doubleValue() >= empresaMB.company.valueMaxPromoDelivery.doubleValue()}">
                                                                 <h:outputText value="#{empresaMB.company.valuePromoDelivery}" styleClass="text-right">
                                                                     <f:convertNumber type="currency" />
                                                                 </h:outputText>
                                                             </h:panelGroup>
-                                                            <h:panelGroup rendered="#{empresaMB.company.valuePromoDelivery.doubleValue() == 0}">
+                                                            <h:panelGroup rendered="#{empresaMB.company.valuePromoDelivery.doubleValue() == 0 and pedidoMB.order.total.doubleValue() >= empresaMB.company.valueMaxPromoDelivery.doubleValue()}">
                                                                 <h:outputText value="Grátis!!!" styleClass="text-right" />
+                                                            </h:panelGroup>
+                                                            <h:panelGroup rendered="#{empresaMB.company.valueMaxPromoDelivery.doubleValue() > pedidoMB.order.total.doubleValue()}">
+                                                                <h:outputText value="#{pedidoMB.order.deliveryCost}" styleClass="text-right" >
+                                                                    <f:convertNumber type="currency" />
+                                                                </h:outputText>
                                                             </h:panelGroup>
                                                         </h:panelGroup>
 

@@ -97,7 +97,6 @@
             </snapshots>
         </repository>
     </repositories>
-
     <build>
         <defaultGoal>install</defaultGoal>
         <plugins>
@@ -147,6 +146,7 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>POP3-Cardapio</finalName>
     </build>
 
 </project>

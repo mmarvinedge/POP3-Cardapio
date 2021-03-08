@@ -231,7 +231,7 @@ public class PedidoMB implements Serializable {
                             novos.add(value);
                             value.setQuantity(value.getQuantity().multiply(item.getQuantity()));
                             value.setTotal(value.getPrice().multiply(value.getQuantity()));
-                            totalAdicionais = totalAdicionais.add(value.getPrice());
+                            totalAdicionais = totalAdicionais.add(value.getTotal());
                         }
                     }
                     atr.setValues(novos);
@@ -320,6 +320,8 @@ public class PedidoMB implements Serializable {
                 } else {
                     order.setDelivery(Boolean.FALSE);
                 }
+            } else if (order.getDelivery() && order.getAddress().getStreet() == null) {
+                order.setDelivery(Boolean.FALSE);
             }
 
             if (order.getDelivery()) {
@@ -346,6 +348,7 @@ public class PedidoMB implements Serializable {
             if (!company.getFreeVersion()) {
                 orderService.sendOrder(order, company.getId());
             }
+            
             montarMensagemFinalizar();
             PrimefacesUtil.Update("grpScrips");
             if (company.getFreeVersion()) {
@@ -383,6 +386,7 @@ public class PedidoMB implements Serializable {
         } else {
             order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()));
         }
+        validarTaxaServico();
     }
 
     public String onFlowProcess(FlowEvent event) {

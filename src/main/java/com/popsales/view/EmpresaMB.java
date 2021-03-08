@@ -121,14 +121,14 @@ public class EmpresaMB implements Serializable {
         if (company.getBairros() == null || company.getBairros().size() == 0) {
             List<String> bairros = new ArrayList();
             company.setBairros(new ArrayList());
-            bairros = categoriaService.getBairros(company.getAddress().getCity());
-            for (String b : bairros) {
-                if (company.getDeliveryCost() == null) {
-                    company.getBairros().add(new Bairro(b, BigDecimal.ZERO, true));
-                } else {
-                    company.getBairros().add(new Bairro(b, company.getDeliveryCost(), true));
-                }
-            }
+//            bairros = categoriaService.getBairros(company.getAddress().getCity());
+//            for (String b : bairros) {
+//                if (company.getDeliveryCost() == null) {
+//                    company.getBairros().add(new Bairro(b, BigDecimal.ZERO, true));
+//                } else {
+//                    company.getBairros().add(new Bairro(b, company.getDeliveryCost(), true));
+//                }
+//            }
         }
         company.setBairros(company.getBairros().stream().filter(b -> b.getEntrega()).collect(Collectors.toList()));
         return company;
