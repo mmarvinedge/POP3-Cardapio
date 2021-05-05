@@ -61,7 +61,7 @@
                                                     <p:selectOneRadio value="#{pedidoMB.order.delivery}" >
                                                         <f:selectItem itemEscaped="true" itemValue="true" itemLabel="Receber Em Casa" itemDisabled="#{!empresaMB.company.deliveryOnly}"  />
                                                         <f:selectItem itemEscaped="true" itemValue="false" itemLabel="Retirar na Loja" itemDisabled="#{!empresaMB.company.withdrawalOnly}" />
-                                                        <p:ajax event="change" update="wizard"   onstart="PF('ldg').show()" oncomplete="PF('ldg').hide();" listener="#{pedidoMB.adicionarRemoverTaxa()}"/>
+                                                        <p:ajax event="change" update="wizard, @this"   onstart="PF('ldg').show()" oncomplete="PF('ldg').hide();" listener="#{pedidoMB.adicionarRemoverTaxa()}"/>
                                                     </p:selectOneRadio>
 
                                                     <h:panelGroup rendered="#{!empresaMB.company.withdrawalOnly}">
@@ -208,8 +208,14 @@
                                                             </div>
                                                             <div class="col-xs-6">
                                                                 <h:panelGroup id="gpTroco" >
-                                                                    <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="#{pedidoMB.order.trocoPara}" required="true" 
-                                                                                 requiredMessage="Troco para quanto?"  rendered="#{pedidoMB.order.troco}"/>
+                                                                    <p:inputText value="#{pedidoMB.order.trocoPara}" required="true" id="iptTroco" type="number" placeholder="Para quanto?" style="magin-bottom: 3% !important;"
+                                                                                 requiredMessage="Troco para quanto?" rendered="#{pedidoMB.order.troco}">
+                                                                        <p:ajax event="blur" update="@this" listener="#{pedidoMB.validaTroco()}"/>
+                                                                    </p:inputText>
+<!--                                                                    <b:inputText style="magin-bottom: 3% !important;" type="number" id="iptTroco" label="Para quanto?"  value="{pedidoMB.order.trocoPara}" required="true" 
+                                                                                 requiredMessage="Troco para quanto?"  rendered="{pedidoMB.order.troco}">
+
+                                                                    </b:inputText>-->
                                                                 </h:panelGroup>
                                                             </div>
                                                         </div>
@@ -221,12 +227,13 @@
                                         <h:panelGroup id="grpCoupon" rendered="#{empresaMB.company.worksCoupon and empresaMB.company.coupons.size() > 0}" >
                                             <div class="row">
 
-                                                <div class="col-xs-12" style=" margin-bottom: 5px;margin-top: 5px;border-top: 1px solid #aeaeae;padding-top: 10px;border-bottom: 1px solid #aeaeae;                                                      padding-bottom: 10px;">
+                                                <div class="col-xs-12" style=" margin-bottom: 5px;margin-top: 5px;border-top: 1px solid #aeaeae;padding-top: 10px;border-bottom: 1px solid #aeaeae; padding-bottom: 10px;">
                                                     <div class="input-group">
                                                         <b:inputText id="couponCode" disabled="#{pedidoMB.couponValid}" value="#{pedidoMB.couponCode}" style="width: 100% !important;border: 1px solid #95c70d !important; height: 45px !important;" placeholder="Cupom de desconto">
                                                             <p:ajax event="blur" update="@this"/>
                                                             <f:facet name="append">
-                                                                <p:commandLink value="APLICAR" styleClass="btn btn-primary" style="height: 34px !important; color: white;  display: grid;     border-top-left-radius: 0px;border-bottom-left-radius: 0px; height: 45px !important;align-items: center;" action="#{pedidoMB.applyCoupon()}"
+                                                                <p:commandLink value="APLICAR" styleClass="btn btn-primary" id="btnCoupon"
+                                                                               style="height: 34px !important; color: white;  display: grid; border-top-left-radius: 0px;border-bottom-left-radius: 0px; height: 45px !important;align-items: center;" action="#{pedidoMB.applyCoupon()}"
                                                                                update="wizard, msgsCoupon" immediate="true" disabled="#{pedidoMB.couponValid}"  />
                                                             </f:facet>
                                                         </b:inputText>
@@ -332,8 +339,7 @@
                                         <div class="col-xs-12" style="margin-bottom: 20px;" >
                                             <p:commandLink id="btnSEND" value="Enviar Pedido" disabled="#{pedidoMB.order.products.size() == 0}" styleClass="btn btn-primary btn-block"  style="height: 50px !important; padding: 15px !important; color: white;     display: grid; margin-top: 15px !important;" 
                                                            update="fechamento" 
-                                                           action="#{pedidoMB.registarPedido()}" onstart="PF('ldg').show()" oncomplete="PF('ldg').hide()"/>
-
+                                                           action="#{pedidoMB.registarPedido()}" onstart="PF('ldg').show(); openModal('mdlLoad')" oncomplete="PF('ldg').hide()"/>
                                         </div>
                                         <h:panelGroup rendered="#{pedidoMB.order.delivery and empresaMB.company.aproxTime != null}">
                                             <div class="col-xs-12">
@@ -347,7 +353,24 @@
                             </p:wizard>
                         </div>
                     </div>
+                    <b:modal id="mdlLoad">
+                        <div class="loader"></div>
+                    </b:modal>
+                    <style>
+                        .loader {
+                            border: 16px solid #f3f3f3; /* Light grey */
+                            border-top: 16px solid #3498db; /* Blue */
+                            border-radius: 50%;
+                            width: 120px;
+                            height: 120px;
+                            animation: spin 2s linear infinite;
+                        }
 
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    </style>
 
 
 

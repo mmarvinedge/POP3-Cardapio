@@ -67,6 +67,8 @@ public class PedidoMB implements Serializable {
 
     private Boolean finalizado = false;
 
+    private Boolean trocoValido = false;
+
     public PedidoMB() {
         order = new Order();
     }
@@ -182,7 +184,7 @@ public class PedidoMB implements Serializable {
         if (item == null || item.getPrice() == null || item.getQuantity() == null) {
             return;
         }
-        if (item.getProduct().getPromo()) {
+        if (item.getProduct().getPromo() && item.getProduct().getPrice().doubleValue() > 0) {
             item.setPrice(item.getProduct().getPrice());
             item.setTotal(item.getPrice());
             return;
@@ -313,7 +315,6 @@ public class PedidoMB implements Serializable {
                 novo.setName(it.getName());
                 it.setProduct(novo);
             }
-
             if (order.getDelivery() == null) {
                 if (order.getAddress().getStreet() != null) {
                     order.setDelivery(Boolean.TRUE);
@@ -329,13 +330,8 @@ public class PedidoMB implements Serializable {
             } else {
                 order.setDeliveryCost(BigDecimal.ZERO);
             }
-
-            if (order.getTroco() != null) {
-                if (order.getTroco()) {
-                    if (order.getTrocoPara() == null) {
-                        order.setTroco(Boolean.FALSE);
-                    }
-                }
+            if (order.getTroco() != null && order.getTroco() && order.getTrocoPara() == null) {
+                order.setTroco(Boolean.FALSE);
             }
             if (couponValid) {
                 for (CouponCode c : company.getCoupons()) {
@@ -348,7 +344,6 @@ public class PedidoMB implements Serializable {
             if (!company.getFreeVersion()) {
                 orderService.sendOrder(order, company.getId());
             }
-            
             montarMensagemFinalizar();
             PrimefacesUtil.Update("grpScrips");
             if (company.getFreeVersion()) {
@@ -366,13 +361,13 @@ public class PedidoMB implements Serializable {
             if (company.getAddress() != null && company.getAddress().getCity() != null) {
                 order.getAddress().setCity(company.getAddress().getCity());
             }
-            if (company.getFreeVersion()) {
-                PrimeFaces.current().executeScript("finalizarPedidoFree();");
-            } else {
-                PrimeFaces.current().executeScript("finalizarPedido();");
-            }
-            PrimeFaces.current().executeScript("PF('ldg').hide()");
-            PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
+//            if (company.getFreeVersion()) {
+//                PrimeFaces.current().executeScript("finalizarPedidoFree();");
+//            } else {
+//                PrimeFaces.current().executeScript("finalizarPedido();");
+//            }
+//            PrimeFaces.current().executeScript("PF('ldg').hide()");
+//            PrimeFaces.current().executeScript("PF('wizardWidget').loadStep('personal', false)");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -381,12 +376,12 @@ public class PedidoMB implements Serializable {
 
     private void calcularTotal() {
         order.setSubtotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
+        validarTaxaServico();
         if (order.getDiscountValue() != null) {
             order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(order.getDiscountValue()));
         } else {
             order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()));
         }
-        validarTaxaServico();
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -416,16 +411,20 @@ public class PedidoMB implements Serializable {
     public void validarTaxaServico() {
         try {
             System.out.println("TOTAL: " + order.getTotal());
-            if (company.getUniqueDeliveryCost()) {
-                order.setDeliveryCost(company.getDeliveryCost());
-            } else {
-                List<Bairro> b = company.getBairros().stream().filter(bb -> bb.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).collect(Collectors.toList());
-                order.setDeliveryCost(b.get(0).getTaxa());
-            }
-            if (company.getValueMaxPromoDelivery() != null && company.getValueMaxPromoDelivery().doubleValue() > 0
-                    && company.getValuePromoDelivery() != null) {
-                if (order.getTotal().doubleValue() >= company.getValueMaxPromoDelivery().doubleValue()) {
-                    order.setDeliveryCost(company.getValuePromoDelivery());
+            if (order.getDelivery()) {
+                if (company.getValueMaxPromoDelivery() != null && company.getValueMaxPromoDelivery().doubleValue() > 0
+                        && company.getValuePromoDelivery() != null) {
+                    if ((order.getTotal().doubleValue() >= company.getValueMaxPromoDelivery().doubleValue())
+                            || (order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue() >= company.getValueMaxPromoDelivery().doubleValue())) {
+                        order.setDeliveryCost(company.getValuePromoDelivery());
+                        return;
+                    }
+                }
+                if (company.getUniqueDeliveryCost()) {
+                    order.setDeliveryCost(company.getDeliveryCost());
+                } else {
+                    List<Bairro> b = company.getBairros().stream().filter(bb -> bb.getBairro().equalsIgnoreCase(order.getAddress().getAuto())).collect(Collectors.toList());
+                    order.setDeliveryCost(b.get(0).getTaxa());
                 }
             }
         } catch (Exception e) {
@@ -560,8 +559,9 @@ public class PedidoMB implements Serializable {
     }
 
     public void applyCoupon() throws Exception {
-        List<CouponCode> couponsCompany = new ArrayList();
-        couponsCompany = couponService.couponsByCompany(company.getId());
+        String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name");
+        this.company = compService.loadCompanyName(name);
+        List<CouponCode> couponsCompany = company.getCoupons();
         System.out.println("LISTA DE CUPONS:" + couponsCompany.size());
         BigDecimal totalSemTaxa = order.getTotal().subtract(order.getDeliveryCost());
         System.out.println(totalSemTaxa);
@@ -577,6 +577,7 @@ public class PedidoMB implements Serializable {
                             couponValid = true;
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
                             PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                            break;
                         }
                     }
                     break;
@@ -616,23 +617,27 @@ public class PedidoMB implements Serializable {
                             calcularDescontoCupom(c.getDiscount(), c.getDeliveryCost(), c.getPercentual());
                             couponValid = true;
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cupom aplicado!", "Cupom aplicado!"));
-//                            PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                            addDetailMessage("Cupom aplicado!", FacesMessage.SEVERITY_INFO);
+                            PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                            break;
                         }
                     }
                     break;
                 case "minimal":
                     couponValid = false;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O valor minimo para utilizar esse cupom não foi atingido!", "O valor minimo para utilizar esse cupom não foi atingido!"));
-//                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                    addDetailMessage("O valor minimo para utilizar esse cupom não foi atingido!", FacesMessage.SEVERITY_ERROR);
+                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
+                    couponCode = "";
+                    break;
+                case "expired":
+                    couponValid = false;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom atingiu o limite máximo de utilizações!", "Cupom atingiu o limite máximo de utilizações!"));
+                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
                     couponCode = "";
                     break;
                 default:
                     couponValid = false;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom inválido!", "Cupom inválido!"));
-//                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
-                    addDetailMessage("Cupom inválido!", FacesMessage.SEVERITY_ERROR);
+                    PrimefacesUtil.Update(":frmFechar:msgsCoupon");
                     couponCode = "";
                     break;
             }
@@ -642,20 +647,30 @@ public class PedidoMB implements Serializable {
     private void calcularDescontoCupom(BigDecimal desconto, Boolean deliveryCost, Boolean percentual) {
         if (percentual) {
             BigDecimal discount = order.getTotal().multiply(desconto).divide(BigDecimal.valueOf(100));
-            if (deliveryCost) {
-                order.setDiscountValue(discount);
-                order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(discount));
+            if (order.getDelivery()) {
+                if (deliveryCost) {
+                    order.setDiscountValue(discount);
+                    order.setTotal(order.getTotal().subtract(discount));
+                } else {
+                    order.setDiscountValue(discount);
+                    order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).subtract(discount).add(order.getDeliveryCost()));
+                }
             } else {
                 order.setDiscountValue(discount);
-                order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).subtract(discount).add(order.getDeliveryCost()));
+                order.setTotal(order.getTotal().subtract(discount));
             }
         } else {
-            if (deliveryCost) {
-                order.setDiscountValue(desconto);
-                order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).add(order.getDeliveryCost()).subtract(desconto));
+            if (order.getDelivery()) {
+                if (deliveryCost) {
+                    order.setDiscountValue(desconto);
+                    order.setTotal(order.getTotal().subtract(desconto));
+                } else {
+                    order.setDiscountValue(desconto);
+                    order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).subtract(desconto).add(order.getDeliveryCost()));
+                }
             } else {
                 order.setDiscountValue(desconto);
-                order.setTotal(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).subtract(desconto).add(order.getDeliveryCost()));
+                order.setTotal(order.getTotal().subtract(desconto));
             }
         }
     }
@@ -715,6 +730,20 @@ public class PedidoMB implements Serializable {
             facesMessage.setSeverity(severity);
         }
         Messages.add(null, facesMessage);
+    }
+
+    public void validaTroco() {
+        if (order.getTrocoPara() < order.getTotal().doubleValue()) {
+            order.setTrocoPara(null);
+        }
+    }
+
+    public Boolean getTrocoValido() {
+        return trocoValido;
+    }
+
+    public void setTrocoValido(Boolean trocoValido) {
+        this.trocoValido = trocoValido;
     }
 
 }

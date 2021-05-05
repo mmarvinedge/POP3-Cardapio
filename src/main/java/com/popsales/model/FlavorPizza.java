@@ -192,4 +192,8 @@ public class FlavorPizza implements Serializable {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "FlavorPizza{" + "sku=" + sku + ", flavor=" + flavor + ", description=" + description + ", price=" + price + ", disabled=" + disabled + '}';
+    }
 }

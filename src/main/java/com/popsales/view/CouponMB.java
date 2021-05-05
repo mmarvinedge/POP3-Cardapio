@@ -32,7 +32,7 @@ public class CouponMB {
                         // cupom atingiu limite máximo de utilizações
                         return "expired";
                     }
-                    if (lastOrder.getCoupon() != null) {
+                    if (lastOrder.getCoupon() != null && !lastOrder.getCoupon().isEmpty()) {
                         if (lastOrder.getCoupon().equalsIgnoreCase(couponCode)) {
                             String today = OUtils.formataData(new Date(), "yyyy-MM-dd");
                             String dateOrder = lastOrder.getDtRegister().substring(0, 10);
@@ -61,9 +61,21 @@ public class CouponMB {
                             }
                             return "true";
                         }
+                    } else {
+                        if (c.getDeliveryCost() && totalSemTaxa.doubleValue() < c.getMinimalValue().doubleValue()) {
+                            // total(sem taxa entrega) não contempla valor minimo do cupom
+                            return "minimal";
+                        }
+                        if (total.doubleValue() < c.getMinimalValue().doubleValue()) {
+                            // total+taxa entrega não contempla valor minimo do cupom
+                            return "minimal";
+                        }
+                        return "true";
                     }
-                } 
+                }
             }
+            // nenhum cupom é igual ao cupom inserido
+            return "false";
         }
         // essa company não possui cupons cadastrados
         return "false";
@@ -77,7 +89,7 @@ public class CouponMB {
                         // cupom atingiu limite máximo de utilizações
                         return "expired";
                     }
-                    if (c.getDeliveryCost() && totalSemTaxa.doubleValue() < c.getMinimalValue().doubleValue()) {
+                    if (!c.getDeliveryCost() && totalSemTaxa.doubleValue() < c.getMinimalValue().doubleValue()) {
                         // total(sem taxa entrega) não contempla valor minimo do cupom
                         return "minimal";
                     }
@@ -88,6 +100,8 @@ public class CouponMB {
                     return "true";
                 }
             }
+            // nenhum cupom é igual ao cupom inserido
+            return "false";
         }
         // company não possui cupons cadastrados
         return "false";

@@ -275,7 +275,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "Product{" + " sku=" + sku + ", name=" + name + ", order=" + order + ", enable=" + enabled + ", description=" + description + ", availability=" + availability + ", imageType=" + imageType + ", imageBase64=" + imageBase64 + ", price=" + price + ", companyId=" + companyId + ", attributes=" + attributes + '}';
+        return "Product{" + "id=" + id + ", sku=" + sku + ", name=" + name + ", order=" + order + ", enabled=" + enabled + ", description=" + description + ", availability=" + availability + ", imageType=" + imageType + ", imageBase64=" + imageBase64 + ", price=" + price + ", priceOriginal=" + priceOriginal + ", companyId=" + companyId + ", categoryMain=" + categoryMain + ", categories=" + categories + ", attributes=" + attributes + ", attributesSelected=" + attributesSelected + ", printer=" + printer + ", promo=" + promo + ", fraction=" + fraction + ", sizePizza=" + sizePizza + ", maxPizza=" + maxPizza + ", flavorsPizza=" + flavorsPizza + ", rulePricePizza=" + rulePricePizza + ", productDay=" + productDay + ", shift=" + shift + ", priceMenu=" + priceMenu + ", onlyMenu=" + onlyMenu + '}';
     }
 
     public Shift getShift() {

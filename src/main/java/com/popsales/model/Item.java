@@ -209,4 +209,9 @@ public class Item {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Item{" + "id=" + id + ", sku=" + sku + ", name=" + name + ", price=" + price + ", quantity=" + quantity + ", totalAds=" + totalAds + ", total=" + total + ", obs=" + obs + ", attributes=" + attributes + ", attributesValues=" + attributesValues + ", product=" + product + ", printer=" + printer + ", flavors=" + flavors + '}';
+    }
+    
 }
